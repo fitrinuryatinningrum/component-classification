@@ -1,0 +1,47 @@
+# Dependencies
+node_modules/
+jspm_packages/
+.pnp
+.pnp.js
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Testing
+coverage/
+*.lcov
+.nyc_output/
+
+# Build output / cache
+.cache/
+.parcel-cache/
+.vite/
+dist/
+tmp/
+temp/
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.swp
+
+# NOTE
+# Klasifikasi-Komponen-AC-DC.html sengaja TIDAK di-ignore.
+# File itu adalah hasil build dari `node build-single-file.js` dan sengaja
+# ikut di-commit supaya repo bisa langsung dibuka tanpa perlu running build.

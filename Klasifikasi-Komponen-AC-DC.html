@@ -1,0 +1,5393 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Klasifikasi Komponen AC & DC — Sistem Interaktif</title>
+<meta name="description" content="Sistem interaktif untuk mengklasifikasikan 94 komponen elektronik berdasarkan jenis arus (AC/DC) dan fungsinya. Kuis 5 tipe soal.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+<style>
+/* =========================================================
+   Klasifikasi Komponen AC/DC — Stylesheet
+   Tanpa dependensi eksternal (bisa offline)
+   ========================================================= */
+
+:root {
+  --bg: #0d1117;
+  --bg-2: #131b26;
+  --card: #161f2c;
+  --card-2: #1c2735;
+  --line: #253243;
+  --line-2: #2f3f55;
+  --txt: #e6edf6;
+  --txt-2: #9fb0c6;
+  --txt-3: #6d7f96;
+  --acc: #4da3ff;
+  --acc-2: #7c5cff;
+  --ac: #38bdf8;
+  --dc: #4ade80;
+  --dual: #fbbf24;
+  --ok: #34d399;
+  --bad: #f87171;
+  --warn: #fbbf24;
+  --radius: 14px;
+  --radius-s: 9px;
+  --shadow: 0 8px 28px rgba(0, 0, 0, .45);
+  --font: "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: "Cascadia Mono", Consolas, "Courier New", monospace;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--txt);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(900px 420px at 15% -8%, rgba(77, 163, 255, .16), transparent 60%),
+    radial-gradient(800px 400px at 88% 4%, rgba(124, 92, 255, .14), transparent 62%);
+  z-index: 0;
+}
+
+.wrap { position: relative; z-index: 1; max-width: 1180px; margin: 0 auto; padding: 0 18px; }
+
+a { color: var(--acc); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+h1, h2, h3, h4 { line-height: 1.25; margin: 0 0 .5em; }
+h1 { font-size: clamp(1.7rem, 4vw, 2.5rem); letter-spacing: -.5px; }
+h2 { font-size: clamp(1.25rem, 2.6vw, 1.6rem); }
+h3 { font-size: 1.08rem; }
+p { margin: 0 0 .8em; }
+
+/* ---------------- HEADER / NAV ---------------- */
+.topbar {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(13, 17, 23, .82);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+.topbar .wrap { display: flex; align-items: center; gap: 18px; height: 60px; }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 700; letter-spacing: -.2px; color: var(--txt); }
+.brand:hover { text-decoration: none; }
+.brand .logo {
+  width: 30px; height: 30px; display: grid; place-items: center;
+  border-radius: 8px; background: linear-gradient(135deg, var(--acc), var(--acc-2));
+  color: #06121f; font-size: 17px;
+}
+.nav { margin-left: auto; display: flex; gap: 4px; }
+.nav a {
+  padding: 7px 13px; border-radius: 9px; color: var(--txt-2);
+  font-size: .92rem; font-weight: 500; white-space: nowrap;
+}
+.nav a:hover { background: var(--card); color: var(--txt); text-decoration: none; }
+.nav a.on { background: var(--card-2); color: var(--txt); box-shadow: inset 0 0 0 1px var(--line-2); }
+
+/* ---------------- HERO ---------------- */
+.hero { padding: 46px 0 26px; }
+.hero .kicker {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: .76rem; letter-spacing: 1.4px; text-transform: uppercase;
+  color: var(--acc); background: rgba(77, 163, 255, .1);
+  border: 1px solid rgba(77, 163, 255, .25);
+  padding: 5px 12px; border-radius: 999px; margin-bottom: 14px;
+}
+.hero p.lead { color: var(--txt-2); max-width: 68ch; font-size: 1.03rem; }
+.hero-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+
+.stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 26px 0 8px; }
+.stat {
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: var(--radius); padding: 14px 16px;
+}
+.stat b { display: block; font-size: 1.55rem; letter-spacing: -.5px; }
+.stat span { font-size: .8rem; color: var(--txt-3); }
+
+/* ---------------- BUTTON ---------------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 10px 18px; border-radius: 10px; border: 1px solid var(--line-2);
+  background: var(--card-2); color: var(--txt); font: inherit; font-weight: 600;
+  font-size: .92rem; cursor: pointer; transition: .15s;
+}
+.btn:hover { background: #24334a; transform: translateY(-1px); text-decoration: none; }
+.btn.primary {
+  background: linear-gradient(135deg, var(--acc), #3b7fd4); border-color: transparent; color: #04121f;
+}
+.btn.primary:hover { filter: brightness(1.08); }
+.btn.ghost { background: transparent; }
+.btn.sm { padding: 6px 12px; font-size: .84rem; border-radius: 8px; }
+.btn:disabled { opacity: .45; cursor: not-allowed; transform: none; }
+
+/* ---------------- PANEL / CARD ---------------- */
+.panel {
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: var(--radius); padding: 18px;
+}
+.panel.tight { padding: 13px 15px; }
+.section { margin: 34px 0; }
+.section-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+.section-head h2 { margin: 0; }
+.section-head .hint { color: var(--txt-3); font-size: .87rem; }
+
+/* ---------------- FILTER BAR ---------------- */
+.filters { position: sticky; top: 60px; z-index: 40; background: rgba(13, 17, 23, .93); backdrop-filter: blur(10px); padding: 12px 0 13px; border-bottom: 1px solid var(--line); }
+.search-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.search {
+  flex: 1 1 260px; display: flex; align-items: center; gap: 9px;
+  background: var(--bg-2); border: 1px solid var(--line-2);
+  border-radius: 10px; padding: 9px 13px;
+}
+.search input {
+  flex: 1; background: none; border: 0; outline: 0; color: var(--txt);
+  font: inherit; font-size: .93rem;
+}
+.search input::placeholder { color: var(--txt-3); }
+.search .ico { color: var(--txt-3); font-size: 1rem; }
+.viewtoggle { display: flex; border: 1px solid var(--line-2); border-radius: 10px; overflow: hidden; }
+.viewtoggle button {
+  background: var(--bg-2); border: 0; color: var(--txt-3); padding: 9px 13px;
+  cursor: pointer; font: inherit; font-size: .86rem;
+}
+.viewtoggle button.on { background: var(--acc); color: #04121f; font-weight: 700; }
+
+.chiprow { display: flex; gap: 7px; flex-wrap: wrap; margin-top: 11px; align-items: center; }
+.chiprow .lbl { font-size: .74rem; text-transform: uppercase; letter-spacing: 1px; color: var(--txt-3); margin-right: 3px; }
+.chip {
+  border: 1px solid var(--line-2); background: var(--bg-2); color: var(--txt-2);
+  padding: 5px 12px; border-radius: 999px; font-size: .83rem; cursor: pointer;
+  font-family: inherit; transition: .13s; white-space: nowrap;
+}
+.chip:hover { color: var(--txt); border-color: var(--acc); }
+.chip.on { background: var(--acc); border-color: var(--acc); color: #04121f; font-weight: 700; }
+.chip.on.k-ac { background: var(--ac); border-color: var(--ac); }
+.chip.on.k-dc { background: var(--dc); border-color: var(--dc); }
+.chip.on.k-dual { background: var(--dual); border-color: var(--dual); }
+.chip.on.k-cat { background: var(--acc-2); border-color: var(--acc-2); color: #fff; }
+.chip .n { opacity: .65; font-size: .76rem; margin-left: 4px; }
+
+/* ---------------- GRID KARTU ---------------- */
+.grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(268px, 1fr));
+  gap: 14px; margin: 20px 0 40px;
+}
+.card {
+  background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 15px 16px; display: flex; flex-direction: column; gap: 9px;
+  transition: .16s; position: relative; overflow: hidden; color: var(--txt);
+}
+.card::before {
+  content: ""; position: absolute; inset: 0 auto 0 0; width: 3px;
+  background: var(--cat-color, var(--acc));
+}
+.card:hover {
+  transform: translateY(-3px); border-color: var(--line-2); box-shadow: var(--shadow);
+  text-decoration: none;
+}
+.card .top { display: flex; align-items: center; gap: 12px; }
+.symbox {
+  width: 68px; height: 46px; flex: 0 0 auto; display: grid; place-items: center;
+  background: var(--bg-2); border: 1px solid var(--line); border-radius: var(--radius-s);
+  color: var(--sym-color, var(--txt-2));
+}
+.sym { width: 100%; height: 100%; display: block; }
+.symbox .sym { width: 52px; height: 34px; }
+.sym-t { stroke: none; fill: currentColor; font-size: 11px; font-family: var(--mono); font-weight: 700; }
+.card h3 { margin: 0; font-size: 1rem; }
+.card .alias { font-size: .76rem; color: var(--txt-3); font-family: var(--mono); }
+.card .fungsi { font-size: .87rem; color: var(--txt-2); margin: 0; flex: 1; }
+.card .foot { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+
+.badge {
+  font-size: .7rem; font-weight: 700; padding: 3px 9px; border-radius: 999px;
+  letter-spacing: .4px; border: 1px solid transparent; white-space: nowrap;
+}
+.badge.ac { background: rgba(56, 189, 248, .14); color: var(--ac); border-color: rgba(56, 189, 248, .35); }
+.badge.dc { background: rgba(74, 222, 128, .13); color: var(--dc); border-color: rgba(74, 222, 128, .32); }
+.badge.dual { background: rgba(251, 191, 36, .13); color: var(--dual); border-color: rgba(251, 191, 36, .33); }
+.badge.cat { background: var(--card-2); color: var(--txt-2); border-color: var(--line-2); }
+.badge.lv { background: transparent; color: var(--txt-3); border-color: var(--line-2); font-weight: 600; }
+
+/* ---------------- TABEL ---------------- */
+.tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); margin: 20px 0 40px; }
+table { border-collapse: collapse; width: 100%; font-size: .88rem; min-width: 720px; }
+thead th {
+  background: var(--card-2); text-align: left; padding: 11px 13px;
+  font-size: .74rem; letter-spacing: .9px; text-transform: uppercase; color: var(--txt-3);
+  position: sticky; top: 0; cursor: pointer; user-select: none; white-space: nowrap;
+}
+thead th:hover { color: var(--txt); }
+thead th .arw { opacity: .5; font-size: .7rem; }
+tbody td { padding: 10px 13px; border-top: 1px solid var(--line); vertical-align: middle; }
+tbody tr:hover { background: var(--card-2); }
+tbody tr { cursor: pointer; }
+td.c-sym { width: 84px; }
+td.c-sym .symbox { width: 62px; height: 38px; }
+td.c-sym .sym { width: 48px; height: 28px; }
+
+/* ---------------- DETAIL ---------------- */
+.detail-hero {
+  display: grid; grid-template-columns: 200px 1fr; gap: 24px; align-items: center;
+  background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 22px; margin: 26px 0 18px;
+}
+.detail-hero .big {
+  height: 140px; display: grid; place-items: center;
+  background: var(--bg-2); border: 1px solid var(--line); border-radius: var(--radius-s);
+}
+.detail-hero .big .sym { width: 170px; height: 110px; }
+.crumbs { font-size: .84rem; color: var(--txt-3); margin: 16px 0 0; }
+.crumbs a { color: var(--txt-2); }
+
+.spec { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; margin: 16px 0; }
+.spec div { background: var(--card); padding: 13px 15px; }
+.spec dt { font-size: .72rem; text-transform: uppercase; letter-spacing: 1px; color: var(--txt-3); margin-bottom: 3px; }
+.spec dd { margin: 0; font-weight: 600; font-size: .95rem; }
+
+.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.info { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 17px 19px; }
+.info h3 { display: flex; align-items: center; gap: 8px; font-size: .95rem; color: var(--acc); margin-bottom: 9px; }
+.info ul { margin: 0; padding-left: 19px; color: var(--txt-2); font-size: .91rem; }
+.info li { margin-bottom: 6px; }
+.info li::marker { color: var(--acc); }
+.note { border-left: 3px solid var(--warn); background: rgba(251, 191, 36, .07); }
+
+.paket { display: flex; align-items: center; gap: 13px; padding: 11px; border: 1px solid var(--line); border-radius: var(--radius-s); background: var(--bg-2); margin-bottom: 9px; color: var(--txt); transition: .14s; }
+.paket:hover { border-color: var(--acc); text-decoration: none; }
+.paket .symbox { width: 62px; height: 40px; }
+.paket .sym { width: 48px; height: 30px; }
+
+.pager { display: flex; gap: 12px; justify-content: space-between; margin: 22px 0 50px; }
+.pager a { flex: 1; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 13px 16px; transition: .15s; }
+.pager a:hover { border-color: var(--acc); text-decoration: none; }
+.pager span { display: block; font-size: .72rem; color: var(--txt-3); text-transform: uppercase; letter-spacing: 1px; }
+.pager b { font-size: .95rem; font-weight: 600; }
+
+/* ---------------- KUIS ---------------- */
+.quiz-setup { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 13px; margin: 22px 0; }
+.fieldset { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 15px 17px; }
+.fieldset > b { display: block; font-size: .78rem; text-transform: uppercase; letter-spacing: 1px; color: var(--txt-3); margin-bottom: 10px; }
+.opts { display: flex; flex-direction: column; gap: 7px; max-height: 190px; overflow-y: auto; }
+.opt {
+  display: flex; align-items: center; gap: 9px; padding: 7px 10px;
+  border: 1px solid var(--line-2); border-radius: var(--radius-s);
+  cursor: pointer; font-size: .88rem; transition: .12s; background: var(--bg-2);
+}
+.opt:hover { border-color: var(--acc); }
+.opt input { accent-color: var(--acc); margin: 0; }
+.opt .cnt { margin-left: auto; font-size: .74rem; color: var(--txt-3); }
+
+.qbar { display: flex; align-items: center; gap: 14px; margin: 22px 0 14px; }
+.progress { flex: 1; height: 8px; background: var(--card-2); border-radius: 99px; overflow: hidden; }
+.progress i { display: block; height: 100%; background: linear-gradient(90deg, var(--acc), var(--acc-2)); transition: width .3s; }
+.qmeta { font-size: .84rem; color: var(--txt-2); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.qscore { font-weight: 700; color: var(--dc); }
+
+.qcard { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; }
+.qtype { font-size: .72rem; letter-spacing: 1.2px; text-transform: uppercase; color: var(--acc); font-weight: 700; }
+.qtext { font-size: 1.08rem; margin: 8px 0 18px; }
+.qsym {
+  height: 150px; display: grid; place-items: center; margin: 6px 0 20px;
+  background: var(--bg-2); border: 1px solid var(--line); border-radius: var(--radius-s);
+}
+.qsym .sym { width: 220px; height: 120px; color: var(--txt); }
+.answers { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
+.ans {
+  display: flex; align-items: center; gap: 11px; text-align: left;
+  padding: 13px 15px; border-radius: var(--radius-s);
+  border: 1px solid var(--line-2); background: var(--bg-2); color: var(--txt);
+  font: inherit; font-size: .92rem; cursor: pointer; transition: .13s;
+}
+.ans:hover:not(:disabled) { border-color: var(--acc); background: var(--card-2); transform: translateY(-2px); }
+.ans .key {
+  width: 24px; height: 24px; flex: 0 0 auto; display: grid; place-items: center;
+  border-radius: 6px; background: var(--card-2); font-size: .76rem; font-weight: 700;
+  font-family: var(--mono); color: var(--txt-3); border: 1px solid var(--line-2);
+}
+.ans .mark { margin-left: auto; font-weight: 700; }
+.ans .sym { width: 62px; height: 40px; flex: 0 0 auto; }
+.ans.correct { border-color: var(--ok); background: rgba(52, 211, 153, .1); }
+.ans.correct .key { background: var(--ok); color: #05231a; border-color: var(--ok); }
+.ans.wrong { border-color: var(--bad); background: rgba(248, 113, 113, .1); }
+.ans.wrong .key { background: var(--bad); color: #2b0808; border-color: var(--bad); }
+.ans:disabled { cursor: default; }
+
+.fback { margin-top: 18px; border-radius: var(--radius-s); padding: 15px 17px; border: 1px solid var(--line); background: var(--bg-2); }
+.fback.ok { border-color: rgba(52, 211, 153, .5); background: rgba(52, 211, 153, .07); }
+.fback.no { border-color: rgba(248, 113, 113, .5); background: rgba(248, 113, 113, .07); }
+.fback b { display: block; margin-bottom: 5px; }
+.fback .mini { width: 92px; height: 60px; float: right; margin: 0 0 8px 16px; color: var(--txt-2); }
+.fback .clearfix::after { content: ""; display: block; clear: both; }
+
+.result { text-align: center; padding: 34px 20px; }
+.score-ring {
+  width: 172px; height: 172px; margin: 0 auto 18px; border-radius: 50%;
+  display: grid; place-items: center; font-size: 2.4rem; font-weight: 800;
+  background: conic-gradient(var(--acc) var(--pct, 0%), var(--card-2) 0);
+  position: relative;
+}
+.score-ring::after { content: ""; position: absolute; inset: 13px; border-radius: 50%; background: var(--card); }
+.score-ring b { position: relative; z-index: 1; }
+.review { max-width: 720px; margin: 24px auto 0; text-align: left; }
+
+/* ---------------- MISC ---------------- */
+.empty { text-align: center; padding: 60px 20px; color: var(--txt-3); }
+.empty .big { font-size: 3rem; margin-bottom: 10px; }
+.note-box { background: rgba(77, 163, 255, .07); border: 1px solid rgba(77, 163, 255, .22); border-radius: var(--radius); padding: 15px 18px; }
+.note-box h3 { color: var(--acc); font-size: .95rem; }
+.note-box p { margin: 0; color: var(--txt-2); font-size: .92rem; }
+
+.legend { display: grid; grid-template-columns: repeat(auto-fit, minmax(215px, 1fr)); gap: 12px; }
+.legend .li { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; border-top: 3px solid var(--c); }
+.legend .li b { display: block; margin-bottom: 4px; }
+.legend .li span { font-size: .86rem; color: var(--txt-2); }
+.legend .li ul { margin: 6px 0 0; padding-left: 18px; font-size: .86rem; color: var(--txt-3); }
+
+footer { border-top: 1px solid var(--line); margin-top: 40px; padding: 26px 0 40px; color: var(--txt-3); font-size: .86rem; }
+footer .wrap { display: flex; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
+
+.hidden { display: none !important; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* warna aksen per kategori */
+[data-kat="pasif"] { --cat-color: #64748b; --sym-color: #cbd5e1; }
+[data-kat="dioda"] { --cat-color: #f97316; --sym-color: #fdba74; }
+[data-kat="transistor"] { --cat-color: #22d3ee; --sym-color: #a5f3fc; }
+[data-kat="ic"] { --cat-color: #a78bfa; --sym-color: #ddd6fe; }
+[data-kat="sensor"] { --cat-color: #34d399; --sym-color: #a7f3d0; }
+[data-kat="daya"] { --cat-color: #f59e0b; --sym-color: #fcd34d; }
+[data-kat="meka"] { --kat-color: #ec4899; --cat-color: #ec4899; --sym-color: #f9a8d4; }
+[data-kat="konektor"] { --cat-color: #818cf8; --sym-color: #c7d2fe; }
+
+/* ---------------- RESPONSIF ---------------- */
+@media (max-width: 900px) {
+  .cols { grid-template-columns: 1fr; }
+  .stat-row { grid-template-columns: repeat(2, 1fr); }
+  .detail-hero { grid-template-columns: 1fr; text-align: center; }
+  .detail-hero .badges { justify-content: center; }
+  .filters { position: static; }
+}
+@media (max-width: 620px) {
+  .wrap { padding: 0 13px; }
+  .topbar .wrap { height: 54px; gap: 8px; }
+  .brand span.full { display: none; }
+  .nav a { padding: 6px 9px; font-size: .84rem; }
+  .grid { grid-template-columns: 1fr; }
+  .qsym { height: 118px; }
+  .qsym .sym { width: 170px; height: 92px; }
+  .answers { grid-template-columns: 1fr; }
+  .score-ring { width: 140px; height: 140px; font-size: 2rem; }
+  .hero { padding: 28px 0 18px; }
+  .pager { flex-direction: column; }
+}
+
+@media print {
+  body::before, .topbar, .filters, footer, .pager, .btn { display: none !important; }
+  body { background: #fff; color: #000; }
+}
+/* kontainer halaman untuk router */
+.page { display: none; }
+.page.on { display: block; }
+.page-foot { margin-top: 40px; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="#/">
+      <span class="logo">⚡</span>
+      <span>Klasifikasi <span class="full">Komponen AC/DC</span></span>
+    </a>
+    <nav class="nav">
+      <a href="#/" data-nav="home">Beranda</a>
+      <a href="#/daftar" data-nav="detail">Komponen</a>
+      <a href="#/kuis" data-nav="quiz">Kuis</a>
+      <a href="#panduan">Panduan</a>
+    </nav>
+  </div>
+</header>
+
+<div id="page-home" class="page on">
+<div class="wrap">
+
+  <!-- ================= HERO ================= -->
+  <section class="hero">
+    <span class="kicker">● Sistem Klasifikasi Interaktif</span>
+    <h1>Kenali &amp; Klasifikasikan Komponen Elektronik<br><span style="color:var(--acc)">Berdasarkan Arus dan Fungsinya</span></h1>
+    <p class="lead">
+      Setiap komponen elektronik dapat diklasifikasikan dari dua sisi: <b>jenis arus</b> yang mampu diterimanya
+      (<b>AC</b>, <b>DC</b>, atau keduanya) dan <b>katategori fungsi</b>-nya. Sistem ini menampilkan
+      94 komponen lengkap dengan simbol, prinsip kerja, dan contoh penerapan nyata — plus mode kuis untuk
+      menguji pemahaman Anda.
+    </p>
+    <div class="hero-actions">
+      <a class="btn primary" href="#daftar">Jelajahi Komponen</a>
+      <a class="btn" href="#/kuis">Mulai Kuis</a>
+      <a class="btn ghost" href="#panduan">Cara Kerja Sistem</a>
+    </div>
+    <div class="stat-row" id="statRow">
+      <div class="stat"><b>94</b><span>Total Komponen</span></div>
+      <div class="stat"><b>8</b><span>Kategori Fungsi</span></div>
+      <div class="stat"><b>3</b><span>Kelas Arus</span></div>
+      <div class="stat"><b>5</b><span>Tipe Soal Kuis</span></div>
+    </div>
+  </section>
+
+  <!-- ================= PANDUAN KLASIFIKASI ================= -->
+  <section id="panduan" class="section">
+    <div class="section-head">
+      <h2>Cara Sistem Mengklasifikasikan</h2>
+      <span class="hint">acuan utama untuk seluruh isi database</span>
+    </div>
+
+    <h3 style="margin-top:18px">1. Berdasarkan jenis arus kerja</h3>
+    <div class="legend">
+      <div class="li" style="--c:var(--ac)">
+        <b>🔵 AC (Alternating Current)</b>
+        <span>Hanya dapat bekerja bila disuplai arus bolak-balik.</span>
+        <ul>
+          <li>Contoh: transformator, TRIAC, motor induksi, saklar</li>
+          <li>Umumnya PLN 220 V / 50 Hz</li>
+          <li>Komponen ini bisa rusak atau terbakar jika diberi DC tetap</li>
+        </ul>
+      </div>
+      <div class="li" style="--c:var(--dc)">
+        <b>🟢 DC (Direct Current)</b>
+        <span>Hanya dapat bekerja bila disuplai arus searah (battery/adaptor).</span>
+        <ul>
+          <li>Contoh: IC digital, op-amp, BJT, motor DC, sensor</li>
+          <li>Umumnya battery, accumulator, atau adaptor</li>
+          <li>Memberi AC tegangan tetap pada komponen ini berbahaya</li>
+        </ul>
+      </div>
+      <div class="li" style="--c:var(--dual)">
+        <b>🟡 AC &amp; DC (Dupleks)</b>
+        <span>Bisa bekerja pada keduanya — kelompok komponen terbesar.</span>
+        <ul>
+          <li>Contoh: resistor, kapasitor, dioda, MOSFET, relay, motor</li>
+          <li>Sifat listriknya tidak bergantung pada arah arus</li>
+          <li>Perbedaannya ada pada aplikasi, bukan pada kelistrikan dasarnya</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="note-box" style="margin-top:14px">
+      <h3>⚠️ Catatan penting</h3>
+      <p>
+        Label "AC", "DC", atau "AC &amp; DC" pada tiap komponen menunjukkan <b>jenis suplai yang aman</b>,
+        bukan asal-usul arus. Contohnya dioda tetap bekerja pada keduanya, tetapi memiliki rating tegangan
+       undur yang berbeda untuk aplikasi AC maupun DC.
+      </p>
+    </div>
+
+    <h3 style="margin-top:28px">2. Berdasarkan fungsi / teknologi</h3>
+    <div class="legend" id="katLegend"></div>
+  </section>
+
+  <!-- ================= DAFTAR KOMPONEN ================= -->
+  <section id="daftar" class="section">
+    <div class="section-head">
+      <h2>Daftar &amp; Filter Komponen</h2>
+      <span class="hint">Cari nama, simbol, atau fungsi — lalu filter berdasarkan arus &amp; kategori</span>
+    </div>
+  </section>
+
+</div>
+<div class="filters" id="filterBar">
+  <div class="wrap">
+    <div class="search-row">
+      <label class="search">
+        <span class="ico">🔍</span>
+        <input type="search" id="q" placeholder="Cari: resistor, dioda, trafo, regulator, sensor cahaya…" autocomplete="off">
+      </label>
+      <div class="viewtoggle" role="group" aria-label="Tampilan">
+        <button id="vGrid" class="on" type="button">▦ Grid</button>
+        <button id="vTable" type="button">☰ Tabel</button>
+      </div>
+      <button class="btn ghost sm" id="resetAll" type="button">↺ Reset</button>
+    </div>
+    <div class="chiprow" id="arusChips">
+      <span class="lbl">Arus</span>
+    </div>
+    <div class="chiprow" id="katChips">
+      <span class="lbl">Kategori</span>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="section-head" style="margin:18px 0 0">
+    <h3 id="countLabel" style="margin:0">Memuat…</h3>
+    <span class="hint" id="activeFilterLabel"></span>
+  </div>
+  <div id="listArea"></div>
+</div>
+</div>
+
+<div id="page-detail" class="page">
+<div class="wrap">
+  <p class="crumbs"><a href="#/">Beranda</a> / <a href="#/daftar">Komponen</a> / <span id="crumbName">…</span></p>
+  <div id="detailArea"></div>
+</div>
+</div>
+
+<div id="page-quiz" class="page">
+<div class="wrap">
+
+  <!-- ============ KONFIGURASI ============ -->
+  <section id="setup" class="section">
+    <div class="section-head">
+      <h2>Kuis Klasifikasi Komponen</h2>
+      <span class="hint">5 tipe soal · umpan balik langsung · skor &amp; review</span>
+    </div>
+
+    <div class="note-box" id="lockBox" style="display:none">
+      <h3>🎯 Mode komponen tunggal</h3>
+      <p id="lockText"></p>
+    </div>
+
+    <div class="quiz-setup">
+      <div class="fieldset">
+        <b>Jumlah soal</b>
+        <div class="opts" id="optJumlah"></div>
+      </div>
+      <div class="fieldset">
+        <b>Tingkat kesulitan</b>
+        <div class="opts" id="optTingkat"></div>
+      </div>
+      <div class="fieldset">
+        <b>Jenis arus yang diuji</b>
+        <div class="opts" id="optArus"></div>
+      </div>
+      <div class="fieldset">
+        <b>Kategori komponen</b>
+        <div class="opts" id="optKat"></div>
+      </div>
+      <div class="fieldset">
+        <b>Opsi lain</b>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="urut" value="acak" checked><span>Acak</span></label>
+          <label class="opt"><input type="radio" name="urut" value="berurutan"><span>Berurutan</span></label>
+          <label class="opt"><input type="checkbox" id="optTimer" checked><span>Batas waktu 20 detik/soal</span></label>
+          <label class="opt"><input type="checkbox" id="optReview" checked><span>Tampilkan kunci jawaban</span></label>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-actions">
+      <button class="btn primary" id="btnMulai" type="button">Mulai Kuis →</button>
+      <button class="btn" id="btnAcak" type="button">🎲 Soal Acak</button>
+      <button class="btn hidden" id="btnUlangSalah" type="button">↻ Ulangi yang salah</button>
+    </div>
+    <p class="hint" id="setupWarn" style="color:var(--warn);margin-top:12px"></p>
+  </section>
+
+  <!-- ============ KUIS BERJALAN ============ -->
+  <section id="play" class="section hidden">
+    <div class="qbar">
+      <span class="qmeta" id="qNomor">Soal 1</span>
+      <div class="progress"><i id="qProgress" style="width:0%"></i></div>
+      <span class="qmeta">Skor: <b class="qscore" id="qScore">0</b></span>
+      <span class="qmeta" id="qTimer" style="min-width:52px"></span>
+    </div>
+    <div class="qcard" id="qCard"></div>
+    <div class="hero-actions" style="margin-top:16px">
+      <button class="btn" id="btnQuit" type="button">Keluar</button>
+      <button class="btn primary hidden" id="btnNext" type="button">Soal Berikutnya →</button>
+    </div>
+  </section>
+
+  <!-- ============ HASIL ============ -->
+  <section id="done" class="section hidden">
+    <div class="panel result" id="resultPanel"></div>
+    <div class="review" id="reviewBox"></div>
+  </section>
+
+</div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <b style="color:var(--txt)">Klasifikasi Komponen AC/DC</b><br>
+      Sistem belajar interaktif · 94 komponen · tanpa koneksi internet
+    </div>
+    <div>
+      <a href="#/">Beranda</a> ·
+      <a href="#/kuis">Kuis</a> ·
+      <a href="#panduan">Panduan</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+window.__SINGLE_FILE__ = true;
+/* =========================================================
+   symbols.js — Pustaka simbol elektronika (SVG vektor)
+   Semua simbol digambar dengan path/line, TIDAK ada file gambar.
+   Warna mengikuti `color` CSS sehingga bisa berubah saat kuis.
+   ========================================================= */
+
+const SYMBOLS = {
+  /* ---------- RESISTOR & VARIABEL ---------- */
+  resistor: {
+    vw: "0 0 80 40",
+    p: ["M4 20 H18 L25 12 L32 28 L39 12 L46 28 L53 12 L60 20 H76"]
+  },
+  potentiometer: {
+    vw: "0 0 80 44",
+    p: [
+      "M4 20 H18 L25 12 L32 28 L39 12 L46 28 L53 12 L60 20 H76",
+      "M40 40 V16",
+      "M36 21 L40 15 L44 21"
+    ]
+  },
+  trimmer: {
+    vw: "0 0 80 44",
+    p: [
+      "M10 20 H20 L25 13 L30 27 L35 13 L40 20 H52",
+      "M66 6 L52 20",
+      "M57 17 L50 20 L57 23"
+    ]
+  },
+  "resistor-array": {
+    vw: "0 0 80 44",
+    p: [
+      "M16 4 V40", "M64 4 V40",
+      "M16 14 H22 L26 9 L30 19 L34 9 L38 14 H64",
+      "M16 30 H22 L26 25 L30 35 L34 25 L38 30 H64"
+    ]
+  },
+  ldr: {
+    vw: "0 0 80 40",
+    p: [
+      "M4 20 H18 L25 12 L32 28 L39 12 L46 28 L53 12 L60 20 H76",
+      "M22 2 L34 12 M22 2 L28 2 M22 2 L22 8",
+      "M42 2 L54 12 M42 2 L48 2 M42 2 L42 8"
+    ]
+  },
+  varistor: {
+    vw: "0 0 80 40",
+    p: [
+      "M4 20 H18 L25 12 L32 28 L39 12 L46 28 L53 12 L60 20 H76",
+      "M24 8 H56 L60 12",
+      "M20 12 H60"
+    ]
+  },
+  ptc: {
+    vw: "0 0 90 40",
+    p: [
+      "M4 20 H18 L25 12 L32 28 L39 12 L46 28 L53 12 L60 20 H76",
+      "M26 8 H54 L58 12",
+      "M22 12 H58"
+    ],
+    t: [[62, 14, "T"]]
+  },
+  thermistor: {
+    vw: "0 0 90 40",
+    p: [
+      "M4 20 H18 L25 12 L32 28 L39 12 L46 28 L53 12 L60 20 H76",
+      "M28 6 H54 L58 10",
+      "M24 10 H58"
+    ],
+    t: [[62, 13, "t°"]]
+  },
+  "resistor-fusible": {
+    vw: "0 0 80 40",
+    p: [
+      "M4 20 H14 L20 13 L26 27 L32 13 L38 20 H48",
+      "M62 13 H74 V27 H62 Z",
+      "M68 13 V7 M68 27 V33"
+    ]
+  },
+
+  /* ---------- KAPASITOR ---------- */
+  capacitor: {
+    vw: "0 0 80 40",
+    p: ["M4 20 H34 M46 20 H76 M34 8 V32 M46 8 V32"]
+  },
+  "capacitor-pol": {
+    vw: "0 0 88 40",
+    p: [
+      "M4 20 H32", "M32 8 V32",
+      "M44 6 A 15 15 0 0 1 44 34",
+      "M52 12 H62 M57 7 V17",
+      "M44 20 H80"
+    ]
+  },
+  "capacitor-trimmer": {
+    vw: "0 0 80 44",
+    p: [
+      "M4 22 H34 M46 22 H76 M34 10 V34 M46 10 V34",
+      "M40 42 V28 M36 33 L40 27 L44 33",
+      "M40 2 V16 M36 11 L40 17 L44 11"
+    ]
+  },
+  "capacitor-motor": {
+    vw: "0 0 80 44",
+    p: ["M4 24 H26 c 8 -18 16 -18 24 0 c -8 18 -16 18 -24 0 H76"]
+  },
+  supercap: {
+    vw: "0 0 88 44",
+    p: [
+      "M4 22 H28", "M28 9 V35",
+      "M42 7 A 16 16 0 0 1 42 37",
+      "M28 22 H46 M28 22 A 9 9 0 0 1 42 22 Z",
+      "M50 14 H60 M55 9 V19",
+      "M42 22 H80"
+    ]
+  },
+  tantalum: {
+    vw: "0 0 88 40",
+    p: [
+      "M4 20 H30", "M30 8 V32",
+      "M44 7 A 14 14 0 0 1 44 33",
+      "M52 12 H62 M57 7 V17",
+      "M44 20 H80"
+    ],
+    c: [[70, 14, 4]]
+  },
+
+  /* ---------- INDUKTOR / TRAFO ---------- */
+  inductor: {
+    vw: "0 0 80 40",
+    p: ["M4 20 a5 6 0 0 1 10 0 a5 6 0 0 1 10 0 a5 6 0 0 1 10 0 a5 6 0 0 1 10 0 H76"]
+  },
+  choke: {
+    vw: "0 0 80 40",
+    p: [
+      "M4 20 a5 6 0 0 1 10 0 a5 6 0 0 1 10 0 a5 6 0 0 1 10 0 a5 6 0 0 1 10 0 H76",
+      "M8 9 H40 M8 31 H40"
+    ]
+  },
+  transformer: {
+    vw: "0 0 80 44",
+    p: [
+      "M4 22 H14",
+      "M14 22 a5 6 0 0 1 10 0 a5 6 0 0 1 10 0",
+      "M38 8 V36 M44 8 V36",
+      "M48 22 a5 6 0 0 1 10 0 a5 6 0 0 1 10 0",
+      "M68 22 H76"
+    ]
+  },
+  "transformer-toroid": {
+    vw: "0 0 80 44",
+    c: [[28, 22, 14], [52, 22, 14]]
+  },
+  "transformer-iso": {
+    vw: "0 0 80 44",
+    p: [
+      "M4 22 H14",
+      "M14 22 a5 6 0 0 1 10 0 a5 6 0 0 1 10 0",
+      "M37 6 V38 M41 6 V38 M45 6 V38",
+      "M49 22 a5 6 0 0 1 10 0 a5 6 0 0 1 10 0",
+      "M69 22 H76"
+    ]
+  },
+  "transformer-smp": {
+    vw: "0 0 80 44",
+    p: [
+      "M4 22 H14",
+      "M14 22 a5 6 0 0 1 10 0 a5 6 0 0 1 10 0",
+      "M38 6 V38 M44 6 V38",
+      "M48 22 a5 6 0 0 1 10 0 a5 6 0 0 1 10 0",
+      "M68 22 H76",
+      "M48 14 L62 8 M62 8 V16"
+    ]
+  },
+  crystal: {
+    vw: "0 0 80 40",
+    p: ["M4 20 H28 M28 11 V29 M34 8 H46 V32 H34 Z M52 11 V29 M52 20 H76"]
+  },
+  fuse: {
+    vw: "0 0 80 40",
+    p: ["M4 20 H30 M30 12 H50 V28 H30 Z M50 20 H76"]
+  },
+
+  /* ---------- DIODA & OPTO ---------- */
+  dioda: {
+    vw: "0 0 80 40",
+    p: ["M4 20 H30 M30 9 V31 L50 20 Z M50 9 V31 M50 20 H76"]
+  },
+  "dioda-zener": {
+    vw: "0 0 82 40",
+    p: ["M4 20 H30 M30 9 V31 L50 20 Z M56 5 L50 13 V27 L56 35 M56 35 H78"]
+  },
+  "dioda-schottky": {
+    vw: "0 0 80 40",
+    p: ["M4 20 H30 M30 9 V31 L50 20 Z M50 7 V33 L42 27 M50 20 H76"]
+  },
+  "dioda-tvs": {
+    vw: "0 0 80 40",
+    p: ["M4 20 H26 M26 9 V31 L40 20 Z M40 9 V31 M40 20 L54 9 V31 Z M54 20 H76"]
+  },
+  "dioda-varactor": {
+    vw: "0 0 80 40",
+    p: ["M4 20 H32 M32 8 V32 M40 8 V32 M40 20 L54 10 V30 Z M54 8 V32 M54 20 H76"]
+  },
+  led: {
+    vw: "0 0 80 40",
+    p: [
+      "M4 20 H30 M30 9 V31 L50 20 Z M50 9 V31 M50 20 H76",
+      "M22 4 L40 16 M22 4 L29 4 M22 4 L22 11",
+      "M38 4 L56 16 M38 4 L45 4 M38 4 L38 11"
+    ]
+  },
+  fotodioda: {
+    vw: "0 0 80 40",
+    p: [
+      "M4 20 H30 M30 9 V31 L50 20 Z M50 9 V31 M50 20 H76",
+      "M22 16 L40 4 M22 16 L29 16 M22 16 L22 9",
+      "M38 16 L56 4 M38 16 L45 16 M38 16 L38 9"
+    ]
+  },
+  "led-7seg": {
+    vw: "0 0 64 44",
+    p: [
+      "M26 8 H44", "M46 11 V19", "M46 21 V29", "M26 32 H44",
+      "M18 21 V29", "M18 11 V19", "M26 20 H44"
+    ]
+  },
+  lcd: {
+    vw: "0 0 84 44",
+    h: '<rect x="6" y="6" width="72" height="30" rx="3"/><text x="42" y="27" class="sym-t" font-size="14">LCD</text>'
+  },
+  optocoupler: {
+    vw: "0 0 92 44",
+    p: [
+      "M2 22 H12 M12 14 V30 L24 22 Z M24 14 V30 M24 22 H34",
+      "M34 8 H86 V36 H34 Z",
+      "M18 8 L30 15 M18 8 L25 8 M18 8 L18 15",
+      "M24 3 L36 10 M24 3 L31 3 M24 3 L24 10",
+      "M42 22 H50 M50 16 V28 L62 22 Z M62 16 V28 M62 22 H76",
+      "M54 28 V34 M76 22 V34"
+    ]
+  },
+  optotriac: {
+    vw: "0 0 92 48",
+    p: [
+      "M2 22 H12 M12 14 V30 L24 22 Z M24 14 V30 M24 22 H34",
+      "M34 8 H86 V40 H34 Z",
+      "M18 8 L30 15 M18 8 L25 8 M18 8 L18 15",
+      "M24 3 L36 10 M24 3 L31 3 M24 3 L24 10",
+      "M48 12 V36 M64 12 V36 M48 12 L56 24 L48 36 Z M64 12 L72 24 L64 36 Z",
+      "M64 24 H90"
+    ]
+  },
+  "solar-cell": {
+    vw: "0 0 84 44",
+    h: '<rect x="12" y="14" width="16" height="20"/><rect x="30" y="14" width="16" height="20"/><rect x="48" y="14" width="16" height="20"/>',
+    p: ["M20 14 V34 M38 14 V34 M56 14 V34 M12 24 H64"]
+  },
+
+  /* ---------- TRANSISTOR ---------- */
+  "bjt-npn": {
+    vw: "0 0 80 50",
+    c: [[40, 25, 17]],
+    p: ["M2 25 H24 M24 16 V34", "M24 18 L44 10 L44 4", "M24 32 L44 40 L44 46"]
+  },
+  "bjt-pnp": {
+    vw: "0 0 80 50",
+    c: [[40, 25, 17]],
+    p: ["M2 25 H24 M24 16 V34", "M24 32 L44 40 L44 46", "M24 18 L44 10 L44 4"]
+  },
+  phototransistor: {
+    vw: "0 0 80 50",
+    c: [[40, 25, 17]],
+    p: [
+      "M2 25 H24 M24 16 V34", "M24 18 L44 10 L44 4", "M24 32 L44 40 L44 46",
+      "M18 4 L32 14 M18 4 L25 4 M18 4 L18 11",
+      "M28 0 L42 10 M28 0 L35 0 M28 0 L28 7"
+    ]
+  },
+  darlington: {
+    vw: "0 0 96 50",
+    h: '<rect x="4" y="6" width="88" height="38" rx="3"/>',
+    p: [
+      "M0 20 H16 M16 14 V26 L26 20 Z M26 14 V26",
+      "M30 16 V34 L40 25 H48",
+      "M48 25 L58 16 L58 8 L64 8 L64 16 L72 20 L64 24 L64 32 L58 32 L58 24 L48 25",
+      "M72 20 H96"
+    ],
+    t: [[22, 40, "Darlington"]]
+  },
+  jfet: {
+    vw: "0 0 80 50",
+    c: [[40, 25, 17]],
+    p: [
+      "M2 25 H26", "M26 12 V38",
+      "M34 12 V38",
+      "M34 12 H54 L54 4", "M34 38 H54 L54 46",
+      "M26 25 L34 25 M34 25 L27 21 M34 25 L27 29"
+    ]
+  },
+  "mosfet-n": {
+    vw: "0 0 84 50",
+    p: [
+      "M2 25 H16 M16 8 V42",
+      "M26 12 V21 M26 29 V38",
+      "M36 12 V38",
+      "M46 12 V21 M46 29 V38",
+      "M26 16.5 H46 M26 33.5 H46",
+      "M46 16.5 V4 M46 33.5 V46",
+      "M36 21 L45 26"
+    ]
+  },
+  "mosfet-p": {
+    vw: "0 0 84 50",
+    p: [
+      "M2 25 H16 M16 8 V42",
+      "M26 12 V21 M26 29 V38",
+      "M36 12 V38",
+      "M46 12 V21 M46 29 V38",
+      "M26 16.5 H46 M26 33.5 H46",
+      "M46 16.5 V4 M46 33.5 V46",
+      "M45 21 L36 26"
+    ]
+  },
+  igbt: {
+    vw: "0 0 88 50",
+    p: [
+      "M2 25 H18 M18 6 V44",
+      "M34 6 V44",
+      "M34 14 H58 V4",
+      "M34 36 H58 V46",
+      "M34 36 L44 30 M34 36 L44 42"
+    ]
+  },
+  scr: {
+    vw: "0 0 94 52",
+    p: [
+      "M4 22 H28 M28 11 V33 L48 22 Z M48 11 V33",
+      "M48 22 H84",
+      "M60 24 L70 38 L70 48"
+    ]
+  },
+  triac: {
+    vw: "0 0 94 52",
+    p: [
+      "M4 24 H24", "M24 10 V40", "M44 10 V40",
+      "M24 10 L36 24 L24 40 Z",
+      "M44 10 L36 24 L44 40 Z",
+      "M44 24 H86",
+      "M30 26 L42 36 L42 46"
+    ]
+  },
+  diac: {
+    vw: "0 0 84 50",
+    p: [
+      "M4 25 H24 M24 12 V38 L40 25 Z M40 12 V38 M40 25 L56 12 V38 Z M56 25 H80"
+    ]
+  },
+  unijunction: {
+    vw: "0 0 84 50",
+    p: [
+      "M6 25 H16 M68 25 H78",
+      "M16 12 V38 M16 12 H68 M16 38 H68",
+      "M16 25 H68",
+      "M34 18 L48 25 L34 32 Z"
+    ]
+  },
+
+  /* ---------- IC & LOGIKA ---------- */
+  opamp: {
+    vw: "0 0 84 50",
+    p: ["M14 46 V4 L64 25 Z", "M2 38 H14", "M2 12 H14", "M64 25 H82"],
+    t: [[20, 33, "\u2212"], [20, 18, "+"]]
+  },
+  "regulator-7805": {
+    vw: "0 0 96 50",
+    p: ["M22 6 H74 V44 H22 Z", "M2 25 H22", "M74 25 H94"],
+    t: [[48, 32, "7805"]]
+  },
+  lm317: {
+    vw: "0 0 96 50",
+    p: ["M22 6 H74 V44 H22 Z", "M2 18 H22", "M74 30 H94", "M48 44 V48"],
+    t: [[48, 32, "LM317"]]
+  },
+  lm555: {
+    vw: "0 0 100 60",
+    p: [
+      "M16 8 H84 V52 H16 Z",
+      "M2 17 H16", "M2 27 H16", "M2 37 H16", "M2 47 H16",
+      "M84 17 H98", "M84 27 H98", "M84 37 H98", "M84 47 H98"
+    ],
+    t: [[50, 36, "555"]]
+  },
+  lm386: {
+    vw: "0 0 100 60",
+    p: [
+      "M16 8 H84 V52 H16 Z",
+      "M2 16 H16", "M2 26 H16", "M2 36 H16",
+      "M84 16 H98", "M84 36 H98", "M84 46 H98"
+    ],
+    t: [[50, 36, "386"]]
+  },
+  lm393: {
+    vw: "0 0 100 60",
+    p: [
+      "M8 6 H92 V54 H8 Z",
+      "M0 20 H8", "M0 40 H8", "M92 20 H100", "M92 40 H100",
+      "M20 14 V46 L44 30 Z",
+      "M68 14 V46 L92 30 Z",
+      "M20 30 H44", "M68 30 H92"
+    ],
+    t: [[50, 66 - 8, "393"]]
+  },
+  "gate-and": {
+    vw: "0 0 96 50",
+    p: ["M22 8 H52 A 22 17 0 0 1 52 42 H22 Z", "M2 20 H22", "M2 30 H22", "M52 25 H94"],
+    t: [[36, 34, "&"]
+    ]
+  },
+  "gate-or": {
+    vw: "0 0 96 50",
+    p: ["M22 8 Q 52 25 52 25 Q 52 25 22 42 Q 40 25 22 8 Z", "M2 16 H26", "M2 34 H26", "M52 25 H94"],
+    t: [[34, 33, "\u22651"]
+    ]
+  },
+  "gate-not": {
+    vw: "0 0 96 50",
+    p: ["M22 8 L22 42 L60 25 Z", "M2 25 H22", "M60 25 H94"],
+    c: [[68, 25, 4]]
+  },
+  "gate-nand": {
+    vw: "0 0 100 50",
+    p: ["M22 8 H52 A 22 17 0 0 1 52 42 H22 Z", "M2 20 H22", "M2 30 H22", "M52 25 H92"],
+    c: [[66, 25, 4]],
+    t: [[36, 34, "&"]
+    ]
+  },
+  "gate-nor": {
+    vw: "0 0 100 50",
+    p: ["M22 8 Q 52 25 52 25 Q 52 25 22 42 Q 40 25 22 8 Z", "M2 16 H26", "M2 34 H26", "M52 25 H92"],
+    c: [[66, 25, 4]],
+    t: [[34, 33, "\u22651"]
+    ]
+  },
+  "gate-xor": {
+    vw: "0 0 96 50",
+    p: ["M22 8 Q 52 25 52 25 Q 52 25 22 42 Q 40 25 22 8 Z", "M2 16 H26", "M2 34 H26", "M52 25 H94"],
+    t: [[34, 33, "=1"]
+    ]
+  },
+  buffer: {
+    vw: "0 0 96 50",
+    p: ["M22 8 L22 42 L64 25 Z", "M2 25 H22", "M64 25 H94"],
+    t: [[38, 34, "1"]
+    ]
+  },
+  "flipflop-d": {
+    vw: "0 0 100 60",
+    p: [
+      "M16 8 H76 V52 H16 Z",
+      "M2 16 H16", "M2 34 H16",
+      "M76 20 H98", "M76 40 H98"
+    ],
+    t: [[28, 32, "D"], [24, 48, "CLK"], [80, 26, "Q"], [80, 44, "/Q"]]
+  },
+  "counter-4020": {
+    vw: "0 0 104 60",
+    p: [
+      "M16 8 H84 V52 H16 Z",
+      "M2 20 H16", "M2 34 H16",
+      "M84 20 H102", "M84 32 H102", "M84 44 H102"
+    ],
+    t: [[50, 36, "4020"]
+    ]
+  },
+  eeprom: {
+    vw: "0 0 104 60",
+    p: [
+      "M20 6 H84 V54 H20 Z",
+      "M2 14 H20", "M2 24 H20", "M2 34 H20", "M2 44 H20",
+      "M84 20 H102", "M84 40 H102"
+    ],
+    t: [[52, 36, "24C02"]
+    ]
+  },
+  "shift-595": {
+    vw: "0 0 104 64",
+    p: [
+      "M20 8 H84 V56 H20 Z",
+      "M2 14 H20", "M2 24 H20", "M2 34 H20", "M2 44 H20",
+      "M84 14 H102", "M84 24 H102", "M84 34 H102", "M84 44 H102",
+      "M2 54 H20", "M84 54 H102"
+    ],
+    t: [[52, 38, "74HC595"]
+    ]
+  },
+  mcu: {
+    vw: "0 0 104 64",
+    p: [
+      "M24 8 H80 V56 H24 Z",
+      "M2 14 H24", "M2 24 H24", "M2 34 H24", "M2 44 H24", "M2 54 H24",
+      "M80 14 H102", "M80 24 H102", "M80 34 H102", "M80 44 H102", "M80 54 H102"
+    ],
+    t: [[52, 38, "MCU"]
+    ]
+  },
+  dac: {
+    vw: "0 0 96 56",
+    p: [
+      "M18 8 H72 V48 H18 Z",
+      "M2 18 H18", "M2 28 H18", "M2 38 H18",
+      "M72 20 H94", "M72 32 H94"
+    ],
+    t: [[45, 34, "DAC"]
+    ]
+  },
+
+  /* ---------- SENSOR ---------- */
+  ultrasonic: {
+    vw: "0 0 96 50",
+    p: ["M16 8 H78 V42 H16 Z", "M2 25 H16", "M78 25 H94"],
+    c: [[34, 25, 9], [60, 25, 9]]
+  },
+  pir: {
+    vw: "0 0 96 50",
+    p: ["M20 8 H76 V42 H20 Z", "M2 25 H20", "M76 25 H94"],
+    c: [[40, 25, 8], [56, 25, 8]]
+  },
+  thermocouple: {
+    vw: "0 0 84 46",
+    p: ["M4 34 L40 22 L78 34", "M40 22 V6 M33 6 H47", "M40 12 V3"],
+    t: [[14, 22, "+"], [64, 22, "\u2212"]
+    ]
+  },
+  hall: {
+    vw: "0 0 96 50",
+    p: ["M18 8 H78 V42 H18 Z", "M2 25 H18", "M78 25 H94"],
+    t: [[48, 31, "HALL"]
+    ]
+  },
+  "sensor-gas": {
+    vw: "0 0 96 50",
+    p: ["M20 8 H76 V42 H20 Z", "M2 25 H20", "M76 25 H94"],
+    t: [[48, 31, "GAS"]
+    ]
+  },
+  "sensor-dht": {
+    vw: "0 0 96 52",
+    h: '<rect x="20" y="8" width="58" height="34" rx="2"/>',
+    p: ["M2 25 H20", "M78 25 H94",
+       "M46 16 C 40 28, 37 34, 37 40 a 9 9 0 0 0 18 0 c 0 -6 -3 -12 -9 -24 Z",
+       "M46 40 a 4 4 0 0 0 4 -4"],
+    t: [[48, 30, "DHT22"]
+    ]
+  },
+
+  /* ---------- DAYA & KONTROL ---------- */
+  bridge: {
+    vw: "0 0 84 52",
+    h: '<rect x="18" y="12" width="56" height="26" rx="2"/>',
+    p: ["M2 25 H18", "M74 25 H82", "M46 38 V48", "M46 12 V4"],
+    t: [[50, 8, "+"], [12, 34, "~"], [58, 34, "~"]
+    ]
+  },
+  relay: {
+    vw: "0 0 100 64",
+    p: [
+      "M20 4 V20",
+      "M20 20 a5 5 0 0 0 -7 5 a5 5 0 0 0 7 5 a5 5 0 0 0 -7 5 a5 5 0 0 0 7 5",
+      "M20 45 V60",
+      "M40 16 V48",
+      "M40 22 H68",
+      "M68 22 V28",
+      "M68 44 H94",
+      "M68 44 L80 34"
+    ]
+  },
+  saklar: {
+    vw: "0 0 96 50",
+    p: ["M10 34 H34", "M34 34 L64 14", "M64 34 H86"]
+  },
+  "saklar-tangent": {
+    vw: "0 0 96 50",
+    p: ["M10 38 H30", "M30 38 L56 14", "M10 20 H26", "M56 14 L86 38"]
+  },
+  tombol: {
+    vw: "0 0 96 50",
+    p: ["M12 38 H36", "M36 38 V22", "M60 38 V22", "M60 38 H84", "M40 10 H56", "M48 10 V22"]
+  },
+  dipswitch: {
+    vw: "0 0 96 50",
+    p: ["M16 10 H80 V40 H16 Z", "M8 25 H16", "M80 25 H88", "M36 14 L48 22", "M48 14 L36 22"],
+    t: [[62, 30, "SW"]
+    ]
+  },
+  speaker: {
+    vw: "0 0 96 50",
+    p: ["M22 16 H36 L54 8 V42 L36 34 H22 Z", "M22 16 V34"],
+    c: [[34, 25, 5]]
+  },
+  buzzer: {
+    vw: "0 0 96 50",
+    p: ["M22 16 H36 L54 8 V42 L36 34 H22 Z", "M22 16 V34"],
+    c: [[34, 25, 5]],
+    t: [[76, 30, "BZ"]
+    ]
+  },
+  piezo: {
+    vw: "0 0 88 46",
+    p: ["M4 24 H30 M30 15 V33 M36 15 V33 M36 8 V40 M36 24 H58 M58 15 V33 M64 15 V33 M64 24 H84",
+       "M36 12 L58 4 M36 12 L58 20"]
+  },
+  "motor-dc": {
+    vw: "0 0 84 52",
+    c: [[42, 26, 20]],
+    t: [[42, 33, "M"]
+    ],
+    p: ["M42 6 V14", "M2 26 H18", "M66 26 H82"]
+  },
+  "motor-ac": {
+    vw: "0 0 84 52",
+    c: [[42, 26, 20]],
+    t: [[42, 33, "M"]],
+    p: ["M42 6 V14", "M2 26 H18", "M66 26 H82", "M4 44 q6 -8 12 0 q6 8 12 0"]
+  },
+  "motor-stepper": {
+    vw: "0 0 84 52",
+    c: [[42, 26, 20]],
+    t: [[42, 33, "M"]],
+    p: ["M42 6 V14", "M2 20 H18", "M2 32 H18", "M66 20 H82", "M66 32 H82"]
+  },
+  solenoid: {
+    vw: "0 0 96 50",
+    p: [
+      "M14 25 H30",
+      "M30 17 a5 6 0 0 1 10 0 a5 6 0 0 1 10 0 a5 6 0 0 1 10 0",
+      "M60 25 H74",
+      "M52 12 V8 M56 12 V6 M60 12 V8",
+      "M40 17 V9 M40 9 H66"
+    ]
+  },
+  fan: {
+    vw: "0 0 84 52",
+    c: [[42, 26, 6]],
+    p: ["M42 20 C 28 8, 20 22, 34 24 Z", "M48 26 C 60 12, 72 24, 56 28 Z", "M42 32 C 56 44, 64 30, 50 28 Z"]
+  },
+
+  /* ---------- KONEKTOR & SUMBER ---------- */
+  battery: {
+    vw: "0 0 84 44",
+    p: ["M4 24 H24 M24 15 V33 M34 19 V29 M34 24 H44 M44 15 V33 M54 19 V29 M54 24 H64 M64 15 V33 M74 24 H80"]
+  },
+  ground: {
+    vw: "0 0 60 48",
+    p: ["M30 6 V28", "M12 28 H48", "M18 35 H42", "M24 42 H36"]
+  },
+  header: {
+    vw: "0 0 84 44",
+    p: ["M10 10 H74 V34 H10 Z", "M26 10 V34", "M58 10 V34", "M2 22 H10", "M74 22 H82"],
+    c: [[18, 22, 3], [42, 22, 3], [66, 22, 3]]
+  },
+  jumper: {
+    vw: "0 0 84 44",
+    p: ["M10 22 H30 L36 12 L44 32 L50 12 L54 22 H74"]
+  },
+  banana: {
+    vw: "0 0 84 44",
+    c: [[42, 22, 12], [42, 22, 5]],
+    p: ["M54 22 H80"]
+  },
+  bnc: {
+    vw: "0 0 84 48",
+    c: [[40, 24, 18], [40, 24, 8], [40, 24, 2]],
+    p: ["M58 24 H82"]
+  },
+  antena: {
+    vw: "0 0 80 48",
+    p: ["M40 44 V18", "M40 18 L22 4", "M40 18 L58 4", "M34 34 L22 26", "M46 34 L58 26"]
+  },
+  terminal: {
+    vw: "0 0 84 48",
+    h: '<rect x="14" y="10" width="26" height="28" rx="2"/><rect x="52" y="10" width="26" height="28" rx="2"/>',
+    p: ["M40 24 H52", "M2 24 H14", "M78 24 H82"],
+    c: [[27, 24, 5], [65, 24, 5]]
+  }
+};
+
+/* ---------- Helper ---------- */
+function _arrow(x1, y1, x2, y2, head) {
+  head = head || 6;
+  const a = Math.atan2(y2 - y1, x2 - x1);
+  const p1x = (x2 - head * Math.cos(a - 0.42)).toFixed(1);
+  const p1y = (y2 - head * Math.sin(a - 0.42)).toFixed(1);
+  const p2x = (x2 - head * Math.cos(a + 0.42)).toFixed(1);
+  const p2y = (y2 - head * Math.sin(a + 0.42)).toFixed(1);
+  return `M${x1} ${y1} L${x2} ${y2} M${p1x} ${p1y} L${x2} ${y2} L${p2x} ${p2y}`;
+}
+
+/**
+ * Render simbol sebagai string SVG.
+ * @param {string} key - kunci simbol pada SYMBOLS
+ * @param {string} cls - class CSS tambahan
+ * @param {string} title - label aksesibilitas
+ */
+function symbolSVG(key, cls, title) {
+  const s = SYMBOLS[key] || SYMBOLS.resistor;
+  cls = cls || "";
+  let inner = "";
+  (s.c || []).forEach(function (c) {
+    inner += `<circle cx="${c[0]}" cy="${c[1]}" r="${c[2]}"/>`;
+  });
+  (s.p || []).forEach(function (d) { inner += `<path d="${d}"/>`; });
+  (s.t || []).forEach(function (t) { inner += `<text x="${t[0]}" y="${t[1]}" class="sym-t">${t[2]}</text>`; });
+  if (s.h) inner += Array.isArray(s.h) ? s.h.join("") : s.h;
+  const vw = s.vw || "0 0 80 40";
+  const lbl = title ? `role="img" aria-label="${title}"` : `aria-hidden="true"`;
+  return `<svg class="sym ${cls}" viewBox="${vw}" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" ${lbl}>${inner}</svg>`;
+}
+
+if (typeof module !== "undefined" && module.exports) { module.exports = { SYMBOLS, symbolSVG }; }
+
+/* Dataset komponen — Klasifikasi AC / DC */
+/* 94 komponen elektronik; nilai id sama dengan kunci simbol pada diagram */
+const KATEGORI = {
+  pasif: 'Komponen Pasif',
+  dioda: 'Dioda & Optoelektronik',
+  transistor: 'Transistor',
+  ic: 'IC & Logika Digital',
+  sensor: 'Sensor',
+  daya: 'Daya & Kontrol',
+  meka: 'Elektromekanis',
+  konektor: 'Konektor & Antena'
+};
+
+const ARUS = { ac: 'AC', dc: 'DC', dual: 'AC & DC' };
+
+const TINGKAT = { dasar: 'Dasar', lanjut: 'Lanjut' };
+
+const COMPONENTS = [
+  {
+    id: 'resistor',
+    nama: 'Resistor',
+    alias: [
+      'R',
+      'Ohm',
+      'Resistor tetap'
+    ],
+    kategori: 'pasif',
+    arus: 'dual',
+    tingkat: 'dasar',
+    bentuk: 'Badan silinder keramik atau film tipis dengan dua kawat terminal.',
+    fungsi: 'Mengatur besar kecil arus listrik pada suatu rangkaian elektronik.',
+    prinsip: 'Bahan dalam resistor menghambat aliran elektron sehingga muncul penurunan tegangan. Besarnya arus berbanding lurus dengan tegangan yang diberikan.',
+    karakteristik: [
+      'Nilainya dalam satuan ohm dengan toleransi ±1% sampai ±20%.',
+      'Rating daya menentukan batas panas yang boleh diterima.',
+      'Nilai ditandai kode warna atau angka pada badannya.'
+    ],
+    tegangan: '0 - 600 V',
+    rating: '1/8 W - 5 W',
+    contoh: [
+      'Pembatas arus LED di layar TV',
+      'Pembagi tegangan pada regulator 7805',
+      'Pengatur kecepatan kipas angin listrik'
+    ],
+    catatan: 'Jangan pakai resistor sebagai pemutus arus besar; gunakan sekering.',
+    mirip: [
+      'potentiometer',
+      'trimmer',
+      'thermistor'
+    ],
+  },
+  {
+    id: 'potentiometer',
+    nama: 'potentiometer',
+    alias: [
+      'Pot',
+      'Volume'
+    ],
+    kategori: 'pasif',
+    arus: 'dual',
+    tingkat: 'dasar',
+    bentuk: 'Badan memutar bertiga terminal dengan poros dan cincin slip.',
+    fungsi: 'Mengatur nilai tahanan secara manual saat perangkat masih dipakai.',
+    prinsip: 'Kontak geser mengubah panjang jalur resistif yang dilalui arus. Tegangan dapat diambil dari ujung atas, ujung bawah, atau penyapu.',
+    karakteristik: [
+      'Nilai tetap yang dapat diubah saat diputar atau digeser.',
+      'Memiliki tiga terminal, yaitu dua ujung dan satu penyapu.',
+      'Sifatnya linear atau logaritmik sesuai kebutuhan aplikasi.'
+    ],
+    tegangan: '0 - 600 V',
+    rating: '1/8 W - 5 W',
+    contoh: [
+      'Pengatur volume radio dan TV',
+      'Pengatur kecepatan kipas ceiling fan',
+      'Joystick pada kendali mobil remote'
+    ],
+    catatan: 'Putar perlahan agar kontak metalik tidak cepat aus.',
+    mirip: [
+      'trimmer',
+      'resistor',
+      'resistor-array'
+    ],
+  },
+  {
+    id: 'trimmer',
+    nama: 'Trimmer Resistor',
+    alias: [
+      'Trimmer',
+      'Preset'
+    ],
+    kategori: 'pasif',
+    arus: 'dual',
+    tingkat: 'lanjut',
+    bentuk: 'Kubus keramik kecil dengan sekrup penyetel di bagian atas.',
+    fungsi: 'Menyesuaikan tahanan kecil untuk kalibrasi rangkaian secara permanen.',
+    prinsip: 'Sekrup penyetel menggeser kontak pada jalur resistif yang sempit. Nilainya diubah hanya saat produksi atau servis.',
+    karakteristik: [
+      'Nilai relatif kecil, umumnya 1 kΩ sampai 1 MΩ.',
+      'Menyediakan satu putaran penuh untuk mencapai nilai akhir.',
+      'Dikalibrasi di pabrik lalu dikunci dengan lapisan epoksi.'
+    ],
+    tegangan: '0 - 300 V',
+    rating: '1/8 W - 1/2 W',
+    contoh: [
+      'Kalibrasi sensitivitas radio transistor',
+      'Penyesuaian frekuensi kristal osilator',
+      'Setting kontras gambar monitor'
+    ],
+    catatan: 'Tidak cocok untuk pengaturan yang sering diubah pengguna.',
+    mirip: [
+      'potentiometer',
+      'resistor',
+      'capacitor-trimmer'
+    ],
+  },
+  {
+    id: 'resistor-array',
+    nama: 'Resistor Array',
+    alias: [
+      'Jaringan resistor',
+      'SIP resistor'
+    ],
+    kategori: 'pasif',
+    arus: 'dual',
+    tingkat: 'lanjut',
+    bentuk: 'Paket cip satu baris dengan beberapa tahanan di dalamnya.',
+    fungsi: 'Menyediakan beberapa nilai tahanan dalam satu paket cip.',
+    prinsip: 'Beberapa elemen resistif disusun dalam satu paket cip.',
+    karakteristik: [
+      'Memuat beberapa tahanan sekaligus dalam satu paket cip.',
+      'Menghemat tempat dan waktu saat perakitan.',
+      'Ada versi yang sudah dilengkapi pin pull-up.'
+    ],
+    tegangan: '0 - 100 V',
+    rating: '1/8 W - 1/4 W per elemen',
+    contoh: [
+      'Pull-up jalur I2C pada modul Arduino',
+      'Rangkaian DAC sederhana dari resistor',
+      'Pembagi tegangan multi kanal sensor'
+    ],
+    catatan: 'Perhatikan pin yang terhubung bersama saat membaca datasheet.',
+    mirip: [
+      'resistor',
+      'trimmer',
+      'eeprom'
+    ],
+  },
+  {
+    id: 'resistor-fusible',
+    nama: 'Resistor Fusible',
+    alias: [
+      'Fusible resistor',
+      'Safety resistor'
+    ],
+    kategori: 'pasif',
+    arus: 'dual',
+    tingkat: 'lanjut',
+    bentuk: 'Badan keramik silinder dengan dua kawat terminal.',
+    fungsi: 'Membatasi arus dan memutus jalur saat terlalu panas.',
+    prinsip: 'Bahan resistif meleleh dan memutus sambungan saat suhu terlalu tinggi. Nilai tahanannya tetap normal pada suhu kerja.',
+    karakteristik: [
+      'Bertahan terhadap satu kali kondisi panas berlebih.',
+      'Setelah pemanasan serius, komponen menjadi putus permanen.',
+      'Nilainya tetap normal selama suhu kerja tidak berlebihan.'
+    ],
+    tegangan: '0 - 500 V',
+    rating: '0,5 W - 5 W',
+    contoh: [
+      'Proteksi primer pada trafo SMPS',
+      'Pengaman modul daya',
+      'Skema optocoupler di catu daya'
+    ],
+    catatan: 'Arahkan panas menjauhi komponen sensitif di sekitarnya.',
+    mirip: [
+      'fuse',
+      'resistor',
+      'varistor'
+    ],
+  },
+  {
+    id: 'ldr',
+    nama: 'LDR (Light Dependent Resistor)',
+    alias: [
+      'Fotoresistor',
+      'CDS'
+    ],
+    kategori: 'pasif',
+    arus: 'dual',
+    tingkat: 'dasar',
+    bentuk: 'Cakram keramik bening dengan pola zig-zag metalik.',
+    fungsi: 'Mengubah kekuatan cahaya menjadi perubahan nilai tahanan.',
+    prinsip: 'Cahaya membebaskan pembawa muatan pada bahan semikonduktor. Bertambahnya pembawa muatan membuat tahanan menurun.',
+    karakteristik: [
+      'Tahanannya turun drastis ketika mendapat cahaya terang.',
+      'Responnya lambat, baru stabil setelah puluhan detik.',
+      'Dipasang pada bagian gelap agar nilainya tidak terpengaruh.'
+    ],
+    tegangan: '0 - 200 V',
+    rating: '0,05 W - 0,25 W',
+    contoh: [
+      'Lampu penerangan jalan otomatis',
+      'Penghitung kertas pada printer',
+      'Sistem penyiram tanaman otomatis'
+    ],
+    catatan: 'Hindari pemasangan tepat di bawah lampu, nilainya jadi tidak stabil.',
+    mirip: [
+      'thermistor',
+      'fotodioda',
+      'phototransistor'
+    ],
+  },
+  {
+    id: 'varistor',
+    nama: 'Varistor (MOV)',
+    alias: [
+      'MOV',
+      'VDR'
+    ],
+    kategori: 'pasif',
+    arus: 'dual',
+    tingkat: 'lanjut',
+    bentuk: 'Piringan keramik atau silinder dua terminal.',
+    fungsi: 'Menyerap lonjakan tegangan sementara sebagai pelindung.',
+    prinsip: 'Bahan varistor bersifat nonlinier sehingga tahanannya turun drastis saat tegangan naik. Energi lonjakan berubah menjadi panas.',
+    karakteristik: [
+      'Tahanannya turun tajam saat tegangan melebihi ambang.',
+      'Merespons sangat cepat dalam hitungan mikrodetik.',
+      'Umumnya dipasang paralel dengan beban yang dilindungi.'
+    ],
+    tegangan: '0 - 600 V',
+    rating: '14 J - 600 J',
+    contoh: [
+      'Pelindung stopkontak rumah',
+      'Proteksi pada TV dan kulkas',
+      'Penyerap lonjakan pada power supply'
+    ],
+    catatan: 'MOV akan short saat rusak dan bisa memicu api, lindungi juga dengan sekering.',
+    mirip: [
+      'dioda-tvs',
+      'resistor-fusible',
+      'fuse'
+    ],
+  },
+  {
+    id: 'ptc',
+    nama: 'PTC Thermistor',
+    alias: [
+      'PTC',
+      'Resistor panas'
+    ],
+    kategori: 'pasif',
+    arus: 'dual',
+    tingkat: 'lanjut',
+    bentuk: 'Piringan atau bead keramik dengan dua kawat.',
+    fungsi: 'Membatasi arus sesaat pada motor induksi yang mulai berputar.',
+    prinsip: 'Koefisien suhu positif membuat tahanan meningkat saat suhu naik. Alur awal dibatasi lalu normal setelah motor berjalan.',
+    karakteristik: [
+      'Tahanannya naik saat suhu komponen meningkat.',
+      'Dipasang seri pada motor atau beban yang dilindungi.',
+      'Nilainya kembali normal setelah komponen mendingin.'
+    ],
+    tegangan: '0 - 250 V',
+    rating: '0,5 W - 5 W',
+    contoh: [
+      'Limiter start kipas angin listrik',
+      'Proteksi pada motor pompa air',
+      'Pembatas arus lampu LED strip'
+    ],
+    catatan: 'Dipilih berdasarkan tahanan pada suhu ruang dan arus start motor.',
+    mirip: [
+      'thermistor',
+      'resistor-fusible',
+      'ldr'
+    ],
+  },
+  {
+    id: 'thermistor',
+    nama: 'NTC Thermistor',
+    alias: [
+      'NTC',
+      'Thermistor'
+    ],
+    kategori: 'pasif',
+    arus: 'dual',
+    tingkat: 'dasar',
+    bentuk: 'Bead atau piringan kecil berbungkus kaca atau epoksi.',
+    fungsi: 'Mengubah perubahan suhu menjadi perubahan nilai tahanan.',
+    prinsip: 'Koefisien suhu negatif membuat tahanan menurun ketika suhu naik. Perubahan ini dipakai sebagai penanda suhu.',
+    karakteristik: [
+      'Tahanannya menurun setiap suhu meningkat.',
+      'Responnya cepat terhadap perubahan suhu lingkungan.',
+      'Perlu resistor tetap seri agar pembacaannya stabil.'
+    ],
+    tegangan: '0 - 250 V',
+    rating: '0,05 W - 1 W',
+    contoh: [
+      'Sensor suhu pada kulkas',
+      'Proteksi motor bor listrik',
+      'Kompensasi suhu pada catu daya'
+    ],
+    catatan: 'Jangan menganggap NTC sebagai sensor digital; keluarannya masih berupa tegangan.',
+    mirip: [
+      'ptc',
+      'ldr',
+      'resistor'
+    ],
+  },
+  {
+    id: 'capacitor',
+    nama: 'Kapasitor',
+    alias: [
+      'C',
+      'Condenser'
+    ],
+    kategori: 'pasif',
+    arus: 'dual',
+    tingkat: 'dasar',
+    bentuk: 'Cakram, silinder, atau keping keramik tanpa polaritas.',
+    fungsi: 'Menyimpan muatan listrik dan menyaring derau pada rangkaian.',
+    prinsip: 'Tegangan bolak-balik membuat muatan berganti di kedua keping sehingga arus mengalir pada jalur.',
+    karakteristik: [
+      'Tidak memiliki polaritas sehingga bebas dipasang.',
+      'Nilai umumnya nanofarad sampai mikrofarad.',
+      'Impedansinya turun pada frekuensi tinggi.'
+    ],
+    tegangan: '0,5 - 1000 V DC',
+    rating: '10 pF - 100 µF',
+    contoh: [
+      'Filter derau pada power supply 5 V',
+      'Decoupling di dekat pin mikrokontroler',
+      'Resonansi pada osilator kristal'
+    ],
+    catatan: 'Lepaskan muatan kapasitor sebelum menyentuhnya, jangan langsung dibongkar.',
+    mirip: [
+      'inductor',
+      'capacitor-pol',
+      'tantalum'
+    ],
+  },
+  {
+    id: 'capacitor-pol',
+    nama: 'Kapasitor Elektrolit',
+    alias: [
+      'Elco',
+      'Capacitor polar'
+    ],
+    kategori: 'pasif',
+    arus: 'dual',
+    tingkat: 'dasar',
+    bentuk: 'Silinder aluminium bertutup dengan dua kaki di bagian bawah.',
+    fungsi: 'Menyimpan muatan besar dengan nilai besar pada tegangan kerja tinggi.',
+    prinsip: 'Dielektrik cair membuat ukuran komponen tetap kecil untuk kapasitansi besar. Karena punya polaritas, arah pemasangan wajib benar.',
+    karakteristik: [
+      'Memiliki tanda polaritas plus dan minus yang wajib.',
+      'Nilainya besar, bisa mencapai ribuan mikrofarad.',
+      'Arus bocornya kecil sehingga cocok untuk penyaring.'
+    ],
+    tegangan: '1 - 630 V DC',
+    rating: '1 µF - 47.000 µF',
+    contoh: [
+      'Reservoir pada charger HP',
+      'Penyaring rectified pada TV',
+      'Perata tegangan setelah di bridge'
+    ],
+    catatan: 'Pemasangan terbalik membuat kapasitor mengembung dan bisa meledak.',
+    mirip: [
+      'tantalum',
+      'capacitor',
+      'supercap'
+    ],
+  },
+  {
+    id: 'capacitor-trimmer',
+    nama: 'Kapasitor Trimmer',
+    alias: [
+      'Trimmer capacitor',
+      'Tuning capacitor'
+    ],
+    kategori: 'pasif',
+    arus: 'dual',
+    tingkat: 'lanjut',
+    bentuk: 'Komponen keramik kecil berwarna dengan sekrup kalibrasi.',
+    fungsi: 'Mengubah nilai kapasitansi untuk menala frekuensi kerja.',
+    prinsip: 'Memutar sekrup mengubah jarak antara keping sehingga nilai kapasitansi berubah. Perubahan ini menggeser frekuensi resonansi.',
+    karakteristik: [
+      'Rentang perubahan nilainya relatif kecil.',
+      'Dikunci dengan epoksi agar hasil kalibrasi tidak bergeser.',
+      'Dipasang seri pada osilator untuk menala frekuensi.'
+    ],
+    tegangan: '0 - 1000 V',
+    rating: '2 pF - 500 pF',
+    contoh: [
+      'Oscilator tuner radio FM',
+      'Kalibrasi osilator warna TV',
+      'Penalaan loop antena'
+    ],
+    catatan: 'Perubahan sudut sekrup sangat halus, jadi gunakan obeng kecil saat menyetel.',
+    mirip: [
+      'trimmer',
+      'capacitor',
+      'capacitor-motor'
+    ],
+  },
+  {
+    id: 'capacitor-motor',
+    nama: 'Kapasitor Motor Run',
+    alias: [
+      'Capacitor start-run',
+      'Capacitor AC motor'
+    ],
+    kategori: 'pasif',
+    arus: 'ac',
+    tingkat: 'lanjut',
+    bentuk: 'Kotak plastik silinder besar dengan dua terminal.',
+    fungsi: 'Memberikan pergeseran fasa pada motor induksi satu fasa.',
+    prinsip: 'Kapasitor menimbulkan pergeseran fasa antara dua lilitan motor. Perbedaan fasa itu menghasilkan medan putar sehingga motor berputar.',
+    karakteristik: [
+      'Dirancang khusus untuk arus bolak-balik pada tegangan AC.',
+      'Nilainya besar dan toleransinya cukup ketat.',
+      'Memakai bahan polypropylene yang tahan panas.'
+    ],
+    tegangan: '110 - 500 V AC',
+    rating: '1 - 45 µF',
+    contoh: [
+      'Motor kipas langit-langit',
+      'Pompa air rumah tangga',
+      'Kipas angin listrik'
+    ],
+    catatan: 'Jangan mengganti dengan kapasitor elektrolit karena tidak tahan sambungan AC.',
+    mirip: [
+      'capacitor',
+      'capacitor-trimmer',
+      'inductor'
+    ],
+  },
+  {
+    id: 'supercap',
+    nama: 'Supercapacitor',
+    alias: [
+      'Super capacitor',
+      'Ultracapacitor'
+    ],
+    kategori: 'pasif',
+    arus: 'dc',
+    tingkat: 'lanjut',
+    bentuk: 'Silinder besar mirip baterai dengan dua terminal.',
+    fungsi: 'Menyimpan energi sementara dengan kapasitas sangat besar.',
+    prinsip: 'Lapisan ganda elektrolit memisahkan ion di dua elektroda. Energi disimpan di lapisan tipis sehingga sangat cepat diisi.',
+    karakteristik: [
+      'Kapasitasnya bisa mencapai ribuan farad.',
+      'Pengisian dan pengosongan jauh lebih cepat dari baterai.',
+      'Tegangan kerja per sel hanya sekitar 2,7 V.'
+    ],
+    tegangan: '1,5 - 5,5 V DC',
+    rating: '0,1 F - 3.000 F',
+    contoh: [
+      'Cadangan daya sesaat pada server',
+      'Penyimpan energi pada rem regeneratif',
+      'Modul start cepat pada bus listrik'
+    ],
+    catatan: 'Wajib memakai modul pengatur tegangan bila dipakai di atas 2,7 V.',
+    mirip: [
+      'battery',
+      'capacitor-pol',
+      'tantalum'
+    ],
+  },
+  {
+    id: 'tantalum',
+    nama: 'Kapasitor Tantalum',
+    alias: [
+      'Capacitor tantalum',
+      'Solid electrolytic'
+    ],
+    kategori: 'pasif',
+    arus: 'dc',
+    tingkat: 'lanjut',
+    bentuk: 'Bentuk tetesan lilin kuning atau merah dengan kaki di bawah.',
+    fungsi: 'Menyaring derau pada catu daya dengan hambatan seri sangat kecil.',
+    prinsip: 'Lapisan oksida tantalum menjadi dielektrik yang sangat tipis. Ketebalan tipis ini memberi kapasitansi besar dalam ukuran kecil.',
+    karakteristik: [
+      'Sangat polar sehingga arah pemasangan wajib benar.',
+      'Hambatan serinya rendah dibanding elektrolit biasa.',
+      'Sensitif terhadap lonjakan tegangan yang tiba-tiba.'
+    ],
+    tegangan: '6 - 100 V DC',
+    rating: '0,1 µF - 1.000 µF',
+    contoh: [
+      'Filter pada modul mikrokontroler',
+      'Regulator LM317 di adaptor',
+      'Penghilang deruan pada catu daya'
+    ],
+    catatan: 'Korslet pada tegangan penuh dapat membuat komponen terbakar dan meledak.',
+    mirip: [
+      'capacitor-pol',
+      'supercap',
+      'capacitor'
+    ],
+  },
+  {
+    id: 'inductor',
+    nama: 'Induktor',
+    alias: [
+      'Coil',
+      'Kumparan'
+    ],
+    kategori: 'pasif',
+    arus: 'dual',
+    tingkat: 'dasar',
+    bentuk: 'Kumparan kawat yang dililitkan pada inti ferit atau udara.',
+    fungsi: 'Menyimpan energi dalam medan magnet dan menyaring derau.',
+    prinsip: 'Perubahan arus listrik menimbulkan medan magnet yang menentang perubahannya. Tegangan induksi ini juga berfungsi menyaring frekuensi tinggi.',
+    karakteristik: [
+      'Nilai induktansinya dinyatakan dalam satuan henri.',
+      'Arus DC butuh waktu untuk naik sampai nilai stabil.',
+      'Rentang nilainya sangat luas dari mikrohenri sampai henri.'
+    ],
+    tegangan: '0 - 600 V',
+    rating: '1 µH - 50 H',
+    contoh: [
+      'Choke pada power supply komputer',
+      'Filter EMI di charger laptop',
+      'Osilator pada catu daya switching'
+    ],
+    catatan: 'Jangan pakai induktor besar pada jalur sinyal yang hanya membawa DC.',
+    mirip: [
+      'choke',
+      'transformer',
+      'capacitor'
+    ],
+  },
+  {
+    id: 'choke',
+    nama: 'Choke / RF Choke',
+    alias: [
+      'Ferrite bead',
+      'Inductor EMI'
+    ],
+    kategori: 'pasif',
+    arus: 'dc',
+    tingkat: 'lanjut',
+    bentuk: 'Manik ferit kecil berbentuk silinder berlubang.',
+    fungsi: 'Menekan derau frekuensi tinggi tanpa menghambat arus tetap.',
+    prinsip: 'Impedansi induktor meningkat seiring naiknya frekuensi sinyal. Listrik DC tetap mengalir dengan hambatan sangat kecil.',
+    karakteristik: [
+      'Impedansinya tinggi pada frekuensi orde MHz.',
+      'Hambatan yang ditambahkan pada arus DC sangat kecil.',
+      'Ukurannya kecil sehingga mudah disisipkan di jalur PCB.'
+    ],
+    tegangan: '0 - 300 V',
+    rating: '10 µH - 1 mH',
+    contoh: [
+      'Filter EMI pada kabel USB',
+      'Peredam derau di PCB Arduino',
+      'Pemisah jalur audio pada amplifier'
+    ],
+    catatan: 'Kurang efektif untuk meredam derau frekuensi rendah.',
+    mirip: [
+      'inductor',
+      'resistor',
+      'capacitor'
+    ],
+  },
+  {
+    id: 'transformer',
+    nama: 'Transformator',
+    alias: [
+      'Trafo',
+      'Trafo listrik'
+    ],
+    kategori: 'pasif',
+    arus: 'ac',
+    tingkat: 'dasar',
+    bentuk: 'Dua kumparan kawat pada inti besi berpelat.',
+    fungsi: 'Mengubah besar kecilnya tegangan bolak-balik antar kumparan.',
+    prinsip: 'Perubahan fluks magnetik pada inti menimbulkan tegangan induksi di kumparan kedua. Rasio jumlah lilitan menentukan rasio tegangan.',
+    karakteristik: [
+      'Hanya bekerja pada arus bolak-balik saja.',
+      'Rasio tegangan sebanding dengan perbandingan lilitan.',
+      'Panas dan short bila lilitan sekundernya hubung singkat.'
+    ],
+    tegangan: '0 - 500 V AC',
+    rating: '0,5 VA - 5.000 VA',
+    contoh: [
+      'Trafo adaptor charger laptop',
+      'Trafo inverter rumah tangga',
+      'Trafo catu daya pada TV'
+    ],
+    catatan: 'Uji resistansi lilitan sekunder lebih dulu, jangan pakai jika outputnya short.',
+    mirip: [
+      'transformer-toroid',
+      'transformer-iso',
+      'transformer-smp'
+    ],
+  },
+  {
+    id: 'transformer-toroid',
+    nama: 'Transformator Toroidal',
+    alias: [
+      'Toroid',
+      'Trafo cincin'
+    ],
+    kategori: 'pasif',
+    arus: 'ac',
+    tingkat: 'dasar',
+    bentuk: 'Kumparan yang melilit pada cincin ferit tertutup.',
+    fungsi: 'Mengubah tegangan dengan induktansi bocor sangat rendah.',
+    prinsip: 'Inti ferit tertutup penuh membatasi medan magnet yang bocor. Akibatnya efisiensi dan isolation antar kumparan lebih baik.',
+    karakteristik: [
+      'Dengung suara lebih kecil dibanding trafo tipe EI.',
+      'Rugi besi lebih rendah sehingga lebih dingin.',
+      'Pemasangan kawat harus merata agar inti tidak jenuh.'
+    ],
+    tegangan: '0 - 500 V AC',
+    rating: '5 VA - 2.000 VA',
+    contoh: [
+      'Trafo power supply audio',
+      'Trafo catu daya low noise',
+      'Trafo untuk perangkat stereo'
+    ],
+    catatan: 'Pastikan jumlah lilitanprimer dan sekunder seimbang agar inti tidak panas.',
+    mirip: [
+      'transformer',
+      'transformer-iso',
+      'inductor'
+    ],
+  },
+  {
+    id: 'transformer-iso',
+    nama: 'Transformator Isolasi',
+    alias: [
+      'Trafo isolasi',
+      'Isolation transformer'
+    ],
+    kategori: 'pasif',
+    arus: 'ac',
+    tingkat: 'lanjut',
+    bentuk: 'Trafo dengan rasio lilitan 1 : 1 dan sekat pengaman.',
+    fungsi: 'Memisahkan bagian bertegangan dari bagian yang disentuh pengguna.',
+    prinsip: 'Kedua sisinya terpisah galvanis karena tidak ada sambungan konduktif. Tegangan kedua tetap sama besar seperti primer.',
+    karakteristik: [
+      'Rasio lilitan 1 : 1 sehingga tegangan tidak berubah.',
+      'Tidak ada sambungan langsung antara kedua sisinya.',
+      'Memiliki pelindung panas dan sekering internal.'
+    ],
+    tegangan: '0 - 500 V AC',
+    rating: '50 VA - 5.000 VA',
+    contoh: [
+      'Alat ukur osiloskop',
+      'Perbaikan power supply TV',
+      'Trafo adaptor laboratrium elektronik'
+    ],
+    catatan: 'Trafo isolasi menyekat ground, sehingga perakitan perlu dihitung ulang.',
+    mirip: [
+      'transformer',
+      'transformer-toroid',
+      'transformer-smp'
+    ],
+  },
+  {
+    id: 'transformer-smp',
+    nama: 'Transformator Switching (SMPS)',
+    alias: [
+      'Trafo SMPS',
+      'Trafo switching'
+    ],
+    kategori: 'pasif',
+    arus: 'ac',
+    tingkat: 'lanjut',
+    bentuk: 'Trafo kecil berinti ferit dengan lilitan terisolasi rapat.',
+    fungsi: 'Mentransfer energi pada frekuensi tinggi untuk catu daya switching.',
+    prinsip: 'Saklar elektronik menggeser tegangan pada frekuensi puluhan kiloHertz. Energi dipindahkan lewat induksi magnetik inti ferit yang kecil.',
+    karakteristik: [
+      'Ukurannya kecil karena bekerja pada frekuensi tinggi.',
+      'Rugi kecil sehingga efisiensi bisa di atas 80 persen.',
+      'Memerlukan dioda penalap dan filter yang baik.'
+    ],
+    tegangan: '0 - 600 V AC',
+    rating: '5 W - 300 W',
+    contoh: [
+      'Adaptor charger laptop',
+      'Catu daya TV LED',
+      'Catu daya di dalam modem internet'
+    ],
+    catatan: 'Jangan buka sebelum tahu cara kerja thyristor pada catu daya.',
+    mirip: [
+      'transformer',
+      'transformer-toroid',
+      'inductor'
+    ],
+  },
+  {
+    id: 'crystal',
+    nama: 'Kristal Piezoelektrik',
+    alias: [
+      'Quartz crystal',
+      'Osilator kristal'
+    ],
+    kategori: 'pasif',
+    arus: 'dual',
+    tingkat: 'lanjut',
+    bentuk: 'Logam silinder kecil berongga dengan dua kaki pipih.',
+    fungsi: 'Memberikan frekuensi osilasi yang sangat stabil pada jam digital.',
+    prinsip: 'Kristal bergetar pada frekuensi resonate alaminya saat diberi listrik. Rangkaian osilator menjaga getaran itu bekerja terus-menerus.',
+    karakteristik: [
+      'Frekuensi umumnya 32,768 kHz atau 1 sampai 20 MHz.',
+      'Sangat stabil terhadap perubahan suhu lingkungan.',
+      'Impedansinya menurun drastis saat beresonansi.'
+    ],
+    tegangan: '0 - 3,3 V',
+    rating: '0,1 µW - 10 mW',
+    contoh: [
+      'Jam digital pada DTB piala dunia',
+      'Penghitung frekuensi tachometer motor',
+      'Modul RTC pada papan Arduino'
+    ],
+    catatan: 'Kristal tidak berosilasi sendiri, selalu perlu IC osilator.',
+    mirip: [
+      'inductor',
+      'capacitor-trimmer',
+      'mcu'
+    ],
+  },
+  {
+    id: 'fuse',
+    nama: 'Sekering (Fuse)',
+    alias: [
+      'Fuse',
+      'Pengaman'
+    ],
+    kategori: 'pasif',
+    arus: 'dual',
+    tingkat: 'dasar',
+    bentuk: 'Tabung kaca atau keramik dengan dua terminal dan kawat.',
+    fungsi: 'Memutus rangkaian secara otomatis saat arus terlalu besar.',
+    prinsip: 'Kawat atau lempeng di dalamnya memerah lalu mencair saat dipanaskan. Arus terhenti dan kawat terbakar putus.',
+    karakteristik: [
+      'Rating arus dan tegangan biasanya tercetak di badannya.',
+      'Sekering yang putus hanya boleh diganti dengan nilai sama.',
+      'Kawat di dalamnya sengaja dibuat tipis agar mudah mencair.'
+    ],
+    tegangan: '0 - 660 V',
+    rating: '0,1 A - 200 A',
+    contoh: [
+      'Tabung pengaman pada meteran listrik',
+      'Sekering motor pompa air',
+      'Pengaman power supply komputer'
+    ],
+    catatan: 'Jangan pernah jumper atau ganti dengan kawat tembaga.',
+    mirip: [
+      'resistor-fusible',
+      'varistor',
+      'battery'
+    ],
+  },
+  {
+    id: 'battery',
+    nama: 'Baterai / Sel Baterai',
+    alias: [
+      'Cell',
+      'Aki'
+    ],
+    kategori: 'pasif',
+    arus: 'dc',
+    tingkat: 'dasar',
+    bentuk: 'Silinder atau kotak berisi elektroda dengan terminal dua kutub.',
+    fungsi: 'Menyimpan energi kimia lalu mengubahnya menjadi energi listrik.',
+    prinsip: 'Reaksi kimia pada dua elektroda menghasilkan aliran elektron melalui beban. Tegangan yang keluar tetap selama bahan masih tersedia.',
+    karakteristik: [
+      'Tegangannya relatif tetap selama bahan aktif masih ada.',
+      'Kapasitasnya dinyatakan dalam satuan mAh atau Ah.',
+      'Nilai tegangan turun perlahan seiring pemakaian berulang.'
+    ],
+    tegangan: '1,2 - 48 V DC',
+    rating: '500 mAh - 200 Ah',
+    contoh: [
+      'Baterai proyektor layar movie',
+      'Baterai cadangan pada gate motor',
+      'Baterai alkaline pada remote TV'
+    ],
+    catatan: 'Perhatikan polaritasnya dan jangan mengisi baterai dengan arus terlalu besar.',
+    mirip: [
+      'supercap',
+      'fuse',
+      'regulator-7805'
+    ],
+  },
+  {
+    id: 'dioda',
+    nama: 'Dioda',
+    alias: [
+      'Diode',
+      'Rectifier diode'
+    ],
+    kategori: 'dioda',
+    arus: 'dual',
+    tingkat: 'dasar',
+    bentuk: 'Badan hitam silinder atau keping dengan garis katoda.',
+    fungsi: 'Melewatkan arus satu arah dan memblokir arah sebaliknya.',
+    prinsip: 'Sambungan semikonduktor PN hanya mengizinkan elektron bergerak satu arah. Tegangan maju membuat dioda menghantar, sedangkan tegangan mundur memblokir.',
+    karakteristik: [
+      'Ada tanda garis yang menandai arah katoda.',
+      'Tegangan jatuh maju sekitar 0,7 V pada dioda silikon.',
+      'Tahanannya pada arah mundur sangat besar sekali.'
+    ],
+    tegangan: '0 - 1000 V',
+    rating: '1 A - 10 A',
+    contoh: [
+      'Penyearah pada catu daya sederhana',
+      'Perlindungan polaritas pada modul',
+      'Proteksi tegangan balik baterai'
+    ],
+    catatan: 'Jangan pakai dioda 1N4007 untuk tegangan di atas ratingnya.',
+    mirip: [
+      'dioda-zener',
+      'dioda-schottky',
+      'led'
+    ],
+  },
+  {
+    id: 'dioda-zener',
+    nama: 'Dioda Zener',
+    alias: [
+      'Zener diode',
+      'Dioda referensi'
+    ],
+    kategori: 'dioda',
+    arus: 'dc',
+    tingkat: 'dasar',
+    bentuk: 'Badan silinder berkaki dua seperti dioda biasa.',
+    fungsi: 'Menjaga tegangan tetap pada nilai tertentu saat dialiri.',
+    prinsip: 'Dioda zener dipakai pada arah mundur, bukan arah maju. Saat tegangan mencapai nilai nominalnya, lapisan semikonduktor membatasi arus yang lewat.',
+    karakteristik: [
+      'Tegangan breakdown-nya tetap pada nilai nominal.',
+      'Dirancang bekerja pada arah mundur, bukan maju.',
+      'Perlu resistor seri untuk membatasi arus zenernya.'
+    ],
+    tegangan: '2,4 - 200 V DC',
+    rating: '0,5 W - 1,5 W',
+    contoh: [
+      'Referensi tegangan pada regulator 7805',
+      'Perlindungan gerbang MOSFET',
+      'Stabilizer tegangan sederhana'
+    ],
+    catatan: 'Pastikan ada resistor seri agar arus zener tidak berlebihan.',
+    mirip: [
+      'dioda',
+      'dioda-tvs',
+      'varistor'
+    ],
+  },
+  {
+    id: 'dioda-schottky',
+    nama: 'Dioda Schottky',
+    alias: [
+      'Schottky diode',
+      'Dioda cepat'
+    ],
+    kategori: 'dioda',
+    arus: 'dc',
+    tingkat: 'lanjut',
+    bentuk: 'Keping logam dengan dua kaki dan tanda katoda.',
+    fungsi: 'Menyearahkan arus dengan kehilangan tegangan lebih kecil.',
+    prinsip: 'Sambungan antara logam dan semikonduktor menghasilkan voltase maju yang rendah. Akibatnya disipasi panas pada penyearah berkurang.',
+    karakteristik: [
+      'Tegangan jatuh maju hanya sekitar 0,2 sampai 0,4 V.',
+      'Sangat cepat dalam beralih arah arus listrik.',
+      'Arus bocornya besar sehingga perlu dioda lain sebagai penghalang.'
+    ],
+    tegangan: '0 - 200 V DC',
+    rating: '0,1 A - 40 A',
+    contoh: [
+      'Penyearah pada power supply komputer',
+      'Dioda bebas-flywheel pada motor DC',
+      'Penyearah pada adaptor laptop'
+    ],
+    catatan: 'Arus bocornya besar, jangan dipakai sebagai penyearah mains tanpa transistor.',
+    mirip: [
+      'dioda',
+      'dioda-zener',
+      'dioda-tvs'
+    ],
+  },
+  {
+    id: 'dioda-tvs',
+    nama: 'Dioda TVS (Transient Voltage Suppressor)',
+    alias: [
+      'TVS diode',
+      'Dioda pelindung'
+    ],
+    kategori: 'dioda',
+    arus: 'dual',
+    tingkat: 'lanjut',
+    bentuk: 'Keping plastik besar dengan dua kaki tebal.',
+    fungsi: 'Meredam lonjakan tegangan sesaat pada jalur sinyal atau daya.',
+    prinsip: 'Saat tegangan melewati ambang, dioda ini menghantar arus besar. Tegangan pada jalur yang dilindungi dibatasi di nilai tetap.',
+    karakteristik: [
+      'Responnya sangat cepat, hanya beberapa nanodetik.',
+      'Mampu menahan arus puncak yang besar untuk sesaat.',
+      'Tegangan kerusakannya dibatasi pada nilai tertentu.'
+    ],
+    tegangan: '0 - 600 V DC',
+    rating: '400 W - 15.000 W',
+    contoh: [
+      'Pelindung port USB pada komputer',
+      'Proteksi jalur data pada modul Arduino',
+      'Pengaman pada modem internet'
+    ],
+    catatan: 'TVS bersifat satu kali withstand, bukan pengganti sekering.',
+    mirip: [
+      'varistor',
+      'dioda-zener',
+      'dioda'
+    ],
+  },
+  {
+    id: 'dioda-varactor',
+    nama: 'Dioda Varactor',
+    alias: [
+      'Varactor diode',
+      'Dioda varaktor'
+    ],
+    kategori: 'dioda',
+    arus: 'dc',
+    tingkat: 'lanjut',
+    bentuk: 'Keping silikon kecil dengan kapasitansi yang bisa diubah.',
+    fungsi: 'Menyediakan kapasitansi yang berubah terhadap tegangan kendali.',
+    prinsip: 'Tegangan mundur mengubah lebar lapisan pengosong pada sambungan. Perubahan lebar ini mengubah nilai kapasitansinya.',
+    karakteristik: [
+      'Kapasitansinya kecil, orde beberapa pikofarad.',
+      'Nilai kapasitansinya berubah perlahan saat dinaikkan.',
+      'Dipakai bersama kapasitor tetap pada osilator.'
+    ],
+    tegangan: '0 - 100 V DC',
+    rating: '1 pF - 100 pF',
+    contoh: [
+      'Tuning osilator radio FM',
+      'Sirkuit matching pada amplifier',
+      'Rangkaian penggeser fasa'
+    ],
+    catatan: 'Dioda ini dipakai pada arah mundur dan sering disERI kapasitor tetap.',
+    mirip: [
+      'capacitor-trimmer',
+      'dioda',
+      'capacitor'
+    ],
+  },
+  {
+    id: 'led',
+    nama: 'LED (Light Emitting Diode)',
+    alias: [
+      'LED',
+      'Lampu indikator'
+    ],
+    kategori: 'dioda',
+    arus: 'dc',
+    tingkat: 'dasar',
+    bentuk: 'Keping plastik bening atau berwarna dengan dua kaki.',
+    fungsi: 'Mengubah energi listrik menjadi cahaya yang dapat dilihat.',
+    prinsip: 'Elektron dan hole yang berlawan muatan bertemu pada lapisan aktif. Energi yang dilepaskan dipancarkan sebagai cahaya.',
+    karakteristik: [
+      'Hanya boleh dipasang seri dengan resistor pembatas.',
+      'Tegangan majunya sekitar 1,8 sampai 3,3 V.',
+      'Warnanya menentukan jenis warna cahaya yang dipancarkan.'
+    ],
+    tegangan: '1,8 - 3,6 V DC',
+    rating: '10 mA - 20 mA',
+    contoh: [
+      'Lampu indikator pada TV',
+      'Lampu status pada power supply komputer',
+      'Lampu sein motor'
+    ],
+    catatan: 'Jangan hubungkan langsung ke tegangan 5 V tanpa resistor.',
+    mirip: [
+      'dioda',
+      'led-7seg',
+      'dioda-zener'
+    ],
+  },
+  {
+    id: 'led-7seg',
+    nama: 'Display 7 Segment',
+    alias: [
+      'Seven segment',
+      'LED display'
+    ],
+    kategori: 'dioda',
+    arus: 'dc',
+    tingkat: 'dasar',
+    bentuk: 'Satu digit berbentuk angka delapan dari seven segment LED.',
+    fungsi: 'Menampilkan angka desimal pada perangkat elektronik.',
+    prinsip: 'Setiap segmen berisi LED dan katoda bersama. Menyala atau matinya tiap segmen membentuk huruf atau angka.',
+    karakteristik: [
+      'Terdiri dari tujuh segmen dan satu titik desimal.',
+      'Sebagian besar memakai empat digit dalam satu modul.',
+      'Setiap segmennya berupa LED dengan arus terbatas.'
+    ],
+    tegangan: '3 - 5 V DC',
+    rating: '5 mA - 20 mA per segmen',
+    contoh: [
+      'Angka arah pada panel lift',
+      'Papan skor pertandingan olahraga',
+      'Timer digital pada dapur'
+    ],
+    catatan: 'Pasang resistor atau driver, jangan terhubung langsung ke pin mikrokontroler.',
+    mirip: [
+      'led',
+      'lcd',
+      'mcu'
+    ],
+  },
+  {
+    id: 'fotodioda',
+    nama: 'Fotodioda',
+    alias: [
+      'Photodiode',
+      'Dioda foto'
+    ],
+    kategori: 'dioda',
+    arus: 'dc',
+    tingkat: 'lanjut',
+    bentuk: 'Keping silikon bening dengan jendela optik dan dua kaki.',
+    fungsi: 'Mengubah cahaya menjadi arus listrik atau tegangan.',
+    prinsip: 'Foton yang mengenai lapisan aktif membebaskan pasangan elektron dan hole. Arus ini mengalir pada arah kebalikan seperti dioda biasa.',
+    karakteristik: [
+      'Dapat dipasang pada mode reverse bias atau nol bias.',
+      'Arus gelapnya sangat kecil saat tidak ada cahaya.',
+      'Sensitivitasnya meningkat bila permukaannya dikasih lens.'
+    ],
+    tegangan: '0 - 60 V DC',
+    rating: '1 µA - 50 mA',
+    contoh: [
+      'Sensor optik pada mouse komputer',
+      'Pembaca kartu KTP elektronik',
+      'Sensor kamera pada ponsel'
+    ],
+    catatan: 'Jangan salah pasang polaritas saat mode reverse bias.',
+    mirip: [
+      'phototransistor',
+      'ldr',
+      'solar-cell'
+    ],
+  },
+  {
+    id: 'lcd',
+    nama: 'LCD 16x2 (Liquid Crystal Display)',
+    alias: [
+      'LCD',
+      'Display karakter'
+    ],
+    kategori: 'dioda',
+    arus: 'dc',
+    tingkat: 'lanjut',
+    bentuk: 'Modul kaca bening dengan baris karakter dan pin di bagian bawah.',
+    fungsi: 'Menampilkan teks atau angka pada layar kristal cair.',
+    prinsip: 'Lapisan kristal cair mengubah arah cahaya latar sesuai tegangan kendali. Perbedaan suhu dan komposisi lapisan menentukan gelap atau terlitnya piksel.',
+    karakteristik: [
+      'Memiliki enam belas kolom dan dua baris karakter.',
+      'Memerlukan potensiometer untuk mengatur kontras layar.',
+      'Memakai driver penguat baris di dalam modulnya.'
+    ],
+    tegangan: '4,5 - 5,5 V DC',
+    rating: '10 mA - 25 mA',
+    contoh: [
+      'Panel informasi di kios',
+      'Display suhu dan jam digital',
+      'Antarmuka menu alat'
+    ],
+    catatan: 'Jangan lupa menarik pin kontras ke ground agar teks terlihat.',
+    mirip: [
+      'led-7seg',
+      'mcu',
+      'shift-595'
+    ],
+  },
+  {
+    id: 'optocoupler',
+    nama: 'Optocoupler / Isolator Optik',
+    alias: [
+      'Optocoupler',
+      'PC817'
+    ],
+    kategori: 'dioda',
+    arus: 'dual',
+    tingkat: 'lanjut',
+    bentuk: 'Cip plastik bening berisi LED dan fototransistor terpisah.',
+    fungsi: 'Menghubungkan dua rangkaian listrik tanpa sambungan konduktif langsung.',
+    prinsip: 'LED di sisi masukan memancarkan cahaya ke fototransistor di sisi keluaran. Cahaya itu memindahkan sinyal tanpa menyentuh kedua sisi secara listrik.',
+    karakteristik: [
+      'Mengisolasi tegangan hingga ribuan volt antar sisinya.',
+      'Responnya cukup lambat, berorde mikrodetik.',
+      'Ada versi phototransistor dan photodarlington.'
+    ],
+    tegangan: '0 - 1000 V DC',
+    rating: '10 mA - 500 mA',
+    contoh: [
+      'Isolasi driver motor di power supply',
+      'Antarmuka sensor pada modul Arduino',
+      'Isolasi sinyal pada panel mesin'
+    ],
+    catatan: 'LED di dalamnya perlu resistor seri, keluarannya juga butuh resistor pull-up.',
+    mirip: [
+      'phototransistor',
+      'optotriac',
+      'transformer-iso'
+    ],
+  },
+  {
+    id: 'optotriac',
+    nama: 'Optotriac (MOC3021)',
+    alias: [
+      'Optotriac',
+      'Phototriac'
+    ],
+    kategori: 'dioda',
+    arus: 'ac',
+    tingkat: 'lanjut',
+    bentuk: 'Cip bening dengan LED di satu sisi dan TRIAC di sisi lain.',
+    fungsi: 'Mengendalikan beban listrik AC lewat sinyal optik tanpa kontak.',
+    prinsip: 'Cahaya dari LED memicu TRIAC di sisi keluaran. TRIAC itu lalu menghantarkan arus pada kedua arah untuk memotong fase gelombang AC.',
+    karakteristik: [
+      'Dapat memutus arus pada kedua arah bipolar sekaligus.',
+      'Arus picu gate yang dibutuhkan cukup besar.',
+      'Dipakai sebagai pemicu pada saklar TRIAC dimmer.'
+    ],
+    tegangan: '0 - 600 V AC',
+    rating: '10 mA - 300 mA',
+    contoh: [
+      'Dimmer lampu pijar di rumah',
+      'Pengendali kipas langit-langit',
+      'Saklar elektronik pada stopkontak'
+    ],
+    catatan: 'TRIAC hanya menghantarkan pada separuh gelombang, perhatikan saat pemicunya.',
+    mirip: [
+      'optocoupler',
+      'triac',
+      'relay'
+    ],
+  },
+  {
+    id: 'solar-cell',
+    nama: 'Solar Cell',
+    alias: [
+      'Sel surya',
+      'Photovoltaic'
+    ],
+    kategori: 'dioda',
+    arus: 'dc',
+    tingkat: 'lanjut',
+    bentuk: 'Keping silikon gelap berlapis anti pantulan.',
+    fungsi: 'Mengubah energi cahaya matahari langsung menjadi listrik DC.',
+    prinsip: 'Foton matahari membebaskan elektron pada lapisan semikonduktor. Penghambatan oleh lapisan penumpuk menghasilkan arus searah.',
+    karakteristik: [
+      'Tegangan open circuit sekitar 0,5 V untuk sel tunggal.',
+      'Outputnya berubah mengikuti intensitas cahaya matahari.',
+      'Perlu dioda schottky sebagai pelindung dari pembalikan.'
+    ],
+    tegangan: '0 - 48 V DC',
+    rating: '1 W - 400 W per panel',
+    contoh: [
+      'Panel surya atap rumah',
+      'Lampu penerangan jalan tenaga surya',
+      'Pompa air untuk ladang jagung'
+    ],
+    catatan: 'Keluarannya berubah-ubah mengikuti cuaca, gunakan regulator agar aman.',
+    mirip: [
+      'fotodioda',
+      'battery',
+      'dioda'
+    ],
+  },
+  {
+    id: 'bjt-npn',
+    nama: 'Transistor BJT NPN',
+    alias: [
+      'NPN',
+      'BC547'
+    ],
+    kategori: 'transistor',
+    arus: 'dc',
+    tingkat: 'dasar',
+    bentuk: 'Cip plastik kecil hitam dengan tiga kaki.',
+    fungsi: 'Menguatkan arus kecil menjadi arus besar pada simpul emitter.',
+    prinsip: 'Tegangan antara basis dan kolektor mengubah aliran elektron pada lapisan basis. Arus emitter menjadi jauh lebih besar daripada arus basis.',
+    karakteristik: [
+      'Memiliki tiga terminal, yaitu basis, kolektor, dan emitter.',
+      'Arus basis kecil cukup mengendalikan arus besar.',
+      'Penguatannya bisa mencapai ratusan kali pada daerah aktif.'
+    ],
+    tegangan: '0 - 300 V',
+    rating: '10 mA - 10 A',
+    contoh: [
+      'Penguat audio pada radio transistor',
+      'Saklar elektronik pada kipas angin',
+      'Driver motor pada mobil remote'
+    ],
+    catatan: 'Jangan memberi tegangan melebihi rating atau transistor cepat terbakar.',
+    mirip: [
+      'bjt-pnp',
+      'mosfet-n',
+      'darlington'
+    ],
+  },
+  {
+    id: 'bjt-pnp',
+    nama: 'Transistor BJT PNP',
+    alias: [
+      'PNP',
+      'BC557'
+    ],
+    kategori: 'transistor',
+    arus: 'dc',
+    tingkat: 'dasar',
+    bentuk: 'Cip plastik kecil hitam dengan tiga kaki, arah kaki berbeda.',
+    fungsi: 'Menguatkan arus pada sisi sumber tegangan atau sisi negatif.',
+    prinsip: 'Polaritas transistor dibalik dibanding NPN. Arus mengalir dari emitter ke kolektor ketika basis diberi tegangan lebih negatif.',
+    karakteristik: [
+      'Tegangan basis harus lebih negatif daripada emitter.',
+      'Umumnya dipakai pada saklar di sisi sumber tegangan.',
+      'Tegangan emitor-emitter saat aktif hanya sekitar 0,2 V.'
+    ],
+    tegangan: '0 - 300 V',
+    rating: '10 mA - 10 A',
+    contoh: [
+      'Saklar pada catu daya positif',
+      'Penguat audio pada amplifier kecil',
+      'Kontrol kipas langit-langit'
+    ],
+    catatan: 'Urutan pin PNP terbalik dari NPN, cek datasheet sebelum menyolder.',
+    mirip: [
+      'bjt-npn',
+      'mosfet-p',
+      'darlington'
+    ],
+  },
+  {
+    id: 'phototransistor',
+    nama: 'Fototransistor',
+    alias: [
+      'Phototransistor',
+      'Sensor foto'
+    ],
+    kategori: 'transistor',
+    arus: 'dc',
+    tingkat: 'lanjut',
+    bentuk: 'Cip bening dengan jendela optik dan dua atau tiga kaki.',
+    fungsi: 'Mengubah kekuatan cahaya menjadi arus listrik yang jauh lebih besar.',
+    prinsip: 'Cahaya yang mengenai lapisan basis membebaskan pembawa muatan. Arus kecil itu dikuatkan oleh transistor di dalamnya.',
+    karakteristik: [
+      'Penguatannya bisa mencapai ratusan kali.',
+      'Sering dipakai sebagai saklar pada relung gelap.',
+      'Terdapat dua versi yaitu dua kaki dan tiga kaki.'
+    ],
+    tegangan: '0 - 300 V',
+    rating: '0,1 mA - 100 mA',
+    contoh: [
+      'Sensor infra merah pada remote TV',
+      'Pendeteksi benda pada mesin fotokopi',
+      'Sensor otomatis pada tangki air'
+    ],
+    catatan: 'Sangat peka terhadap cahaya, lindungi dengan pipa hitam saat diperlukan.',
+    mirip: [
+      'fotodioda',
+      'ldr',
+      'optocoupler'
+    ],
+  },
+  {
+    id: 'darlington',
+    nama: 'Transistor Darlington',
+    alias: [
+      'Darlington pair',
+      'BD139'
+    ],
+    kategori: 'transistor',
+    arus: 'dc',
+    tingkat: 'lanjut',
+    bentuk: 'Cip hitam dengan tiga kaki seperti transistor biasa.',
+    fungsi: 'Menguatkan arus basis yang sangat kecil agar arus besar bisa dialirkan.',
+    prinsip: 'Emitter transistor pertama terhubung ke basis transistor kedua. Arus emitter pertama menjadi arus basis transistor kedua.',
+    karakteristik: [
+      'Penguatan arusnya bisa lebih dari seribu kali.',
+      'Tegangan jatuh totalnya sekitar 1,2 sampai 1,4 V.',
+      'Ada versi yang sudah jadi satu cip utuh.'
+    ],
+    tegangan: '0 - 300 V',
+    rating: '0,5 A - 20 A',
+    contoh: [
+      'Driver relay pada sistem alarm',
+      'Kontrol motor langkah pada printer 3D',
+      'Penguat arus pada modul Arduino'
+    ],
+    catatan: 'Jatuh tegangannya besar, pasang pendingin pada transistor ini.',
+    mirip: [
+      'bjt-npn',
+      'bjt-pnp',
+      'mosfet-n'
+    ],
+  },
+  {
+    id: 'jfet',
+    nama: 'Transistor JFET',
+    alias: [
+      'JFET',
+      '2N5457'
+    ],
+    kategori: 'transistor',
+    arus: 'dc',
+    tingkat: 'lanjut',
+    bentuk: 'Badan logam atau plastik kecil dengan tiga kaki.',
+    fungsi: 'Menguatkan sinyal kecil dengan impedansi masukan yang sangat tinggi.',
+    prinsip: 'Tegangan gerbang mundur mengubah lebar kanal antara drainase dan sumber. Perubahan lebar itu menentukan besar kecilnya arus drainase.',
+    karakteristik: [
+      'Arus gerbangnya sangat kecil, hanya orde nanoampere.',
+      'Impedansi masukannya sangat tinggi sehingga mudah dikendalikan.',
+      'Juga dipakai sebagai saklar analog pada mixer radio.'
+    ],
+    tegangan: '0 - 300 V',
+    rating: '1 mA - 500 mA',
+    contoh: [
+      'Penguat pitan depan pada radio FM',
+      'Osilator kristal pada jam digital',
+      'Meter elektronik'
+    ],
+    catatan: 'Mudah rusak karena listrik statis, lindungi saat penyimpanan.',
+    mirip: [
+      'mosfet-n',
+      'bjt-npn',
+      'dioda-varactor'
+    ],
+  },
+  {
+    id: 'mosfet-n',
+    nama: 'MOSFET N-Channel',
+    alias: [
+      'NMOS',
+      'IRFZ44'
+    ],
+    kategori: 'transistor',
+    arus: 'dc',
+    tingkat: 'dasar',
+    bentuk: 'Cip plastik hitam dengan tiga kaki dan tabur pendingin.',
+    fungsi: 'Berfungsi sebagai saklar elektronik untuk arus besar dengan sedikit kehilangan daya.',
+    prinsip: 'Tegangan gerbang membentuk lapisan konduktor di bawah lapisan oksida. Saluran ini menghubungkan drainase dan sumber saat gerbang diberi tegangan cukup.',
+    karakteristik: [
+      'Hambatan saat aktif sangat kecil sehingga dayanya besar.',
+      'Arus gerbangnya hampir nol sehingga mudah dikendalikan.',
+      'Tegangan ambang gerbangnya masih memerlukan driver khusus.'
+    ],
+    tegangan: '20 - 600 V',
+    rating: '1 A - 150 A',
+    contoh: [
+      'Saklar pada motor kipas angin listrik',
+      'Penguat daya pada radio FM',
+      'Saklar pada modul charger HP'
+    ],
+    catatan: 'Jangan lupa pasang diode flyback pada beban induktif.',
+    mirip: [
+      'mosfet-p',
+      'igbt',
+      'bjt-npn'
+    ],
+  },
+  {
+    id: 'mosfet-p',
+    nama: 'MOSFET P-Channel',
+    alias: [
+      'PMOS',
+      'IRF9540'
+    ],
+    kategori: 'transistor',
+    arus: 'dc',
+    tingkat: 'dasar',
+    bentuk: 'Cip plastik hitam dengan tiga kaki dan tab pendingin.',
+    fungsi: 'Saklar pada sisi positif yang dikendalikan dari arah atas rangkaian.',
+    prinsip: 'Tegangan gerbang membentuk lapisan konduktor pada kanal. Arus mengalir dari sumber ke drainase saat gerbang diberi tegangan lebih negatif.',
+    karakteristik: [
+      'Pembawa muutannya adalah hole yang bermuatan positif.',
+      'Ruginya lebih besar dibanding MOSFET N pada rating sama.',
+      'Sering dipasang pada saklar sisi atas sebuah rangkaian.'
+    ],
+    tegangan: '20 - 100 V',
+    rating: '1 A - 100 A',
+    contoh: [
+      'Saklar sisi positif pada modul Arduino',
+      'Proteksi polaritas daya aki',
+      'Saklar bagian atas pada amplifier'
+    ],
+    catatan: 'Arus gerbangnya cukup besar, tambahkan driver bila perlu.',
+    mirip: [
+      'mosfet-n',
+      'igbt',
+      'bjt-pnp'
+    ],
+  },
+  {
+    id: 'igbt',
+    nama: 'IGBT',
+    alias: [
+      'IGBT',
+      'Insulated Gate Bipolar Transistor'
+    ],
+    kategori: 'transistor',
+    arus: 'dc',
+    tingkat: 'lanjut',
+    bentuk: 'Modul besar berpendingin atau cip bertegang tinggi.',
+    fungsi: 'Saklar daya untuk tegangan dan arus besar pada aplikasi industri.',
+    prinsip: 'Gerbang terisolasi membentuk kanal MOSFET dan transistor bipolar bekerja sama. Struktur gabungan ini memberi tegangan tahan tinggi sekaligus kecepatan switching.',
+    karakteristik: [
+      'Dapat menahan tegangan hingga ratusan volt DC.',
+      'Sangat cepat dalam switching tetapi ada rugi saat menyala.',
+      'Gerbangnya terisolasi sehingga tidak perlu jalur pemicu tambahan.'
+    ],
+    tegangan: '300 - 1700 V DC',
+    rating: '20 A - 750 A',
+    contoh: [
+      'Penggerak motor pada inverter rumah tangga',
+      'Tegangan DC ke AC pada panel surya',
+      'Saklar pada mesin industri'
+    ],
+    catatan: 'Butuh IC penggerak gerbang khusus, jangan disambung langsung ke Arduino.',
+    mirip: [
+      'mosfet-n',
+      'scr',
+      'triac'
+    ],
+  },
+  {
+    id: 'scr',
+    nama: 'SCR (Silicon Controlled Rectifier)',
+    alias: [
+      'Thyristor',
+      'SCR'
+    ],
+    kategori: 'transistor',
+    arus: 'dc',
+    tingkat: 'lanjut',
+    bentuk: 'Cip besar bergelombang dengan tiga kaki.',
+    fungsi: 'Mengalirkan arus besar satu arah dan tetap on sampai arusnya kecil.',
+    prinsip: 'Sinyal pada gerbang memicu sambungan agar SCR mulai menghantar. Setelah aktif, SCR terus menghantar sampai arus turun di bawah nilai tahan.',
+    karakteristik: [
+      'Hanya menghantarkan arus pada satu arah saja.',
+      'Tidak bisa dimatikan lewat gerbang, harus lewat arus.',
+      'Setelah aktif, SCR bertahan sampai arusnya turun kecil.'
+    ],
+    tegangan: '100 - 3000 V DC',
+    rating: '5 A - 2000 A',
+    contoh: [
+      'Saklar pada pemanas listrik',
+      'Pengendali motor pada mixer semen',
+      'Dimmer lampu penerangan jalan'
+    ],
+    catatan: 'Pastikan ada jalur untuk memutus arus, kalau tidak SCR akan tersangkut aktif.',
+    mirip: [
+      'triac',
+      'igbt',
+      'diac'
+    ],
+  },
+  {
+    id: 'triac',
+    nama: 'TRIAC',
+    alias: [
+      'Triac',
+      'AC switch'
+    ],
+    kategori: 'transistor',
+    arus: 'ac',
+    tingkat: 'lanjut',
+    bentuk: 'Cip plastik dengan tiga kaki seperti transistor.',
+    fungsi: 'Mengendalikan beban AC pada kedua arah aliran arus.',
+    prinsip: 'Pulsa pada gerbang memicu TRIAC agar menghantar pada paruh gelombang. TRIAC tetap menghantar sampai arus melewati titik nol berikutnya.',
+    karakteristik: [
+      'Dapat memicu dan memutus arus pada kedua arah.',
+      'Dipasang paralel dengan beban pada jalur keluar.',
+      'Memerlukan resistor pada kaki gerbangnya agar stabil.'
+    ],
+    tegangan: '100 - 800 V AC',
+    rating: '1 A - 500 A',
+    contoh: [
+      'Dimmer lampu di kamar tidur',
+      'Saklar kecepatan kipas ceiling fan',
+      'Saklar pengeras suara'
+    ],
+    catatan: 'Pilih TRIAC dengan arus di atas beban dan beri resistor pada gerbang.',
+    mirip: [
+      'scr',
+      'diac',
+      'optotriac'
+    ],
+  },
+  {
+    id: 'diac',
+    nama: 'DIAC',
+    alias: [
+      'Diac',
+      'Dioda AC'
+    ],
+    kategori: 'transistor',
+    arus: 'dc',
+    tingkat: 'lanjut',
+    bentuk: 'Keping plastik kecil dengan dua kaki.',
+    fungsi: 'Membantu pemicuan TRIAC pada saat tegangan ambang terlampaui.',
+    prinsip: 'DIAC menghantar pada kedua arah setelah tegangan mencapai nilai ambang. Arus saat memicu ini membuat TRIAC menyala pada sudut fasa yang dikehendaki.',
+    karakteristik: [
+      'Aliran pada kedua arah sama pada ambang tegangan tertentu.',
+      'Nilai tegangan pemicunya sekitar 30 sampai 40 V.',
+      'Hanya berfungsi sebentar saat diberi arus picu.'
+    ],
+    tegangan: '0 - 400 V',
+    rating: '1 A - 10 A',
+    contoh: [
+      'Rangkaian dimmer pada TRIAC',
+      'Pengendali sudut fase pada motor',
+      'Saklar pengatur lampu'
+    ],
+    catatan: 'DIAC hanya menjadi pemicu, tugas utamanya tetap pada TRIAC.',
+    mirip: [
+      'triac',
+      'dioda',
+      'scr'
+    ],
+  },
+  {
+    id: 'unijunction',
+    nama: 'UJT (Unijunction Transistor)',
+    alias: [
+      'UJT',
+      '2N2647'
+    ],
+    kategori: 'transistor',
+    arus: 'dc',
+    tingkat: 'lanjut',
+    bentuk: 'Cip kecil berbentuk cakram dengan tiga kaki.',
+    fungsi: 'Membentuk osilator relaksasi sederhana untuk menghasilkan denyut.',
+    prinsip: 'Arus pada emiter naik sampai tegangan puncak emiter terlampaui. Tegangan pada kapasitor di basis lalu turun cepat sehingga terbentuk denyut.',
+    karakteristik: [
+      'Memiliki tiga kaki, yaitu emiter, basis satu, dan basis dua.',
+      'Tegangan puncak emiternya ditentukan pembagi tegangan.',
+      'Dipakai bersama satu resistor dan satu kapasitor.'
+    ],
+    tegangan: '0 - 60 V',
+    rating: '50 mA - 2 A',
+    contoh: [
+      'Osilator pada jam digital murah',
+      'Rangkaian penunda waktu pada alarm',
+      'Penghitung laju denyut nadi'
+    ],
+    catatan: 'Hanya punya satu sambungan, jadi tidak sama dengan BJT pada umumnya.',
+    mirip: [
+      'scr',
+      'diac',
+      'lm555'
+    ],
+  },
+  {
+    id: 'opamp',
+    nama: 'Op-Amp (LM741)',
+    alias: [
+      'Op amp',
+      'LM741'
+    ],
+    kategori: 'ic',
+    arus: 'dc',
+    tingkat: 'dasar',
+    bentuk: 'Cip hitam bersepuluh melalui delapan kaki.',
+    fungsi: 'Menguatkan selisih dua tegangan masukan yang sangat kecil.',
+    prinsip: 'Umpan balik negatif menentukan besarnya penguatan amplifier. Sinyal keluaran sengaja dikembalikan ke masukan agar nilainya bisa diatur.',
+    karakteristik: [
+      'Memiliki dua masukan, yaitu inverting dan non inverting.',
+      'Penguatannya sangat besar bila tanpa umpan balik.',
+      'Terdapat osilator internal untuk memangkas osilasi.'
+    ],
+    tegangan: '3 - 36 V',
+    rating: '10 mA - 80 mA',
+    contoh: [
+      'Penguat audio pada radio FM',
+      'Rangkaian sensor suhu pada termostat digital',
+      'Penguat sinyal kecil pada osiloskop'
+    ],
+    catatan: 'Perlu catu daya ganda untuk memproses sinyal di sekitar titik nol.',
+    mirip: [
+      'lm393',
+      'dac',
+      'lm386'
+    ],
+  },
+  {
+    id: 'regulator-7805',
+    nama: 'Regulator 7805',
+    alias: [
+      '7805',
+      'Regulator 5 volt'
+    ],
+    kategori: 'ic',
+    arus: 'dc',
+    tingkat: 'dasar',
+    bentuk: 'Cip logam tipe TO-220 dengan tiga kaki berlubang.',
+    fungsi: 'Menjaga tegangan keluaran tetap 5 V dari masukan yang lebih tinggi.',
+    prinsip: 'Di dalam cip ada penguat dan sumber tegangan acuan. Umpan balik internal menjaga selisih tegangan tetap sehingga keluaran stabil.',
+    karakteristik: [
+      'Toleransi keluarannya cukup baik untuk rangkaian digital.',
+      'Memerlukan kapasitor pada kaki masukan dan kaki keluaran.',
+      'Kenaikan suhunya kecil pada pemakaian arus normal.'
+    ],
+    tegangan: '7 - 35 V DC',
+    rating: '1 A - 1,5 A',
+    contoh: [
+      'Catu daya 5 V pada modul Arduino',
+      'Catu daya untuk radio transistor',
+      'Catu daya perakitan rumahan'
+    ],
+    catatan: 'Wajib dipasang kapasitor masuk dan keluar agar tidak bergetar.',
+    mirip: [
+      'lm317',
+      'battery',
+      'capacitor-pol'
+    ],
+  },
+  {
+    id: 'lm317',
+    nama: 'Regulator LM317',
+    alias: [
+      'LM317',
+      'Adjustable regulator'
+    ],
+    kategori: 'ic',
+    arus: 'dc',
+    tingkat: 'lanjut',
+    bentuk: 'Cip logam dengan tiga kaki dan pendingin.',
+    fungsi: 'Mengatur tegangan keluaran sesuai nilai yang dikehendaki pengguna.',
+    prinsip: 'Selisih tegangan antara kaki keluaran dan adjust dijaga tetap oleh sumber acuan. Dua resistor luar menentukan besar tegangan keluaran.',
+    karakteristik: [
+      'Tegangan keluar diatur lewat perbandingan dua resistor.',
+      'Jangkauan tegangan keluarannya cukup luas dan dapat disetel.',
+      'Selisih tegangan yang hilang berubah menjadi panas.'
+    ],
+    tegangan: '3 - 40 V DC',
+    rating: '0,5 A - 1,5 A',
+    contoh: [
+      'Catu daya 12 V untuk modul radio',
+      'Catu daya atur pada perakitan rumahan',
+      'Pengatur tegangan amplifier'
+    ],
+    catatan: 'Pasang pendingin karena selisih tegangan berubah menjadi panas.',
+    mirip: [
+      'regulator-7805',
+      'capacitor-pol',
+      'mosfet-n'
+    ],
+  },
+  {
+    id: 'lm555',
+    nama: 'Timer NE555',
+    alias: [
+      'NE555',
+      'Timer 555'
+    ],
+    kategori: 'ic',
+    arus: 'dc',
+    tingkat: 'dasar',
+    bentuk: 'Cip hitam bersepuluh melalui delapan kaki timer.',
+    fungsi: 'Membuat denyut dan waktu tunda memakai resistor dan kapasitor luar.',
+    prinsip: 'Kapasitor diisi melalui resistor lalu tegangannya dibandingkan dengan ambang. Saat ambang terlampaui, output berbalik dan denyut berulang.',
+    karakteristik: [
+      'Bisa bekerja sebagai osilator lepas kekangan atau monostable.',
+      'Frekuensi dan lebar denyut diatur oleh komponen luar.',
+      'Keluarannya kuat sampai arus sekitar 200 mA.'
+    ],
+    tegangan: '2 - 18 V',
+    rating: '10 mA - 200 mA',
+    contoh: [
+      'Pencahayaan kedip pada spion motor',
+      'Sirene alarm sederhana',
+      'Penghitung waktu pada mesin foto copy'
+    ],
+    catatan: 'Periode denyut dihitung dari resistor dan kapasitor yang dipasang.',
+    mirip: [
+      'unijunction',
+      'opamp',
+      'mcu'
+    ],
+  },
+  {
+    id: 'lm386',
+    nama: 'Penguat Audio LM386',
+    alias: [
+      'LM386',
+      'Audio amplifier'
+    ],
+    kategori: 'ic',
+    arus: 'dc',
+    tingkat: 'lanjut',
+    bentuk: 'Kotak plastik kecil bersepuluh, delapan kaki.',
+    fungsi: 'Menguatkan sinyal audio lemah agar cukup untuk menggerakkan speaker.',
+    prinsip: 'Penguat internal menguatkan selisih tegangan masukan. Umpan balik dan kapasitor luar menentukan besar kecilnya penguatan.',
+    karakteristik: [
+      'Penguatannya dapat diatur dari 20 kali sampai 200 kali.',
+      'Catu dayanya sederhana, cukup dari baterai atau regulator.',
+      'Keluarannya dapat disambungkan langsung ke speaker.'
+    ],
+    tegangan: '4 - 12 V',
+    rating: '10 mA - 200 mA',
+    contoh: [
+      'Amplifier kecil untuk speaker pita',
+      'Penguat suara pada radio transistor',
+      'Modul amplifier pada papan Arduino'
+    ],
+    catatan: 'Padukan kapasitor kopling pada masukan supaya suara tidak cacat.',
+    mirip: [
+      'opamp',
+      'speaker',
+      'mcu'
+    ],
+  },
+  {
+    id: 'lm393',
+    nama: 'Comparator LM393',
+    alias: [
+      'LM393',
+      'Comparator'
+    ],
+    kategori: 'ic',
+    arus: 'dc',
+    tingkat: 'lanjut',
+    bentuk: 'Cip hitam dengan kaki comparator dan dua unit.',
+    fungsi: 'Membandingkan dua tegangan dan memberi keluaran tinggi atau rendah.',
+    prinsip: 'Perbandingan dua tegangan masukan menentukan arah transistor keluaran. Umpan balik dari kolektor menjaga level keluaran tetap tegas.',
+    karakteristik: [
+      'Keluaran berupa transistor open collector yang perlu pull-up.',
+      'Tersedia dua unit comparator dalam satu paket cip.',
+      'Tegangan masukannya dapat mendekati titik nol volt.'
+    ],
+    tegangan: '2 - 36 V',
+    rating: '0,1 mA - 100 mA',
+    contoh: [
+      'Rancangan pengaman baterai otomatis',
+      'Sensor level air pada tandon',
+      'Modul pemicu sensor'
+    ],
+    catatan: 'Keluaran open collector wajib diberi resistor pull-up ke sumber.',
+    mirip: [
+      'opamp',
+      'dac',
+      'mcu'
+    ],
+  },
+  {
+    id: 'gate-and',
+    nama: 'Gerbang AND 7408',
+    alias: [
+      '7408',
+      'AND gate'
+    ],
+    kategori: 'ic',
+    arus: 'dc',
+    tingkat: 'dasar',
+    bentuk: 'Cip DIP 14 kaki berisi gerbang AND dua masukan.',
+    fungsi: 'Menghasilkan keluaran logika 1 hanya bila semua masukannya bernilai 1.',
+    prinsip: 'Transistor pada tiap gerbang menentukan keadaan keluaran sesuai masukan. Tegangan keluarannya hanya tinggi bila semua masukan aktif.',
+    karakteristik: [
+      'Berisi empat gerbang AND dua masukan dalam satu cip.',
+      'Memakai logika positif TTL dengan catu daya 5 volt.',
+      'Setiap gerbang punya keluaran pada kaki terpisah.'
+    ],
+    tegangan: '4,5 - 5,5 V DC',
+    rating: '10 mA - 50 mA',
+    contoh: [
+      'Kode pengaman pintu digital',
+      'Sirkuit kontrol motor sederhana',
+      'Pencacah digital pada jam'
+    ],
+    catatan: 'Jangan campur cip TTL 5 V dengan logika CMOS yang levelnya berbeda.',
+    mirip: [
+      'gate-or',
+      'gate-nand',
+      'gate-not'
+    ],
+  },
+  {
+    id: 'gate-or',
+    nama: 'Gerbang OR 7432',
+    alias: [
+      '7432',
+      'OR gate'
+    ],
+    kategori: 'ic',
+    arus: 'dc',
+    tingkat: 'dasar',
+    bentuk: 'Cip DIP 14 kaki, tiap cip punya empat gerbang OR.',
+    fungsi: 'Menghasilkan keluaran logika 1 bila salah satu masukannya bernilai 1.',
+    prinsip: 'Jalur transistor tiap gerbang disusun paralel. Bila salah satu masukan aktif, keluaran ikut menjadi tinggi.',
+    karakteristik: [
+      'Berisi empat gerbang OR dua masukan dalam satu cip.',
+      'Masing-masing gerbang punya dua kaki masukan.',
+      'Cocok untuk menyatukan beberapa kondisi jadi satu perintah.'
+    ],
+    tegangan: '4,5 - 5,5 V DC',
+    rating: '10 mA - 50 mA',
+    contoh: [
+      'Alarm saat salah satu sensor aktif',
+      'Kontrol lampu tanda lalu lintas jalan',
+      'Pemicu alarm pada lemari pendingin'
+    ],
+    catatan: 'Keluarannya berlawanan dengan gerbang AND, pastikan tidak tertukar saat merakit.',
+    mirip: [
+      'gate-and',
+      'gate-nor',
+      'gate-not'
+    ],
+  },
+  {
+    id: 'gate-not',
+    nama: 'Gerbang NOT (Inverter) 7404',
+    alias: [
+      '7404',
+      'NOT gate',
+      'Inverter'
+    ],
+    kategori: 'ic',
+    arus: 'dc',
+    tingkat: 'dasar',
+    bentuk: 'Cip DIP 14 kaki berisi enam gerbang satu masukan.',
+    fungsi: 'Membalik logika masukan, yaitu mengubah 1 menjadi 0 dan 0 menjadi 1.',
+    prinsip: 'Satu tahap transistor membalik arah tegangan masukan. Keluaran berlawanan fase dengan masukan.',
+    karakteristik: [
+      'Berisi enam gerbang NOT dalam satu paket cip.',
+      'Masing-masing gerbang hanya punya satu kaki masukan.',
+      'Keluarannya selalu berlawanan logika dengan masukannya.'
+    ],
+    tegangan: '4,5 - 5,5 V DC',
+    rating: '10 mA - 50 mA',
+    contoh: [
+      'Pembuat logika negasi pada alarm',
+      'Rangkaian penguat level sensor',
+      'Koreksi polaritas sinyal digital'
+    ],
+    catatan: 'Inverter bukan buffer, keluarannya berlawanan polaritas dengan masukan.',
+    mirip: [
+      'gate-and',
+      'buffer',
+      'gate-nand'
+    ],
+  },
+  {
+    id: 'gate-nand',
+    nama: 'Gerbang NAND 7400',
+    alias: [
+      '7400',
+      'NAND gate'
+    ],
+    kategori: 'ic',
+    arus: 'dc',
+    tingkat: 'lanjut',
+    bentuk: 'Cip DIP 14 kaki dengan empat gerbang NAND.',
+    fungsi: 'Menghasilkan keluaran 0 hanya bila kedua masukannya bernilai 1.',
+    prinsip: 'Gerbang NAND adalah gerbang AND yang disambung dengan inverter. Keluaran akhir dibalik dari hasil AND.',
+    karakteristik: [
+      'Berisi empat gerbang NAND dua masukan dalam satu cip.',
+      'Sering dipakai sebagai gerbang universal saat merakit logika.',
+      'Ditambah inverter, gerbang ini bisa jadi AND maupun OR.'
+    ],
+    tegangan: '4,5 - 5,5 V DC',
+    rating: '10 mA - 50 mA',
+    contoh: [
+      'Rancangan pengaman pintu dua faktor',
+      'Kode pengenal pada kunci elektronik',
+      'Klasifikasi tugas pada mesin absensi'
+    ],
+    catatan: 'NAND bisa dijadikan semua gerbang dasar dengan menambahkan inverter.',
+    mirip: [
+      'gate-and',
+      'gate-nor',
+      'gate-or'
+    ],
+  },
+  {
+    id: 'gate-nor',
+    nama: 'Gerbang NOR 7402',
+    alias: [
+      '7402',
+      'NOR gate'
+    ],
+    kategori: 'ic',
+    arus: 'dc',
+    tingkat: 'lanjut',
+    bentuk: 'Kotak DIP 14 kaki berisi gerbang NOR dua masukan.',
+    fungsi: 'Menghasilkan keluaran 1 hanya bila semua masukannya bernilai 0.',
+    prinsip: 'Gerbang NOR adalah gerbang OR yang disambung dengan inverter. Keluaran akhir dibalik dari hasil OR.',
+    karakteristik: [
+      'Berisi empat gerbang NOR dua masukan dalam satu cip.',
+      'Tiap gerbang punya dua kaki masukan dan satu kaki keluaran.',
+      'Keluarannya tinggi hanya bila semua masukan bernilai 0.'
+    ],
+    tegangan: '4,5 - 5,5 V DC',
+    rating: '10 mA - 50 mA',
+    contoh: [
+      'Pengecek kondisi pada mesin vending',
+      'Pemindai jalur pada papan sirkuit cetak',
+      'Kontrol lampu penerangan teras'
+    ],
+    catatan: 'Jangan tertukar saat memilih gerbang, NOR hanya menyala saat semua masukan 0.',
+    mirip: [
+      'gate-or',
+      'gate-nand',
+      'gate-not'
+    ],
+  },
+  {
+    id: 'gate-xor',
+    nama: 'Gerbang XOR 7486',
+    alias: [
+      '7486',
+      'XOR gate'
+    ],
+    kategori: 'ic',
+    arus: 'dc',
+    tingkat: 'lanjut',
+    bentuk: 'Cip DIP 14 kaki, empat gerbang XOR dua masukan.',
+    fungsi: 'Menghasilkan keluaran 1 bila kedua masukannya berbeda.',
+    prinsip: 'Dua jalur transistor menentukan keluaran saat masuksannya berbeda. Bila masuksannya sama, keluaran tetap rendah.',
+    karakteristik: [
+      'Berisi empat gerbang XOR dua masukan dalam satu cip.',
+      'Dipakai untuk memeriksa kesamaan dua nilai data.',
+      'Keluarannya tinggi bila kedua masukan berbeda nilainya.'
+    ],
+    tegangan: '4,5 - 5,5 V DC',
+    rating: '10 mA - 50 mA',
+    contoh: [
+      'Deteksi perubahan nilai pada sensor',
+      'Pemeriksaan paritas saat pengiriman data',
+      'Pengecek kesamaan kode pada remote TV'
+    ],
+    catatan: 'Tidak bisa dibuat hanya dari satu jenis gerbang lain tanpa bantuan cip.',
+    mirip: [
+      'gate-and',
+      'gate-or',
+      'gate-not'
+    ],
+  },
+  {
+    id: 'buffer',
+    nama: 'Buffer Logika 74HC244',
+    alias: [
+      '74HC244',
+      'Buffer'
+    ],
+    kategori: 'ic',
+    arus: 'dc',
+    tingkat: 'lanjut',
+    bentuk: 'Cip DIP 20 kaki dengan delapan kaki buffer.',
+    fungsi: 'Menyalin level logika tanpa mengubahnya dan menambah kekuatan arus.',
+    prinsip: 'Tiap buffer menyalin level logika masukan ke keluaran. Dengan begitu sinyal tetap benar meski bebannya berat.',
+    karakteristik: [
+      'Berisi delapan buffer tiga keadaan dalam satu cip.',
+      'Dapat dipakai untuk menaikkan atau menurunkan beban.',
+      'Memiliki pin enable yang bisa melepas seluruh keluaran.'
+    ],
+    tegangan: '2 - 6 V DC',
+    rating: '10 mA - 25 mA',
+    contoh: [
+      'Penguat beban untuk deretan LED',
+      'Perantara antara remote TV dan rangkaian penguat',
+      'Pendorong display tujuh segmen'
+    ],
+    catatan: 'Kaki enable membuat keluaran masuk impedansi tinggi, bukan terputus total.',
+    mirip: [
+      'gate-not',
+      'mcu',
+      'shift-595'
+    ],
+  },
+  {
+    id: 'flipflop-d',
+    nama: 'Flip-Flop D 7474',
+    alias: [
+      '7474',
+      'D flip-flop'
+    ],
+    kategori: 'ic',
+    arus: 'dc',
+    tingkat: 'lanjut',
+    bentuk: 'Cip DIP 14 kaki berisi dua flip-flop D.',
+    fungsi: 'Menyimpan satu bit data dan memindahkannya saat tepi clock.',
+    prinsip: 'Sinyal pada masukan D dicatat saat tepi clock. Data lama akan tertimpa setiap ada tepi clock berikutnya.',
+    karakteristik: [
+      'Setiap unit punya masukan D, clock, dan keluaran Q.',
+      'Memiliki keluaran komplemen untuk tahap berikutnya.',
+      'Isi memorinya hanya satu bit pada satu waktu.'
+    ],
+    tegangan: '4,5 - 5,5 V DC',
+    rating: '10 mA - 50 mA',
+    contoh: [
+      'Penyimpan status pada mesin ATM',
+      'Rangkaian pembagi frekuensi pada jam digital',
+      'Antrian data pada port serial'
+    ],
+    catatan: 'Perhatikan jenis pemicuan clock, ada yang rising edge dan ada yang falling edge.',
+    mirip: [
+      'counter-4020',
+      'buffer',
+      'mcu'
+    ],
+  },
+  {
+    id: 'counter-4020',
+    nama: 'Counter 4020',
+    alias: [
+      'CD4020',
+      'Counter ripple'
+    ],
+    kategori: 'ic',
+    arus: 'dc',
+    tingkat: 'lanjut',
+    bentuk: 'Cip DIP 16 kaki dengan empat belas keluaran hitungan.',
+    fungsi: 'Menghitung jumlah pulsa clock dan menampilkan hasil dalam bentuk biner.',
+    prinsip: 'Setiap pulsa clock membalik keadaan flip-flop di dalamnya. Rangkaian berantai itu mengubah jumlah pulsa menjadi angka basis dua.',
+    karakteristik: [
+      'Memiliki empat belas keluaran biner untuk hitungan.',
+      'Dapat di-reset sehingga hitungan dimulai dari nol.',
+      'Dipakai juga sebagai pembagi frekuensi pada osilator.'
+    ],
+    tegangan: '3 - 18 V DC',
+    rating: '1 mA - 50 mA',
+    contoh: [
+      'Penghitung putaran mesin foto copy',
+      'Pembagi frekuensi pada panel display',
+      'Penghitung pulsa pada tachometer motor'
+    ],
+    catatan: 'Keluaran biner perlu diterjemahkan menjadi angka desimal agar mudah dibaca.',
+    mirip: [
+      'flipflop-d',
+      'mcu',
+      'crystal'
+    ],
+  },
+  {
+    id: 'eeprom',
+    nama: 'EEPROM 24C02',
+    alias: [
+      '24C02',
+      'EEPROM I2C'
+    ],
+    kategori: 'ic',
+    arus: 'dc',
+    tingkat: 'lanjut',
+    bentuk: 'Cip kecil bersepuluh melalui delapan kaki.',
+    fungsi: 'Menyimpan data kecil secara permanen dan dapat dibaca ulang.',
+    prinsip: 'Sel memori menyimpan muatan pada sel gerbang mengambang. Data tetap ada meski catu daya diputus, sampai ditulis ulang.',
+    karakteristik: [
+      'Kapasitasnya 2 Kbit atau setara 256 byte.',
+      'Berkomunikasi lewat protokol I2C dengan dua kabel.',
+      'Jumlah siklus tulisnya terbatas, sekitar sejuta kali.'
+    ],
+    tegangan: '1,8 - 5,5 V DC',
+    rating: '1 mA - 5 mA',
+    contoh: [
+      'Simpan kata sandi alat musik',
+      'Menyimpan setelan kalibrasi TV',
+      'Menyimpan konfigurasi pada modul Arduino'
+    ],
+    catatan: 'Data bertahan tanpa catu daya, tetapi jumlah siklus tulisnya terbatas.',
+    mirip: [
+      'mcu',
+      'counter-4020',
+      'resistor-array'
+    ],
+  },
+  {
+    id: 'shift-595',
+    nama: 'Shift Register 74HC595',
+    alias: [
+      '74HC595',
+      'Shift register'
+    ],
+    kategori: 'ic',
+    arus: 'dc',
+    tingkat: 'lanjut',
+    bentuk: 'Cip bersepuluh melalui enam belas kaki.',
+    fungsi: 'Memperluas jumlah pin keluaran mikrokontroler menjadi delapan output.',
+    prinsip: 'Data dikirim bergantian ke dalam cip lalu disimpan di register geser. Seluruh delapan pin keluaran berubah sekaligus saat pin pengunci ditekan.',
+    karakteristik: [
+      'Delapan pin keluaran dengan pin pengunci latch.',
+      'Cukup tiga pin mikrokontroler untuk delapan output.',
+      'Tiap pin keluarannya dapat disambungkan ke beban kecil.'
+    ],
+    tegangan: '2 - 6 V DC',
+    rating: '5 mA - 25 mA',
+    contoh: [
+      'Menjalankan deretan LED pada papan reklame',
+      'Memperluas pin pada modul Arduino',
+      'Menjalankan banyak LED dengan pin terbatas'
+    ],
+    catatan: 'Kaki MR dipakai untuk mengembalikan seluruh keluaran ke keadaan awal.',
+    mirip: [
+      'buffer',
+      'mcu',
+      'led-7seg'
+    ],
+  },
+  {
+    id: 'mcu',
+    nama: 'Mikrokontroler (Arduino/STM32)',
+    alias: [
+      'MCU',
+      'Arduino Uno'
+    ],
+    kategori: 'ic',
+    arus: 'dc',
+    tingkat: 'lanjut',
+    bentuk: 'Papan kecil berlapis tembaga dengan cip utama dan konektor USB.',
+    fungsi: 'Mengolah data sensor lalu memberi perintah ke aktuator sesuai program.',
+    prinsip: 'Prosesor di dalam cip menjalankan instruksi dari memori. Pin masukan dan keluaran digunakan untuk membaca sensor serta menyalakan beban.',
+    karakteristik: [
+      'Memiliki satu unit pemrosesan dan memori dalam satu cip.',
+      'Tersedia banyak pin digital, analog, dan komunikasi.',
+      'Dapat diprogram ulang melalui kabel USB.'
+    ],
+    tegangan: '1,8 - 5,5 V DC',
+    rating: '10 mA - 100 mA',
+    contoh: [
+      'Panel kendali mesin penyaring air',
+      'Sistem alarm rumah',
+      'Pengendali lampu taman'
+    ],
+    catatan: 'Jangan memberi tegangan lebih dari 5 V pada pin Arduino Uno.',
+    mirip: [
+      'eeprom',
+      'shift-595',
+      'opamp'
+    ],
+  },
+  {
+    id: 'dac',
+    nama: 'Konverter DAC',
+    alias: [
+      'DAC',
+      'MCP4725'
+    ],
+    kategori: 'ic',
+    arus: 'dc',
+    tingkat: 'lanjut',
+    bentuk: 'Cip kecil bersepuluh dengan kaki data dan clock.',
+    fungsi: 'Mengubah sinyal digital menjadi tegangan analog.',
+    prinsip: 'Kode digital menentukan arah saklar pada susunan resistor. Tegangan yang dihasilkan besarnya sebanding dengan nilai kode.',
+    karakteristik: [
+      'Keluarnya berupa tegangan analog pada satu kaki.',
+      'Resolusinya umumnya 8 bit sampai 12 bit.',
+      'Butuh antarmuka I2C atau SPI dari pengendalinya.'
+    ],
+    tegangan: '2,7 - 5,5 V DC',
+    rating: '1 mA - 20 mA',
+    contoh: [
+      'Pengatur volume pada amplifier digital',
+      'Pengendali kecepatan motor melalui op-amp',
+      'Membentuk gelombang sinus untuk penguat'
+    ],
+    catatan: 'Resolusi step kasar, tambahkan op-amp agar tegangan keluaran halus.',
+    mirip: [
+      'eeprom',
+      'opamp',
+      'mcu'
+    ],
+  },
+  {
+    id: 'ultrasonic',
+    nama: 'Sensor Ultrasonik HC-SR04',
+    alias: [
+      'HC-SR04',
+      'Sensor jarak'
+    ],
+    kategori: 'sensor',
+    arus: 'dc',
+    tingkat: 'lanjut',
+    bentuk: 'Modul PCB dengan dua transducer dan empat kaki.',
+    fungsi: 'Mengukur jarak objek tanpa perlu menyentuh objek tersebut.',
+    prinsip: 'Modul memancarkan gelombang ultrasonik lalu mengukur waktu pantulannya. Jarak dihitung dari waktu tempuh dibagi dua dan dikali kecepatan suara.',
+    karakteristik: [
+      'Jarak ukurnya sekitar 2 sampai 400 sentimeter.',
+      'Memiliki pin trigger dan pin echo yang terpisah.',
+      'Akurasinya turun bila permukaan target tidak rata.'
+    ],
+    tegangan: '5 V DC',
+    rating: '10 mA - 40 mA',
+    contoh: [
+      'Sensor parkir mundur mobil',
+      'Pengukur tinggi orang untuk mesin ATM',
+      'Pompa air otomatis pada tangki'
+    ],
+    catatan: 'Hasil ukur bisa meleset pada permukaan miring atau berpori.',
+    mirip: [
+      'pir',
+      'sensor-dht',
+      'hall'
+    ],
+  },
+  {
+    id: 'pir',
+    nama: 'Sensor Gerak PIR (HC-SR501)',
+    alias: [
+      'PIR',
+      'Sensor gerak'
+    ],
+    kategori: 'sensor',
+    arus: 'dc',
+    tingkat: 'lanjut',
+    bentuk: 'Modul kecil berkuping dengan jendela penangkap panas.',
+    fungsi: 'Mendeteksi gerak manusia dari perubahan radiasi infra merah.',
+    prinsip: 'Sensor pyroelektrik menghasilkan arus setiap suhu di sekitarnya berubah. Radiasi panas tubuh manusia itulah yang dideteksi cip.',
+    karakteristik: [
+      'Jangkauan deteksinya sekitar 3 sampai 7 meter.',
+      'Sudut deteksi dapat diatur memakai potensiometer.',
+      'Memiliki dua potensiometer untuk jarak dan sensitivitas.'
+    ],
+    tegangan: '5 - 20 V DC',
+    rating: '0,1 mA - 20 mA',
+    contoh: [
+      'Lampu penerangan teras yang menyala otomatis',
+      'Alarm gerak pada gudang',
+      'Pintu otomatis pada tempat umum'
+    ],
+    catatan: 'Modul ini punya jeda waktu, jadi perlu menunggu stabil setelah dinyalakan.',
+    mirip: [
+      'ultrasonic',
+      'sensor-dht',
+      'hall'
+    ],
+  },
+  {
+    id: 'thermocouple',
+    nama: 'Thermocouple',
+    alias: [
+      'Termokopel',
+      'Type K thermocouple'
+    ],
+    kategori: 'sensor',
+    arus: 'ac',
+    tingkat: 'lanjut',
+    bentuk: 'Dua kawat logam berbeda yang menyambung di ujung yang dipanaskan.',
+    fungsi: 'Mengukur suhu tinggi dengan menghasilkan tegangan kecil yang sebanding.',
+    prinsip: 'Sambungan dua logam berbeda menghasilkan tegangan saat dipanaskan. Besar tegangan itu naik perlahan seiring suhu junction.',
+    karakteristik: [
+      'Keluarnya berupa tegangan milivolt yang sangat kecil.',
+      'Tahan terhadap suhu hingga ratusan derajat Celsius.',
+      'Ada banyak tipe, mulai tipe K sampai tipe T.'
+    ],
+    tegangan: '0 - 60 mV',
+    rating: '0,1 mA - 20 mA',
+    contoh: [
+      'Pengukur suhu tungku pada industri food processing',
+      'Sensor suhu mesin pembakaran',
+      'Pengukur suhu pemanas listrik'
+    ],
+    catatan: 'Keluarnya sangat kecil, jadi perlu penguat op-amp agar mudah dibaca.',
+    mirip: [
+      'thermistor',
+      'opamp',
+      'dac'
+    ],
+  },
+  {
+    id: 'hall',
+    nama: 'Sensor Hall Effect',
+    alias: [
+      'Hall sensor',
+      'Hall effect'
+    ],
+    kategori: 'sensor',
+    arus: 'dc',
+    tingkat: 'lanjut',
+    bentuk: 'Cip kecil tiga kaki dengan sisi datar.',
+    fungsi: 'Mendeteksi medan magnet tanpa perlu menyentuh sumbernya.',
+    prinsip: 'Medan magnet membuat tegangan muncul pada lapisan semikonduktor di dalam cip. Tegangan itu sebanding dengan besar kecilnya medan magnet yang masuk.',
+    karakteristik: [
+      'Keluaran berupa tegangan atau arus yang berubah mendadak.',
+      'Terdapat versi saklar tanpa jalur linier.',
+      'Tidak terpengaruh cahaya, jadi andal di ruang gelap.'
+    ],
+    tegangan: '3 - 5,5 V DC',
+    rating: '5 mA - 20 mA',
+    contoh: [
+      'Sensor posisi rotor pada motor BLDC',
+      'Sensor magnetic pada speedometer motor',
+      'Deteksi magnet pada kunci immobilizer'
+    ],
+    catatan: 'Sensor tidak terpengaruh oleh cahaya, jadi tetap andal dalam ruang gelap.',
+    mirip: [
+      'ultrasonic',
+      'pir',
+      'sensor-dht'
+    ],
+  },
+  {
+    id: 'sensor-gas',
+    nama: 'Sensor Gas MQ-2',
+    alias: [
+      'MQ-2',
+      'Sensor gas'
+    ],
+    kategori: 'sensor',
+    arus: 'dc',
+    tingkat: 'lanjut',
+    bentuk: 'Tabung keramik bertenaga dengan dua elektroda dan dua kaki.',
+    fungsi: 'Mendeteksi keberadaan gas LPG dan asap dalam udara.',
+    prinsip: 'Gas yang melewati lapisan pemanas bereaksi dengan material di dalamnya. Tahanan pada elektroda sensing berubah karena adanya gas tersebut.',
+    karakteristik: [
+      'Tahanannya berubah bila ada gas yang dideteksi.',
+      'Memerlukan pemanasan singkat sebelum terukur.',
+      'Nilainya berubah sesuai konsentrasi gas di sekitarnya.'
+    ],
+    tegangan: '4 - 5,5 V DC',
+    rating: '20 mA - 150 mA',
+    contoh: [
+      'Alarm gas di dapur dan kamar',
+      'Monitoring kualitas udara di sekolah',
+      'Deteksi asap pada panel kendali'
+    ],
+    catatan: 'Sensor ini hanya memberi indikasi, bukan ukuran kadar gas yang presisi.',
+    mirip: [
+      'sensor-dht',
+      'hall',
+      'pir'
+    ],
+  },
+  {
+    id: 'sensor-dht',
+    nama: 'Sensor Suhu & Kelembapan DHT22',
+    alias: [
+      'DHT22',
+      'AM2302'
+    ],
+    kategori: 'sensor',
+    arus: 'dc',
+    tingkat: 'lanjut',
+    bentuk: 'Kotak plastik bertiga kaki dengan selaput filter di atasnya.',
+    fungsi: 'Mengukur suhu udara dan kelembapan lalu mengirimkannya sebagai data digital.',
+    prinsip: 'Sensor kapasitif mengukur kelembapan dan semikonduktor mengukur suhu. Data dikirim berupa denyut pada satu jalur.',
+    karakteristik: [
+      'Keluarnya berupa data digital pada satu pin data.',
+      'Pembacaannya cukup lambat, sekitar satu kali dua detik.',
+      'Terlindung selaput filter agar tidak terkena air.'
+    ],
+    tegangan: '3,3 - 5,5 V DC',
+    rating: '0,1 mA - 2,5 mA',
+    contoh: [
+      'Pemantau suhu dan kelembapan gudang',
+      'Kontrol kipas dan penyiram tanaman',
+      'Peringatan panas pada panel IoT'
+    ],
+    catatan: 'Pasang resistor pull-up pada pin data dan beri catu daya stabil 3,3 sampai 5 V.',
+    mirip: [
+      'thermistor',
+      'sensor-gas',
+      'pir'
+    ],
+  },
+  {
+    id: 'bridge',
+    nama: 'Bridge Rectifier',
+    alias: [
+      'Bridge diode',
+      'Jembatan'
+    ],
+    kategori: 'daya',
+    arus: 'ac',
+    tingkat: 'dasar',
+    bentuk: 'Keping hitam dengan empat dioda di dalamnya dan dua kaki.',
+    fungsi: 'Menyearahkan arus bolak-balik menjadi arus searah.',
+    prinsip: 'Empat dioda disusun jembatan sehingga kedua paruh gelombang diteruskan. Hasilnya tegangan DC penuh.',
+    karakteristik: [
+      'Tegangan keluarannya lebih stabil dari penyearah setengah gelombang.',
+      'Selalu ada dua dioda yang menghantarkan pada setiap saat.',
+      'Rugi dayanya lebih besar karena ada dua dioda di jalur.'
+    ],
+    tegangan: '0 - 1000 V',
+    rating: '1 A - 50 A',
+    contoh: [
+      'Catu daya TV dan radio transistor',
+      'Catu daya charger HP sederhana',
+      'Power supply komputer'
+    ],
+    catatan: 'Selalu ada dua dioda yang menghantarkan, sehingga panas yang hilang lebih besar.',
+    mirip: [
+      'dioda',
+      'regulator-7805',
+      'transformer'
+    ],
+  },
+  {
+    id: 'saklar',
+    nama: 'Saklar (SPST)',
+    alias: [
+      'Switch',
+      'Saklar satu'
+    ],
+    kategori: 'daya',
+    arus: 'dual',
+    tingkat: 'dasar',
+    bentuk: 'Kotak plastik dengan tuas kecil dan dua terminal.',
+    fungsi: 'Memutus atau menyambung aliran listrik secara manual.',
+    prinsip: 'Kontak logam dalam saklar saling bersentuhan saat ditekan. Tekanan tuas membuat kedua kontak menyambung dan arus mengalir.',
+    karakteristik: [
+      'Hanya satu jalur, jadi terhubung atau terputus.',
+      'Hanya berada pada dua keadaan, yaitu hidup atau mati.',
+      'Kontaknya aus setelah dipakai ribuan kali.'
+    ],
+    tegangan: '0 - 250 V',
+    rating: '0,5 A - 20 A',
+    contoh: [
+      'Saklar lampu di kamar tidur',
+      'Saklar pengatur kipas langit-langit',
+      'Saklar daya pada power supply komputer'
+    ],
+    catatan: 'Pastikan rating arus saklar lebih besar dari arus beban.',
+    mirip: [
+      'saklar-tangent',
+      'tombol',
+      'relay'
+    ],
+  },
+  {
+    id: 'saklar-tangent',
+    nama: 'Saklar Tangent (SPDT)',
+    alias: [
+      'SPDT',
+      'Saklar arah'
+    ],
+    kategori: 'daya',
+    arus: 'dual',
+    tingkat: 'dasar',
+    bentuk: 'Kotak plastik bertiga terminal dengan tuas dapat dibalik.',
+    fungsi: 'Memilih salah satu dari dua jalur secara bergantian.',
+    prinsip: 'Tuas menghubungkan terminal umum ke salah satu dari dua terminal keluaran. Posisi tuas menentukan jalur yang aktif.',
+    karakteristik: [
+      'Memiliki satu terminal umum dan dua terminal keluaran.',
+      'Dapat dipakai untuk membalik arah putaran motor.',
+      'Sering dipakai pada motor induksi satu fasa.'
+    ],
+    tegangan: '0 - 250 V',
+    rating: '0,5 A - 20 A',
+    contoh: [
+      'Saklar arah putaran kipas angin',
+      'Saklar pilih arah motor pengering pakaian',
+      'Saklar dua arah pada panel amplifier'
+    ],
+    catatan: 'Perhatikan terminal mana yang jadi titik common sebelum menyambung kabel.',
+    mirip: [
+      'saklar',
+      'tombol',
+      'relay'
+    ],
+  },
+  {
+    id: 'tombol',
+    nama: 'Push Button',
+    alias: [
+      'Tombol tekan',
+      'Push button'
+    ],
+    kategori: 'daya',
+    arus: 'dual',
+    tingkat: 'dasar',
+    bentuk: 'Tutup plastik kecil berbentuk silinder dengan dua kaki.',
+    fungsi: 'Menyambung atau memutus rangkaian sesaat saat ditekan.',
+    prinsip: 'Kontak dalam tombol saling bersentuhan hanya selagi ditekan. Lepas tombol, kontak kembali terpisah dan arus terhenti.',
+    karakteristik: [
+      'Biasanya momenter dan kembali sendiri setelah dilepas.',
+      'Terdapat versi dengan kunci baut pengunci.',
+      'Menghasilkan getaran singkat saat kontak bersentuhan.'
+    ],
+    tegangan: '0 - 250 V',
+    rating: '0,5 A - 16 A',
+    contoh: [
+      'Pemicu menu kalkulator',
+      'Tombol start pada mesin ATM',
+      'Tombol reset pada power supply komputer'
+    ],
+    catatan: 'Tambahkan resistor pull-up atau pull-down agar masukan mikrokontroler tidak mengambang.',
+    mirip: [
+      'saklar',
+      'dipswitch',
+      'relay'
+    ],
+  },
+  {
+    id: 'dipswitch',
+    nama: 'DIP Switch',
+    alias: [
+      'DIP switch',
+      'Saklar geser'
+    ],
+    kategori: 'daya',
+    arus: 'dc',
+    tingkat: 'lanjut',
+    bentuk: 'Kotak hitam dengan beberapa tuas kecil berjajar.',
+    fungsi: 'Memberikan beberapa pilihan konfigurasi tanpa perlu melepas cip.',
+    prinsip: 'Setiap tuas geser menyambung atau memutus satu jalur kecil. Mikrokontroler membaca posisi tiap tuas saat menyala.',
+    karakteristik: [
+      'Tiap posisi tuas menentukan keadaan on atau off satu jalur.',
+      'Jumlah tuasnya bisa empat sampai delapan buah.',
+      'Memakai jenis Normally Open seperti saklar kecil.'
+    ],
+    tegangan: '0 - 250 V',
+    rating: '10 mA - 1 A',
+    contoh: [
+      'Pilih alamat jaringan pada amplifier',
+      'Pengaturan mode kerja papan IoT',
+      'Pemilihan kanal pada modulator radio'
+    ],
+    catatan: 'Hindari menyalakan daya saat DIP sedang digeser, pin bisa ikut berubah.',
+    mirip: [
+      'tombol',
+      'saklar',
+      'mcu'
+    ],
+  },
+  {
+    id: 'relay',
+    nama: 'Relay',
+    alias: [
+      'Relay elektromekanik',
+      'Contactor'
+    ],
+    kategori: 'daya',
+    arus: 'dual',
+    tingkat: 'dasar',
+    bentuk: 'Kotak plastik bening atau gelap dengan kumparan di dalamnya.',
+    fungsi: 'Mengendalikan rangkaian bertegangan besar dari sinyal kecil.',
+    prinsip: 'Arus kecil pada kumparan menghasilkan medan magnet. Medan itu menarik armature sehingga kontak bergeser dan menyambung jalur besar.',
+    karakteristik: [
+      'Kontaknya terisolasi dari kumparan pemicunya.',
+      'Bisa berupa Normally Open maupun Normally Closed.',
+      'Kumparannya biasanya bertegangan 5, 12, atau 24 V.'
+    ],
+    tegangan: '5 - 250 V',
+    rating: '5 A - 40 A',
+    contoh: [
+      'Kontrol kipas dan lampu dari panel IoT',
+      'Penggerak gerbang otomatis',
+      'Saklar pompa air pada sistem rumah'
+    ],
+    catatan: 'Wajib pasang dioda silang pada kumparan agar umur relay lebih panjang.',
+    mirip: [
+      'optocoupler',
+      'solenoid',
+      'saklar'
+    ],
+  },
+  {
+    id: 'fan',
+    nama: 'Kipas Pendingin (DC Fan)',
+    alias: [
+      'Fan',
+      'Kipas'
+    ],
+    kategori: 'daya',
+    arus: 'dual',
+    tingkat: 'lanjut',
+    bentuk: 'Kotak persegi dengan bilah berputar dan dua atau tiga kaki.',
+    fungsi: 'Mendinginkan perangkat dengan menghembuskan udara.',
+    prinsip: 'Bilah berputar mendorong udara dari satu sisi ke sisi lain. Putaran cepat menghasilkan aliran udara yang lebih besar.',
+    karakteristik: [
+      'Umumnya punya tiga atau empat kecepatan putar.',
+      'Banyak yang punya sensor putaran di hubungannya.',
+      'Hanya berputar satu arah, jadi perlu dioda flyback saat dikendalikan transistor.'
+    ],
+    tegangan: '5 - 24 V DC',
+    rating: '0,05 A - 2 A',
+    contoh: [
+      'Kipas pendingin CPU di komputer',
+      'Kipas ventilasi di lemari server',
+      'Kipas pendingin pada power supply TV'
+    ],
+    catatan: 'Jangan hubungkan langsung ke pin mikrokontroler, arusnya terlalu besar.',
+    mirip: [
+      'motor-dc',
+      'saklar',
+      'bridge'
+    ],
+  },
+  {
+    id: 'solenoid',
+    nama: 'Solenoid',
+    alias: [
+      'Solenoid',
+      'Kumparan solenoid'
+    ],
+    kategori: 'meka',
+    arus: 'dc',
+    tingkat: 'lanjut',
+    bentuk: 'Kumparan kawat pada tabung besi dengan movable inti.',
+    fungsi: 'Mengubah energi listrik menjadi gerakan mekanis linier.',
+    prinsip: 'Arus pada kumparan menimbulkan medan magnet. Medan itu menarik inti besi ke dalam kumparan sehingga terjadi gerakan.',
+    karakteristik: [
+      'Daya tariknya besar pada awal gerak lalu menurun.',
+      'Membutuhkan sumber daya cukup besar agar tetap kuat.',
+      'Tidak cocok untuk gerak yang sangat halus.'
+    ],
+    tegangan: '5 - 240 V DC',
+    rating: '0,2 A - 10 A',
+    contoh: [
+      'Penggerak katup pada mesin dispenser',
+      'Pengunci pintu garasi',
+      'Palu kecil pada mesin absen'
+    ],
+    catatan: 'Kumparannya memanas saat dinyalakan lama, jadi beri rating arus dengan margin.',
+    mirip: [
+      'relay',
+      'motor-dc',
+      'piezo'
+    ],
+  },
+  {
+    id: 'piezo',
+    nama: 'Piezo Buzzer / Piezo Kristal',
+    alias: [
+      'Buzzer piezo',
+      'Piezo crystal'
+    ],
+    kategori: 'meka',
+    arus: 'dual',
+    tingkat: 'lanjut',
+    bentuk: 'Piring keramik tipis berlapis dua elektroda dengan lubang.',
+    fungsi: 'Menghasilkan bunyi atau getaran dari sinyal listrik.',
+    prinsip: 'Listrik pada dua elektroda membuat piring keramik menjadi pipih. Perubahan bentuk itu menimbulkan getaran yang terdengar sebagai bunyi.',
+    karakteristik: [
+      'Bunyinya nyaring namun nadanya selalu satu nada.',
+      'Impedansinya tinggi sehingga arus yang dipakai kecil.',
+      'Memerlukan sumber listrik bolak-balik agar berbunyi.'
+    ],
+    tegangan: '3 - 250 V',
+    rating: '1 mA - 30 mA',
+    contoh: [
+      'Bunyi alarm pintu',
+      'Nada pemanggil mesin teller',
+      'Sensor timeout pada jam digital'
+    ],
+    catatan: 'Piezo hanya menghasilkan satu nada, jadi tidak cocok untuk musik.',
+    mirip: [
+      'buzzer',
+      'solenoid',
+      'speaker'
+    ],
+  },
+  {
+    id: 'motor-dc',
+    nama: 'Motor DC',
+    alias: [
+      'DC motor',
+      'Motor searah'
+    ],
+    kategori: 'meka',
+    arus: 'dc',
+    tingkat: 'dasar',
+    bentuk: 'Tabung logam dengan poros keluar di tengah dan dua terminal.',
+    fungsi: 'Mengubah energi listrik menjadi putaran poros.',
+    prinsip: 'Arus pada kumparan menimbulkan medan magnet yang berlawanan arah antara dua sisi kumparan. Medan bersama ini berputar bersama rotor dan menghasilkan torsi.',
+    karakteristik: [
+      'Kecepatan putaran dapat diatur dengan tegangan.',
+      'Arah putaran berlawanan bila polaritasnya ditukar.',
+      'Perlu dioda flyback saat dikendalikan saklar elektronik.'
+    ],
+    tegangan: '3 - 300 V DC',
+    rating: '5 - 500 W',
+    contoh: [
+      'Motor penggerak kipas langit-langit',
+      'Motor pengering pakaian',
+      'Motor kecil pada robot line follower'
+    ],
+    catatan: 'Motor DC tidak bisa dinyalakan terus-menerus tanpa beban, panas cepat naik.',
+    mirip: [
+      'motor-stepper',
+      'fan',
+      'solenoid'
+    ],
+  },
+  {
+    id: 'motor-ac',
+    nama: 'Motor AC (Induksi)',
+    alias: [
+      'Motor induksi',
+      'AC motor'
+    ],
+    kategori: 'meka',
+    arus: 'ac',
+    tingkat: 'dasar',
+    bentuk: 'Rumah logam besar dengan poros keluar di salah satu sisi.',
+    fungsi: 'Mengubah energi listrik bolak-balik menjadi putaran poros.',
+    prinsip: 'Medan magnet berputar dari stator menarik rotor sehingga ikut berputar. Perubahan kecepatan induksi ini menghasilkan torsi.',
+    karakteristik: [
+      'Kecepatan putaran relatif konstan pada beban normal.',
+      'Butuh kapasitor atau pengatur start pada jenis satu fasa.',
+      'Kecepatan sinkronnya sekitar 1500 rpm pada 50 Hz.'
+    ],
+    tegangan: '110 - 400 V AC',
+    rating: '0,25 - 500 HP',
+    contoh: [
+      'Motor pompa air rumah tangga',
+      'Motor blower pada cooker hood',
+      'Motor pengering di rumah'
+    ],
+    catatan: 'Tegangan kerja harus cocok dengan jaringan listrik di tempat itu.',
+    mirip: [
+      'motor-dc',
+      'capacitor-motor',
+      'fan'
+    ],
+  },
+  {
+    id: 'motor-stepper',
+    nama: 'Motor Stepper',
+    alias: [
+      'Stepper motor',
+      'Motor langkah'
+    ],
+    kategori: 'meka',
+    arus: 'dc',
+    tingkat: 'lanjut',
+    bentuk: 'Silinder logam bertingkat dengan poros di tengahnya.',
+    fungsi: 'Memutar poros dalam langkah kecil yang diatur secara digital.',
+    prinsip: 'Setiap denyut pada kumparan memindahkan rotor satu langkah tetap. Jumlah denyut menentukan sudut putaran.',
+    karakteristik: [
+      'Sudut per langkahnya umumnya 1,8 derajat.',
+      'Torsinya besar walau putaran berlangsung pelan.',
+      'Posisi rotornya dapat dikunci tanpa catu daya.'
+    ],
+    tegangan: '5 - 48 V DC',
+    rating: '0,5 - 15 W',
+    contoh: [
+      'Poros printer 3D dan mesin CNC mini',
+      'Sumbu motor pada robot line follower',
+      'Gerbang pembuka pintu gulir otomatis'
+    ],
+    catatan: 'Gunakan driver board yang sesuai, motor stepper tidak bisa dikendalikan langsung dari Arduino.',
+    mirip: [
+      'motor-dc',
+      'mcu',
+      'fan'
+    ],
+  },
+  {
+    id: 'speaker',
+    nama: 'Speaker / Loudspeaker',
+    alias: [
+      'Speaker',
+      'Pengeras suara'
+    ],
+    kategori: 'meka',
+    arus: 'dual',
+    tingkat: 'dasar',
+    bentuk: 'Kotak atau kerucut dengan membran besar dan dua terminal.',
+    fungsi: 'Mengubah sinyal listrik menjadi gelombang suara.',
+    prinsip: 'Getaran listrik pada kumparan menggerakkan membran di dekatnya. Getaran membran inilah yang terdengar sebagai suara.',
+    karakteristik: [
+      'Impedansinya tetap, umumnya 4, 8, atau 16 ohm.',
+      'Semakin besar diameternya, suara bass makin dalam.',
+      'Memiliki dua terminal, yaitu positif dan negatif.'
+    ],
+    tegangan: '5 - 250 V',
+    rating: '0,5 - 100 W',
+    contoh: [
+      'Speaker TV di ruang tamu',
+      'Speaker pada radio transistor',
+      'Speaker aktif di sistem audio rumah'
+    ],
+    catatan: 'Impedansi speaker harus cocok dengan amplifier, jangan disambung sembarangan.',
+    mirip: [
+      'buzzer',
+      'piezo',
+      'lm386'
+    ],
+  },
+  {
+    id: 'buzzer',
+    nama: 'Buzzer Aktif / Pasif',
+    alias: [
+      'Buzzer',
+      'Bel listrik'
+    ],
+    kategori: 'meka',
+    arus: 'dual',
+    tingkat: 'dasar',
+    bentuk: 'Bulat hitam dengan dua kaki atau pin di bawahnya.',
+    fungsi: 'Menghasilkan bunyi peringatan saat diberi listrik.',
+    prinsip: 'Pada buzzer aktif ada osilator internal yang menghasilkan bunyi. Buzzer pasif justru perlu sinyal getar dari luar agar berbunyi.',
+    karakteristik: [
+      'Bunyinya nyaring meski hanya diberi tegangan DC.',
+      'Buzzer aktif sudah punya osilator di dalamnya.',
+      'Buzzer pasif perlu sinyal listrik dari luar.'
+    ],
+    tegangan: '3 - 24 V',
+    rating: '10 mA - 50 mA',
+    contoh: [
+      'Peringatan pada mesin teller bank',
+      'Bunyi tombol pada kalkulator',
+      'Indikator suara pada panel lift'
+    ],
+    catatan: 'Beda buzzer aktif dan pasif sangat penting, yang aktif tidak bisa dikendalikan frekuensinya.',
+    mirip: [
+      'piezo',
+      'speaker',
+      'relay'
+    ],
+  },
+  {
+    id: 'ground',
+    nama: 'Ground / Pentanahan',
+    alias: [
+      'GND',
+      'Earth',
+      'Massa'
+    ],
+    kategori: 'meka',
+    arus: 'dual',
+    tingkat: 'dasar',
+    bentuk: 'Titik acuan pada papan, terminal logam, atau elektroda tanah.',
+    fungsi: 'Menjadi titik acuan tegangan dan jalur kembali arus listrik.',
+    prinsip: 'Bagian-bagian dirangkai pada satu titik sehingga potensialnya sama. Tegangan antar titik baru bisa diukur dengan benar bila acuan ini satu.',
+    karakteristik: [
+      'Idealnya potensialnya nol volt dan tidak bertegangan.',
+      'Ada ground sinyal, ground daya, dan ground pelindung.',
+      'Dihubungkan ke tanah lewat elektroda atau jalur tembaga.'
+    ],
+    tegangan: '0 V acuan',
+    rating: 'Tanpa batas daya',
+    contoh: [
+      'Sambungan ground pada instalasi listrik rumah',
+      'Titik minus pada catu daya adaptor',
+      'Elektroda tanah pada tiang antena'
+    ],
+    catatan: 'Kesalahan pentanahan bisa menyebabkan sengatan listrik dan gangguan derau.',
+    mirip: [
+      'terminal',
+      'transformer-iso',
+      'antena'
+    ],
+  },
+  {
+    id: 'header',
+    nama: 'Header Pin',
+    alias: [
+      'Header',
+      'Female header'
+    ],
+    kategori: 'konektor',
+    arus: 'dc',
+    tingkat: 'dasar',
+    bentuk: 'Deretan socket logam bertumpuk pada papan kecil.',
+    fungsi: 'Menyediakan jalur sambungan antar papan dan kabel.',
+    prinsip: 'Setiap pin logam saling terhubung dengan jalur di papan. Kabel jumper dipasang pada socket itu untuk meneruskan sinyal.',
+    karakteristik: [
+      'Tersedia dalam jumlah pin 2, 3, 4, 6, dan 8.',
+      'Typenya ada male dan female sesuai kebutuhan.',
+      'Dipasang tegak lurus pada permukaan papan sirkuit.'
+    ],
+    tegangan: '0 - 50 V DC',
+    rating: '0,5 A - 3 A per pin',
+    contoh: [
+      'Sambungan sensor ke papan Arduino',
+      'Jalur data modul SD card',
+      'Konektor daya motor kecil'
+    ],
+    catatan: 'Jangan menyambungkan header ke daya besar, pinnya cepat meleleh.',
+    mirip: [
+      'jumper',
+      'terminal',
+      'banana'
+    ],
+  },
+  {
+    id: 'jumper',
+    nama: 'Kabel Jumper',
+    alias: [
+      'Jumper wire',
+      'Kabel bridge'
+    ],
+    kategori: 'konektor',
+    arus: 'dc',
+    tingkat: 'dasar',
+    bentuk: 'Kabel pendek warna-warni dengan pin logam di kedua ujung.',
+    fungsi: 'Menghubungkan dua titik pada papan rangkaian sementara.',
+    prinsip: 'Kabel konduktor ini menyambungkan kedua header secara langsung. Listrik dialirkan lewat kawat tembaga di dalamnya.',
+    karakteristik: [
+      'Panjangnya umumnya 10 sampai 20 sentimeter.',
+      'Warnanya menandai jenis jalurnya, merah untuk daya.',
+      'Kontinuitasnya harus diuji sebelum digunakan.'
+    ],
+    tegangan: '0 - 60 V DC',
+    rating: '0,3 A - 3 A',
+    contoh: [
+      'Menghubungkan modul sensor ke papan Arduino',
+      'Memasang jumper boot pada papan mikrokontroler',
+      'Men jumper speaker pada modul amplifier'
+    ],
+    catatan: 'Warna kabel menandakan jalur data dan jalur daya agar tidak tertukar saat merakit papan.',
+    mirip: [
+      'header',
+      'terminal',
+      'banana'
+    ],
+  },
+  {
+    id: 'banana',
+    nama: 'Plug Banana',
+    alias: [
+      'Banana plug',
+      'Jack banana'
+    ],
+    kategori: 'konektor',
+    arus: 'dual',
+    tingkat: 'dasar',
+    bentuk: 'Pin logam beralur seperti buah pisang dengan sarung plastik.',
+    fungsi: 'Menghubungkan kabel uji atau catu daya ke soket dengan cepat.',
+    prinsip: 'Pin logam masuk ke lubang soket lalu dikunci oleh tab pengunci. Kontak logamnya menghubungkan kabel dengan jalur di perangkat.',
+    karakteristik: [
+      'Diameter pinnya umumnya 4 mm untuk tipe standar.',
+      'Ada versi male dan female dengan warna berbeda.',
+      'Dapat dilepas dengan memutar badan plastiknya.'
+    ],
+    tegangan: '0 - 300 V',
+    rating: '1 A - 30 A',
+    contoh: [
+      'Kabel pengukur multimeter digital',
+      'Kabel catu daya untuk modul uji',
+      'Kabel aki pada tes baterai mobil'
+    ],
+    catatan: 'Pastikan warna merah dan hitam tidak tertukar saat menyambung catu daya.',
+    mirip: [
+      'terminal',
+      'jumper',
+      'header'
+    ],
+  },
+  {
+    id: 'bnc',
+    nama: 'Konektor BNC',
+    alias: [
+      'BNC',
+      'Konektor koaksial'
+    ],
+    kategori: 'konektor',
+    arus: 'dc',
+    tingkat: 'lanjut',
+    bentuk: 'Silinder logam berulir dengan pengunci bayonet.',
+    fungsi: 'Menghubungkan kabel koaksial pada perangkat elektronik.',
+    prinsip: 'Pin tengah menghubungkan jalur sinyal, sedangkan selubung logam menjadi ground. Perisai kabel menjaga sinyal tetap bersih.',
+    karakteristik: [
+      'Didesain untuk frekuensi tinggi hingga orde GHz.',
+      'Pengunci bayonet mencegah konektor lepas sendiri.',
+      'Menggunakan perisai ground untuk menahan derau.'
+    ],
+    tegangan: '0 - 300 V DC',
+    rating: '0,5 A - 5 A',
+    contoh: [
+      'Kabel antena pada modem internet',
+      'Kabel kamera keamanan',
+      'Kabel pengukur osiloskop'
+    ],
+    catatan: 'Pastikan soket dan kabel sama-sama BNC, jangan dipaksa dicocokkan.',
+    mirip: [
+      'antena',
+      'jumper',
+      'header'
+    ],
+  },
+  {
+    id: 'terminal',
+    nama: 'Terminal Blok',
+    alias: [
+      'Terminal',
+      'Terminal strip'
+    ],
+    kategori: 'konektor',
+    arus: 'dual',
+    tingkat: 'dasar',
+    bentuk: 'Blok plastik berderet sekrup dengan lubang kawat.',
+    fungsi: 'Menghubungkan dan menyalurkan daya atau sinyal antar kawat.',
+    prinsip: 'Sekrup menekan kawat ke plat logam di dalam blok. Jalur logam itu meneruskan arus dari satu terminal ke terminal lain.',
+    karakteristik: [
+      'Tiap terminalnya punya sekrup pengunci kawat.',
+      'Bisa disambung bertingkat sesuai kebutuhan.',
+      'Ruang kawatnya muat untuk kawat ukuran sedang.'
+    ],
+    tegangan: '0 - 500 V',
+    rating: '1 A - 40 A',
+    contoh: [
+      'Sambungan kawat pada panel instalasi listrik',
+      'Terminal power pada amplifier rumahan',
+      'Penghubung kabel speaker'
+    ],
+    catatan: 'Kencangkan sekrup secukupnya, jangan berlebihan karena plat bisa retak.',
+    mirip: [
+      'banana',
+      'header',
+      'ground'
+    ],
+  },
+  {
+    id: 'antena',
+    nama: 'Antena',
+    alias: [
+      'Antena',
+      'Tiang antena'
+    ],
+    kategori: 'konektor',
+    arus: 'dual',
+    tingkat: 'lanjut',
+    bentuk: 'Batang logam atau kawat yang dipasang tinggi.',
+    fungsi: 'Menangkap dan memancarkan gelombang radio ke udara.',
+    prinsip: 'Gelombang elektromagnetik menimbulkan arus listrik kecil pada kawat antena. Arus kecil inilah yang diperkuat menjadi sinyal radio.',
+    karakteristik: [
+      'Panjang dan bentuknya menentukan frekuensi yang diterima.',
+      'Semakin panjang antenanya, semakin rendah frekuensinya.',
+      'Dipasang sejauh mungkin dari bangunan bertembok beton.'
+    ],
+    tegangan: '0 - 300 V',
+    rating: '0,1 A - 5 A',
+    contoh: [
+      'Antena pemancar radio amatir',
+      'Antena WiFi di atap rumah',
+      'Antena TV di atap rumah'
+    ],
+    catatan: 'Jangan pasang antena tanpa grounding yang baik, karena polarisasinya menjadi tidak beraturan.',
+    mirip: [
+      'bnc',
+      'ground',
+      'jumper'
+    ],
+  },
+];
+
+/* Ekspor untuk Node.js, sekaligus tetap jalan sebagai variabel global di browser */
+if (typeof module !== "undefined" && module.exports) { module.exports = { KATEGORI, ARUS, TINGKAT, COMPONENTS }; }
+
+/* sanity: */
+if (typeof window !== "undefined") {
+  console.assert(COMPONENTS.length === 94, "harus 94 komponen");
+}
+
+
+/* =========================================================
+   app.js — Beranda: pencarian, filter, tampilan grid/tabel
+   ========================================================= */
+
+(function () {
+  "use strict";
+
+  const $ = (s, r) => (r || document).querySelector(s);
+  const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
+
+  /* ---------- state ---------- */
+  const state = {
+    q: "",
+    arus: new Set(),      // ac | dc | dual
+    kat: new Set(),       // kunci kategori
+    tingkat: new Set(),   // dasar | lanjut
+    view: "grid",
+    sortKey: "nama",
+    sortDir: 1
+  };
+
+  /* ---------- util ---------- */
+  function esc(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+  }
+
+  function rusuk(s) {
+    return (s || "").toLowerCase().normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9\s]/g, " ")
+      .replace(/\s+/g, " ").trim();
+  }
+
+  function haystack(c) {
+    return rusuk([
+      c.nama, (c.alias || []).join(" "), c.fungsi, c.prinsip, c.bentuk,
+      (c.contoh || []).join(" "), KATEGORI[c.kategori], ARUS[c.arus],
+      TINGKAT[c.tingkat], (c.karakteristik || []).join(" ")
+    ].join(" "));
+  }
+  const HAY = new Map(COMPONENTS.map(c => [c.id, haystack(c)]));
+
+  function byId(id) { return COMPONENTS.find(c => c.id === id); }
+
+  function badgeArus(a) {
+    const cls = a === "ac" ? "ac" : a === "dc" ? "dc" : "dual";
+    return `<span class="badge ${cls}">${esc(ARUS[a])}</span>`;
+  }
+
+  /* ---------- filter ---------- */
+  function filtered() {
+    const terms = rusuk(state.q).split(" ").filter(Boolean);
+    let out = COMPONENTS.filter(function (c) {
+      if (state.arus.size && !state.arus.has(c.arus)) return false;
+      if (state.kat.size && !state.kat.has(c.kategori)) return false;
+      if (state.tingkat.size && !state.tingkat.has(c.tingkat)) return false;
+      if (terms.length) {
+        const h = HAY.get(c.id);
+        for (let i = 0; i < terms.length; i++) if (h.indexOf(terms[i]) === -1) return false;
+      }
+      return true;
+    });
+
+    const k = state.sortKey, d = state.sortDir;
+    const val = c => {
+      if (k === "nama") return rusuk(c.nama);
+      if (k === "kategori") return KATEGORI[c.kategori] + rusuk(c.nama);
+      if (k === "arus") return c.arus + rusuk(c.nama);
+      if (k === "tingkat") return c.tingkat + rusuk(c.nama);
+      return rusuk(c.nama);
+    };
+    out.sort((a, b) => (val(a) < val(b) ? -1 : val(a) > val(b) ? 1 : 0) * d);
+    return out;
+  }
+
+  /* ---------- render ---------- */
+  function cardHTML(c) {
+    return `<a class="card" data-kat="${c.kategori}" href="#/k=${encodeURIComponent(c.id)}">
+      <div class="top">
+        <div class="symbox">${symbolSVG(c.id, "", c.nama)}</div>
+        <div>
+          <h3>${esc(c.nama)}</h3>
+          <div class="alias">${esc((c.alias || []).slice(0, 2).join(" · "))}</div>
+        </div>
+      </div>
+      <p class="fungsi">${esc(c.fungsi)}</p>
+      <div class="foot">
+        ${badgeArus(c.arus)}
+        <span class="badge cat">${esc(KATEGORI[c.kategori])}</span>
+        <span class="badge lv">${esc(TINGKAT[c.tingkat])}</span>
+      </div>
+    </a>`;
+  }
+
+  const COLS = [
+    { k: "nama", t: "Komponen", s: true },
+    { k: "arus", t: "Arus", s: false },
+    { k: "kategori", t: "Kategori", s: false },
+    { k: "fungsi", t: "Fungsi", s: false }
+  ];
+
+  function tableHTML(list) {
+    const head = COLS.map(c => {
+      const arw = state.sortKey === c.k ? `<span class="arw">${state.sortDir > 0 ? "▲" : "▼"}</span>` : "";
+      return `<th data-sort="${c.k}">${c.t} ${arw}</th>`;
+    }).join("");
+
+    const rows = list.map(c => `<tr data-kat="${c.kategori}" data-go="#/k=${encodeURIComponent(c.id)}">
+      <td class="c-sym"><div class="symbox">${symbolSVG(c.id, "", c.nama)}</div></td>
+      <td><b>${esc(c.nama)}</b><br><span class="alias">${esc((c.alias || [])[0] || "")}</span></td>
+      <td>${badgeArus(c.arus)}</td>
+      <td>${esc(KATEGORI[c.kategori])}</td>
+      <td>${esc(c.fungsi)}</td>
+    </tr>`).join("");
+
+    return `<div class="tablewrap"><table><thead><tr>${head}<th>Simbol</th></tr></thead>
+      <tbody>${rows}</tbody></table></div>`;
+  }
+
+  function render() {
+    const list = filtered();
+    const area = $("#listArea");
+
+    $("#countLabel").textContent =
+      `${list.length} dari ${COMPONENTS.length} komponen`;
+
+    const act = [];
+    if (state.q) act.push(`pencarian "${state.q}"`);
+    state.arus.forEach(a => act.push(ARUS[a]));
+    state.kat.forEach(k => act.push(KATEGORI[k]));
+    state.tingkat.forEach(t => act.push(TINGKAT[t]));
+    $("#activeFilterLabel").textContent = act.length ? "Filter aktif: " + act.join(" · ") : "";
+
+    if (!list.length) {
+      area.innerHTML = `<div class="empty">
+        <div class="big">🔍</div>
+        <h3>Tidak ada komponen yang cocok</h3>
+        <p>Coba kata kunci lain, atau <a href="#" id="clearLink">hapus semua filter</a>.</p>
+      </div>`;
+      $("#clearLink").addEventListener("click", e => { e.preventDefault(); reset(); });
+      return;
+    }
+
+    if (state.view === "grid") {
+      area.innerHTML = `<div class="grid">${list.map(cardHTML).join("")}</div>`;
+    } else {
+      area.innerHTML = tableHTML(list);
+      $$("#listArea thead th[data-sort]").forEach(th => {
+        th.addEventListener("click", () => {
+          const k = th.dataset.sort;
+          state.sortDir = (state.sortKey === k) ? -state.sortDir : 1;
+          state.sortKey = k;
+          render();
+        });
+      });
+      $$("#listArea tbody tr").forEach(tr => {
+        tr.addEventListener("click", () => { location.href = tr.dataset.go; });
+      });
+    }
+  }
+
+  /* ---------- chips ---------- */
+  function chip(label, kind, key, count) {
+    const el = document.createElement("button");
+    el.type = "button";
+    el.className = "chip k-" + kind;
+    el.dataset.kind = kind;
+    el.dataset.key = key;
+    el.innerHTML = `${esc(label)}${count != null ? `<span class="n">${count}</span>` : ""}`;
+    return el;
+  }
+
+  function buildChips() {
+    const aBox = $("#arusChips");
+    [["ac", "AC"], ["dc", "DC"], ["dual", "AC & DC"]].forEach(([k, label]) => {
+      const n = COMPONENTS.filter(c => c.arus === k).length;
+      aBox.appendChild(chip(label, k === "dual" ? "dual" : k, k, n));
+    });
+
+    const kBox = $("#katChips");
+    const tier = chip("Semua", "cat", "__all", COMPONENTS.length);
+    kBox.appendChild(tier);
+    Object.keys(KATEGORI).forEach(k => {
+      const n = COMPONENTS.filter(c => c.kategori === k).length;
+      kBox.appendChild(chip(KATEGORI[k], "cat", k, n));
+    });
+
+    const tBox = document.createElement("div");
+    tBox.className = "chiprow";
+    tBox.innerHTML = '<span class="lbl">Tingkat</span>';
+    tBox.appendChild(chip("Dasar", "lv", "dasar", COMPONENTS.filter(c => c.tingkat === "dasar").length));
+    tBox.appendChild(chip("Lanjut", "lv", "lanjut", COMPONENTS.filter(c => c.tingkat === "lanjut").length));
+    $("#katChips").parentNode.appendChild(tBox);
+    tBox.id = "tierChips";
+
+    document.addEventListener("click", function (e) {
+      const c = e.target.closest(".chip");
+      if (!c) return;
+      const { kind, key } = c.dataset;
+      if (key === "__all") {
+        state.kat.clear();
+      } else if (kind === "cat") {
+        state.kat.has(key) ? state.kat.delete(key) : state.kat.add(key);
+      } else if (kind === "lv") {
+        state.tingkat.has(key) ? state.tingkat.delete(key) : state.tingkat.add(key);
+      } else {
+        state.arus.has(key) ? state.arus.delete(key) : state.arus.add(key);
+      }
+      syncChips();
+      render();
+    });
+  }
+
+  function syncChips() {
+    $$(".chip").forEach(c => {
+      const { kind, key } = c.dataset;
+      let on;
+      if (key === "__all") on = state.kat.size === 0;
+      else if (kind === "cat") on = state.kat.has(key);
+      else if (kind === "lv") on = state.tingkat.has(key);
+      else on = state.arus.has(key);
+      c.classList.toggle("on", on);
+    });
+  }
+
+  function reset() {
+    state.q = ""; state.arus.clear(); state.kat.clear(); state.tingkat.clear();
+    $("#q").value = "";
+    syncChips();
+    render();
+  }
+
+  /* ---------- legenda kategori ---------- */
+  function buildLegend() {
+    const box = $("#katLegend");
+    if (!box) return;
+    const desc = {
+      pasif: ["Tidak memerlukan sumber daya untuk bekerja", ["Resistor, kapasitor, induktor, transformator", "Fungsi utamanya memfilter, menyimpan, atau mentransfer energi listrik", "Contoh: power supply, audio, filter sinyal"]],
+      dioda: ["Mengalirkan arus satu arah", ["Dioda, Zener, LED, fotodioda, optocoupler", "Berperilaku seperti katup yang hanya mengizinkan arus satu arah", "Contoh: rectifier, indikator, sensor optik"]],
+      transistor: ["Penguat & saklar", ["BJT, MOSFET, IGBT, SCR, TRIAC", "Menguatkan sinyal kecil atau berfungsi sebagai sakelar elektronik", "Contoh: audio amplifier, driver motor, regulator switching"]],
+      ic: ["Proses & logika", ["Op-amp, timer, gerbang logika, mikrokontroler", "Menggabungkan banyak transistor menjadi satu fungsi utuh", "Contoh: alarm, remote, proyek Arduino"]],
+      sensor: ["Mengubah besaran fisik menjadi sinyal", ["LDR, ultrasonik, PIR, thermocouple, hall", "Mendeteksi cahaya, jarak, gerak, suhu, atau magnet", "Contoh: burglar alarm, termometer digital, avr"]],
+      daya: ["Mengatur & melindungi", ["Bridge rectifier, relay, saklar, sekering", "Menyalurkan, memisahkan, dan melindungi rangkaian", "Contoh: stopkontak, power supply, instalasi listrik"]],
+      meka: ["Mengubah energi listrik menjadi gerak/bunyi", ["Motor, speaker, buzzer, solenoid", "Hasil akhirnya gerak mekanis atau suara", "Contoh: kipas, kulkas, alat musik"]],
+      konektor: ["Menyambung &anutara", ["Header, jumper, BNC, terminal, antena", "Menjaga sambungan listrik dan gelombang tersambung", "Contoh: motherboard, kabel coaxial, instalasi"]]
+    };
+    box.innerHTML = Object.keys(KATEGORI).map(function (k) {
+      const d = desc[k] || ["", []];
+      const n = COMPONENTS.filter(c => c.kategori === k).length;
+      return `<div class="li" data-kat="${k}" style="--c:var(--cat-color)">
+        <b>${esc(KATEGORI[k])} <span class="n" style="font-size:.74rem;color:var(--txt-3)">(${n})</span></b>
+        <span>${esc(d[0])}</span>
+        <ul>${d[1].map(x => `<li>${esc(x)}</li>`).join("")}</ul>
+      </div>`;
+    }).join("");
+  }
+
+  /* ---------- init ---------- */
+  function init() {
+    // `const COMPONENTS` di top-level script tidak menjadi properti window,
+// jadi harus dicek lewat identifier, bukan window.COMPONENTS
+if (typeof COMPONENTS === "undefined") {
+      document.body.insertAdjacentHTML("afterbegin",
+        '<div style="padding:20px;color:#f87171">Dataset (data.js) gagal dimuat.</div>');
+      return;
+    }
+    buildChips();
+    buildLegend();
+    syncChips();
+
+    $("#statRow").children[0].querySelector("b").textContent = COMPONENTS.length;
+
+    let t;
+    $("#q").addEventListener("input", e => {
+      clearTimeout(t);
+      t = setTimeout(() => { state.q = e.target.value; render(); }, 110);
+    });
+
+    $("#vGrid").addEventListener("click", () => setView("grid"));
+    $("#vTable").addEventListener("click", () => setView("table"));
+    $("#resetAll").addEventListener("click", reset);
+
+    function setView(v) {
+      state.view = v;
+      $("#vGrid").classList.toggle("on", v === "grid");
+      $("#vTable").classList.toggle("on", v === "table");
+      render();
+    }
+
+    render();
+  }
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+  else init();
+})();
+
+/* =========================================================
+   detail.js — Halaman detail satu komponen
+   ========================================================= */
+
+(function () {
+  "use strict";
+
+  const $ = (s, r) => (r || document).querySelector(s);
+
+  function esc(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+  }
+  function byId(id) { return COMPONENTS.find(c => c.id === id); }
+
+  function badgeArus(a) {
+    const cls = a === "ac" ? "ac" : a === "dc" ? "dc" : "dual";
+    return `<span class="badge ${cls}">${esc(ARUS[a])}</span>`;
+  }
+
+  function arusPenjelasan(a) {
+    if (a === "ac") return "Komponen ini <b>hanya bekerja dengan arus bolak-balik (AC)</b>. Contohnya transformator, motor induksi, dan TRIAC. Memberi DC tetap padanya dapat membuat kumparan cepat panas lalu terbakar.";
+    if (a === "dc") return "Komponen ini <b>hanya bekerja dengan arus searah (DC)</b>. Sumbernya battery, accumulator, atau adaptor. Pada tegangan AC, komponen ini tidak dapat dioperasikan langsung.";
+    return "Komponen ini dapat bekerja pada <b>AC maupun DC</b>. Sifat kelistrikannya tidak bergantung pada arah arus, sehingga dipakai luas di kedua jenis instalasi.";
+  }
+
+  function render(c) {
+    const idx = COMPONENTS.indexOf(c);
+    const prev = COMPONENTS[(idx - 1 + COMPONENTS.length) % COMPONENTS.length];
+    const next = COMPONENTS[(idx + 1) % COMPONENTS.length];
+
+    const mirip = (c.mirip || []).map(byId).filter(Boolean);
+
+    document.title = c.nama + " — Klasifikasi AC/DC";
+    $("#crumbName").textContent = c.nama;
+
+    $("#detailArea").innerHTML = `
+      <section class="detail-hero" data-kat="${c.kategori}">
+        <div class="big">${symbolSVG(c.id, "", c.nama)}</div>
+        <div>
+          <div class="badges" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px">
+            ${badgeArus(c.arus)}
+            <span class="badge cat">${esc(KATEGORI[c.kategori])}</span>
+            <span class="badge lv">Tingkat ${esc(TINGKAT[c.tingkat])}</span>
+          </div>
+          <h1 style="margin-bottom:6px">${esc(c.nama)}</h1>
+          <p style="color:var(--txt-3);font-family:var(--mono);font-size:.85rem;margin:0 0 10px">
+            ${esc((c.alias || []).join(" · ") || c.id)}
+          </p>
+          <p style="margin:0">${esc(c.fungsi)}</p>
+        </div>
+      </section>
+
+      <dl class="spec" data-kat="${c.kategori}">
+        <div><dt>Jenis Arus</dt><dd>${esc(ARUS[c.arus])}</dd></div>
+        <div><dt>Kategori</dt><dd>${esc(KATEGORI[c.kategori])}</dd></div>
+        <div><dt>Tegangan Kerja</dt><dd>${esc(c.tegangan)}</dd></div>
+        <div><dt>Rating</dt><dd>${esc(c.rating)}</dd></div>
+        <div><dt>Bentuk Fisik</dt><dd>${esc(c.bentuk)}</dd></div>
+      </dl>
+
+      <div class="note-box" style="margin-bottom:16px">
+        <h3>🔌 Kenapa diklasifikasikan ${esc(ARUS[c.arus])}?</h3>
+        <p>${arusPenjelasan(c.arus)}</p>
+      </div>
+
+      <div class="cols">
+        <div class="info">
+          <h3>⚙️ Prinsip Kerja</h3>
+          <p>${esc(c.prinsip)}</p>
+        </div>
+        <div class="info">
+          <h3>📌 Karakteristik Utama</h3>
+          <ul>${(c.karakteristik || []).map(x => `<li>${esc(x)}</li>`).join("")}</ul>
+        </div>
+        <div class="info">
+          <h3>🔧 Contoh Penerapan</h3>
+          <ul>${(c.contoh || []).map(x => `<li>${esc(x)}</li>`).join("")}</ul>
+        </div>
+        <div class="info note">
+          <h3 style="color:var(--warn)">⚠️ Catatan &amp; Jebakan Umum</h3>
+          <p style="margin:0">${esc(c.catatan)}</p>
+        </div>
+      </div>
+
+      ${mirip.length ? `
+      <section class="section">
+        <div class="section-head"><h2>Komponen Serupa</h2>
+          <span class="hint">sering tertukar dengan ${esc(c.nama)}</span></div>
+        <div class="grid">
+          ${mirip.map(m => `
+            <a class="card" data-kat="${m.kategori}" href="#/k=${encodeURIComponent(m.id)}">
+              <div class="top">
+                <div class="symbox">${symbolSVG(m.id, "", m.nama)}</div>
+                <div><h3>${esc(m.nama)}</h3>
+                  <div class="alias">${esc((m.alias || [])[0] || "")}</div></div>
+              </div>
+              <p class="fungsi">${esc(m.fungsi)}</p>
+              <div class="foot">${badgeArus(m.arus)}
+                <span class="badge cat">${esc(KATEGORI[m.kategori])}</span></div>
+            </a>`).join("")}
+        </div>
+      </section>` : ""}
+
+      <div class="hero-actions" style="margin:8px 0 4px">
+        <a class="btn primary" href="#/kuis/fokus=${encodeURIComponent(c.id)}">🎯 Uji dengan kuis ini</a>
+        <a class="btn" href="#/daftar">← Kembali ke daftar</a>
+        <a class="btn ghost" href="#/k=${encodeURIComponent(
+            COMPONENTS[Math.floor(Math.random() * COMPONENTS.length)].id)}">🎲 Komponen acak</a>
+      </div>
+
+      <nav class="pager">
+        <a href="#/k=${encodeURIComponent(prev.id)}">
+          <span>← Sebelumnya</span><b>${esc(prev.nama)}</b></a>
+        <a href="#/k=${encodeURIComponent(next.id)}" style="text-align:right">
+          <span>Berikutnya →</span><b>${esc(next.nama)}</b></a>
+      </nav>
+    `;
+  }
+
+  function renderMissing(id) {
+    document.title = "Komponen tidak ditemukan — Klasifikasi AC/DC";
+    $("#crumbName").textContent = "tidak ditemukan";
+    $("#detailArea").innerHTML = `
+      <div class="empty" style="padding:70px 20px">
+        <div class="big">🤷</div>
+        <h2>Komponen "${esc(id)}" tidak ditemukan</h2>
+        <p>Mungkin tautannya sudah berubah. Lihat <a href="#/daftar">daftar lengkap</a>.</p>
+      </div>`;
+  }
+
+  function showById(id) {
+    const c = byId(id);
+    if (c) render(c); else renderMissing(id);
+  }
+
+  function init() {
+    const id = new URLSearchParams(location.search).get("id") || "resistor";
+    showById(id);
+  }
+
+  // hook untuk router versi satu-file
+  window.DETAIL = { show: showById, init: init };
+
+  // pada versi satu-file, router yang memanggil show() — jangan auto-init
+  if (!window.__SINGLE_FILE__) {
+    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+    else init();
+  }
+})();
+
+/* =========================================================
+   kuis.js — Mesin kuis klasifikasi (5 tipe soal)
+   ========================================================= */
+
+(function () {
+  "use strict";
+
+  const $ = (s, r) => (r || document).querySelector(s);
+  const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
+  const LS = "klasifikasi-kuis-v1";
+  const TIME_LIMIT = 20;
+
+  function esc(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+  }
+  function byId(id) { return COMPONENTS.find(c => c.id === id); }
+  function shuffle(a) {
+    const r = a.slice();
+    for (let i = r.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [r[i], r[j]] = [r[j], r[i]];
+    }
+    return r;
+  }
+  function sample(arr, n) { return shuffle(arr).slice(0, n); }
+
+  /* ---------------- state ---------------- */
+  const cfg = {
+    jumlah: 10,
+    tingkat: "",     // "" = semua
+    arus: "",        // "" = semua
+    kat: "",         // "" = semua
+    urut: "acak",
+    timer: true,
+    review: true,
+    fokus: ""
+  };
+
+  let quiz = null;
+  let tick = null;
+
+  /* ---------------- penyimpanan ---------------- */
+  function save(extra) {
+    try {
+      const data = Object.assign({}, localStorage.getItem(LS) ? JSON.parse(localStorage.getItem(LS)) : {}, extra || {});
+      localStorage.setItem(LS, JSON.stringify(data));
+    } catch (e) { /* storage penuh / diblokir — abaikan */ }
+  }
+  function load() {
+    try { return JSON.parse(localStorage.getItem(LS) || "{}"); } catch (e) { return {}; }
+  }
+
+  /* ---------------- penyusun soal ---------------- */
+  const TYPES = ["simbol-nama", "simbol-arus", "simbol-kategori", "fungsi-simbol", "penerapan"];
+  const TYPE_LABEL = {
+    "simbol-nama": "Tipe 1 · Simbol → Nama Komponen",
+    "simbol-arus": "Tipe 2 · Simbol → Jenis Arus",
+    "simbol-kategori": "Tipe 3 · Simbol → Kategori Fungsi",
+    "fungsi-simbol": "Tipe 4 · Fungsi → Simbol",
+    "penerapan": "Tipe 5 · Komponen → Contoh Penerapan"
+  };
+
+  /* komponen yang akan dijadikan OBJEK soal */
+  function poolFor(opts) {
+    let pool = COMPONENTS.slice();
+    if (opts.fokus) return pool.filter(c => c.id === opts.fokus);
+    if (opts.kat) pool = pool.filter(c => c.kategori === opts.kat);
+    if (opts.arus) pool = pool.filter(c => c.arus === opts.arus);
+    if (opts.tingkat) pool = pool.filter(c => c.tingkat === opts.tingkat);
+    return pool;
+  }
+
+  /* komponen yang dipakai sebagai OPSI PALSU (bisa seluruh database) */
+  function distractorPool(opts) {
+    if (opts.fokus) return COMPONENTS.slice();
+    return poolFor(opts);
+  }
+
+  function textOpt(label, correct) { return { label: label, correct: correct }; }
+  function symOpt(id, correct) { return { svg: id, correct: correct, alt: (byId(id) || {}).nama }; }
+
+  function makeQuestion(comp, type, pool) {
+    const siblings = pool.filter(c => c.id !== comp.id && c.kategori === comp.kategori);
+    const others = (siblings.length >= 3 ? siblings : pool.filter(c => c.id !== comp.id));
+
+    switch (type) {
+      case "simbol-arus": {
+        const vals = ["ac", "dc", "dual"];
+        return {
+          type: type,
+          comp: comp,
+          soal: "Simbol di bawah termasuk komponen dengan jenis arus <b>APA</b>?",
+          opsi: shuffle(vals.map(v => textOpt(ARUS[v], v === comp.arus)))
+        };
+      }
+      case "simbol-kategori": {
+        const katKeys = Object.keys(KATEGORI).filter(k => k !== comp.kategori);
+        const opts = shuffle([KATEGORI[comp.kategori]].concat(sample(katKeys, 3).map(k => KATEGORI[k])))
+          .map(l => textOpt(l, l === KATEGORI[comp.kategori]));
+        return {
+          type: type, comp: comp,
+          soal: "Simbol di bawah termasuk kategori fungsi <b>APA</b>?",
+          opsi: opts
+        };
+      }
+      case "fungsi-simbol": {
+        const picks = [comp].concat(sample(others, 3));
+        return {
+          type: type, comp: comp,
+          soal: `Fungsi berikut dimiliki komponen dengan simbol <b>APA</b>?<br>
+                 <span style="color:var(--txt-2);font-size:.95rem">“${esc(comp.fungsi)}”</span>`,
+          opsi: shuffle(picks.map(c => symOpt(c.id, c.id === comp.id)))
+        };
+      }
+      case "penerapan": {
+        const pool2 = (others.length >= 3 ? others : COMPONENTS.filter(c => c.id !== comp.id));
+        const picks = [comp].concat(sample(pool2, 3));
+        return {
+          type: type, comp: comp,
+          soal: `Komponen <b>${esc(comp.nama)}</b>${comp.alias && comp.alias[0] ? " (" + esc(comp.alias[0]) + ")" : ""} memiliki contoh penerapan:`,
+          opsi: shuffle(picks.map(c => textOpt(c.contoh[0], c.id === comp.id)))
+        };
+      }
+      default: { // simbol-nama
+        const picks = [comp].concat(sample(others, 3));
+        return {
+          type: "simbol-nama", comp: comp,
+          soal: "Simbol di bawah disebut <b>APA</b>?",
+          opsi: shuffle(picks.map(c => textOpt(c.nama, c.id === comp.id)))
+        };
+      }
+    }
+  }
+
+  function buildQuiz(opts) {
+    const pool = poolFor(opts);
+    const dist = distractorPool(opts);
+    if (pool.length < 1) return null;
+    if (!opts.fokus && pool.length < 4) return null;
+
+    let n = opts.fokus ? 10 : Math.min(opts.jumlah, pool.length);
+
+    let picked;
+    if (opts.fokus) {
+      // mode fokus: 10 soal tentang SATU komponen, bergantian 5 tipe
+      picked = new Array(n).fill(pool[0]);
+    } else if (opts.urut === "berurutan") {
+      picked = pool.slice(0, n);
+    } else {
+      picked = sample(pool, n);
+    }
+
+    // sebarkan tipe soal agar semua tipe terpakai
+    const types = [];
+    for (let i = 0; i < n; i++) types.push(TYPES[i % TYPES.length]);
+    if (opts.urut === "acak" && !opts.fokus) types.sort(() => Math.random() - 0.5);
+
+    return {
+      soal: picked.map((c, i) => makeQuestion(c, types[i], dist)),
+      skor: 0, i: 0, benar: 0, salah: [],
+      jawaban: {}, timer: opts.timer, review: opts.review,
+      waktu: Date.now()
+    };
+  }
+
+  /* ---------------- tampilan ---------------- */
+  function show(which) {
+    ["setup", "play", "done"].forEach(id => $("#" + id).classList.toggle("hidden", id !== which));
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function startQuiz(opts) {
+    const q = buildQuiz(opts);
+    if (!q) {
+      $("#setupWarn").textContent =
+        "Filter yang dipilih hanya menghasilkan " + poolFor(opts).length +
+        " komponen — minimal 4 komponen diperlukan agar pilihan jawaban bermakna. Longgarkan filter Anda.";
+      return;
+    }
+    $("#setupWarn").textContent = "";
+    quiz = q;
+    // fokus tidak ikut disimpan, agar kuis tidak terkunci di sesi berikutnya
+    save({ cfg: { jumlah: opts.jumlah, tingkat: opts.tingkat, arus: opts.arus, kat: opts.kat, urut: opts.urut, timer: opts.timer, review: opts.review } });
+    $("#btnUlangSalah").classList.add("hidden");
+    show("play");
+    renderQuestion();
+  }
+
+  function renderQuestion() {
+    const Q = quiz.soal[quiz.i];
+    const total = quiz.soal.length;
+
+    $("#qNomor").textContent = `Soal ${quiz.i + 1} / ${total}`;
+    $("#qScore").textContent = quiz.benar;
+    $("#qProgress").style.width = ((quiz.i) / total * 100) + "%";
+
+    const cards = Q.opsi.map((o, i) => {
+      const key = String.fromCharCode(65 + i);
+      const body = o.svg
+        ? `${symbolSVG(o.svg, "", o.alt)}<span>${esc(o.alt)}</span>`
+        : `<span>${esc(o.label)}</span>`;
+      return `<button class="ans" type="button" data-i="${i}">
+        <span class="key">${key}</span>${body}<span class="mark"></span>
+      </button>`;
+    }).join("");
+
+    $("#qCard").innerHTML = `
+      <div class="qtype">${esc(TYPE_LABEL[Q.type])}</div>
+      <div class="qtext">${Q.soal}</div>
+      <div class="qsym">${symbolSVG(Q.comp.id, "", Q.comp.nama)}</div>
+      <div class="answers">${cards}</div>
+      <div id="fbSlot"></div>
+    `;
+
+    $$("#qCard .ans").forEach(b => {
+      b.addEventListener("click", () => answer(parseInt(b.dataset.i, 10)));
+    });
+    startTimer();
+  }
+
+  /* pintasan papan ketik: A/B/C/D untuk menjawab, Enter untuk lanjut */
+  document.addEventListener("keydown", function (e) {
+    if (e.target.matches("input, textarea, select")) return;
+    if ($("#play").classList.contains("hidden")) return;
+
+    if (e.key === "Enter") {
+      if (!$("#btnNext").classList.contains("hidden")) { e.preventDefault(); next(); }
+      return;
+    }
+    const btns = $$("#qCard .ans:not(:disabled)");
+    const n = e.key.toUpperCase().charCodeAt(0) - 65;
+    if (n >= 0 && n < btns.length && /^[a-dA-D]$/.test(e.key)) {
+      e.preventDefault();
+      btns[n].click();
+    }
+  });
+
+  function startTimer() {
+    clearInterval(tick);
+    const box = $("#qTimer");
+    if (!quiz.timer) { box.textContent = ""; return; }
+    let left = TIME_LIMIT;
+    box.textContent = "⏱ " + left + "s";
+    tick = setInterval(function () {
+      left--;
+      box.textContent = "⏱ " + Math.max(left, 0) + "s";
+      if (left <= 0) { clearInterval(tick); answer(-1); }
+    }, 1000);
+  }
+
+  function answer(pick) {
+    clearInterval(tick);
+    const Q = quiz.soal[quiz.i];
+    const benarIdx = Q.opsi.findIndex(o => o.correct);
+    const benar = pick === benarIdx;
+    const timeout = pick === -1;
+
+    if (benar) quiz.benar++;
+    else quiz.salah.push({ id: Q.comp.id, type: Q.type, pilih: timeout ? "waktu habis" : (Q.opsi[pick] ? (Q.opsi[pick].alt || Q.opsi[pick].label) : "-") });
+
+    quiz.jawaban[Q.comp.id + "|" + Q.type] = benar;
+
+    $$("#qCard .ans").forEach((b, i) => {
+      b.disabled = true;
+      if (i === benarIdx) { b.classList.add("correct"); b.querySelector(".mark").textContent = "✓"; }
+      else if (i === pick) { b.classList.add("wrong"); b.querySelector(".mark").textContent = "✗"; }
+    });
+
+    $("#qScore").textContent = quiz.benar;
+
+    const c = Q.comp;
+    $("#fbSlot").innerHTML = `
+      <div class="fback ${benar ? "ok" : "no"} clearfix">
+        ${symbolSVG(c.id, "mini", c.nama)}
+        <b>${benar ? "✅ Benar!" : timeout ? "⏱ Waktu habis." : "❌ Belum tepat."}
+           — ${esc(c.nama)}</b>
+        <div style="font-size:.9rem;color:var(--txt-2)">
+          ${badgeRow(c)}
+          <p style="margin:8px 0 0"><b style="color:var(--txt)">Fungsi:</b> ${esc(c.fungsi)}</p>
+        </div>
+        <p style="margin:10px 0 0">
+          <a href="#/k=${encodeURIComponent(c.id)}">Pelajari selengkapnya →</a>
+        </p>
+      </div>`;
+
+    $("#qProgress").style.width = ((quiz.i + 1) / quiz.soal.length * 100) + "%";
+    $("#btnNext").classList.remove("hidden");
+    $("#btnNext").textContent = quiz.i === quiz.soal.length - 1 ? "Lihat Hasil →" : "Soal Berikutnya →";
+  }
+
+  function badgeRow(c) {
+    const cls = c.arus === "ac" ? "ac" : c.arus === "dc" ? "dc" : "dual";
+    return `<span class="badge ${cls}">${esc(ARUS[c.arus])}</span>
+            <span class="badge cat">${esc(KATEGORI[c.kategori])}</span>
+            <span class="badge lv">${esc(TINGKAT[c.tingkat])}</span>`;
+  }
+
+  function next() {
+    if (quiz.i < quiz.soal.length - 1) { quiz.i++; renderQuestion(); }
+    else finish();
+  }
+
+  /* ---------------- hasil ---------------- */
+  function finish() {
+    clearInterval(tick);
+    const total = quiz.soal.length;
+    const benar = quiz.benar;
+    const pct = Math.round(benar / total * 100);
+    const nilai = Math.round((benar / total) * 100);
+    const predikat = nilai >= 90 ? "Luar biasa!" : nilai >= 75 ? "Bagus sekali!" :
+                     nilai >= 60 ? "Cukup baik." : nilai >= 40 ? "Perlu diulang." : "Belum paham — coba lagi.";
+
+    const warna = nilai >= 75 ? "var(--ok)" : nilai >= 50 ? "var(--acc)" : "var(--bad)";
+    const terbaik = load().terbaik || 0;
+    const rekor = nilai > terbaik;
+    if (rekor) save({ terbaik: nilai });
+
+    $("#resultPanel").innerHTML = `
+      <div class="score-ring" style="--pct:${pct}%;color:${warna}"><b>${nilai}</b></div>
+      <h2 style="color:${warna}">${esc(predikat)}</h2>
+      <p style="color:var(--txt-2)">Kamu menjawab <b style="color:var(--ok)">${benar} benar</b>
+        dari <b>${total}</b> soal${rekor ? ' · <b style="color:var(--dual)">Rekor baru!</b>' : ' · Rekor: ' + terbaik}</p>
+      <div class="hero-actions" style="justify-content:center;margin-top:20px">
+        <button class="btn primary" id="btnMulai2" type="button">Main Lagi</button>
+        <button class="btn ${quiz.salah.length ? "" : "hidden"}" id="btnUlang2" type="button">↻ Ulangi ${quiz.salah.length} soal yang salah</button>
+        <a class="btn ghost" href="#/daftar">Pelajari komponen</a>
+      </div>`;
+
+    // review
+    let review = "";
+    if (quiz.review) {
+      const heads = {
+        "simbol-nama": "Simbol → Nama", "simbol-arus": "Simbol → Arus",
+        "simbol-kategori": "Simbol → Kategori", "fungsi-simbol": "Fungsi → Simbol",
+        "penerapan": "Contoh penerapan"
+      };
+      const nama = id => (byId(id) || {}).nama || id;
+      review = quiz.salah.length
+        ? `<h3 style="margin-top:6px">Soal yang perlu diulang (${quiz.salah.length})</h3>
+           ${quiz.salah.map((s, i) => `
+             <a class="paket" data-kat="${(byId(s.id) || {}).kategori || ""}"
+                href="#/k=${encodeURIComponent(s.id)}">
+               <div class="symbox">${symbolSVG(s.id, "", nama(s.id))}</div>
+               <div style="flex:1">
+                 <b>${esc(nama(s.id))}</b>
+                 <div style="font-size:.83rem;color:var(--txt-3)">${esc(heads[s.type] || s.type)}</div>
+                 <div style="font-size:.85rem;color:var(--bad)">Jawaban Anda: ${esc(s.pilih)}</div>
+               </div>
+             </a>`).join("")}`
+        : `<div class="panel" style="text-align:center;margin-top:20px">
+             <h3 style="color:var(--ok)">🏆 Semua jawaban benar!</h3>
+             <p style="color:var(--txt-2);margin:0">Tidak ada soal yang perlu diulang. Naikkan level kesulitan untuk tantangan berikutnya.</p>
+           </div>`;
+
+      $("#reviewBox").innerHTML = review;
+    } else {
+      $("#reviewBox").innerHTML = "";
+    }
+
+    $("#btnUlangSalah").classList.toggle("hidden", quiz.salah.length === 0);
+    $("#btnUlang2").addEventListener("click", repeatWrong);
+    $("#btnMulai2").addEventListener("click", () => startQuiz(currentOpts()));
+    show("done");
+  }
+
+  function repeatWrong() {
+    // soal salah, dengan opsi palsu diacak ulang dari seluruh database
+    const soal = quiz.salah.map(s => makeQuestion(byId(s.id), s.type, COMPONENTS));
+    quiz = {
+      soal: soal, skor: 0, i: 0, benar: 0, salah: [],
+      timer: false, review: quiz.review, waktu: Date.now()
+    };
+    $("#btnUlangSalah").classList.add("hidden");
+    show("play");
+    renderQuestion();
+  }
+
+  /* ---------------- form setup ---------------- */
+  let currentOpts = () => ({
+    jumlah: cfg.jumlah, tingkat: cfg.tingkat, arus: cfg.arus, kat: cfg.kat,
+    urut: cfg.urut, timer: cfg.timer, review: cfg.review, fokus: cfg.fokus
+  });
+
+  function radioRow(box, name, items, checked, onchange) {
+    box.innerHTML = items.map((it, i) => `
+      <label class="opt">
+        <input type="radio" name="${name}" value="${esc(it.v)}" ${checked === it.v ? "checked" : ""}>
+        <span>${esc(it.t)}</span>
+        ${it.n != null ? `<span class="cnt">${it.n}</span>` : ""}
+      </label>`).join("");
+    $$("input", box).forEach(r => r.addEventListener("change", onchange));
+  }
+
+  function buildForm() {
+    const saved = load().cfg || {};
+    const fokusAktif = cfg.fokus;   // dari URL, jangan ditimpa config tersimpan
+    Object.assign(cfg, saved);
+    cfg.fokus = fokusAktif;
+
+    radioRow($("#optJumlah"), "jumlah",
+      [{ v: "10", t: "10 soal", n: "~2 menit" }, { v: "20", t: "20 soal", n: "~4 menit" },
+       { v: "50", t: "50 soal", n: "~9 menit" }, { v: "999", t: "Semua", n: COMPONENTS.length }],
+      String(cfg.jumlah), e => cfg.jumlah = +e.target.value);
+
+    radioRow($("#optTingkat"), "tingkat",
+      [{ v: "", t: "Semua tingkat" }, { v: "dasar", t: "Dasar", n: COMPONENTS.filter(c => c.tingkat === "dasar").length },
+       { v: "lanjut", t: "Lanjut", n: COMPONENTS.filter(c => c.tingkat === "lanjut").length }],
+      cfg.tingkat, e => cfg.tingkat = e.target.value);
+
+    radioRow($("#optArus"), "arus",
+      [{ v: "", t: "Semua jenis arus" }, { v: "ac", t: "AC", n: COMPONENTS.filter(c => c.arus === "ac").length },
+       { v: "dc", t: "DC", n: COMPONENTS.filter(c => c.arus === "dc").length },
+       { v: "dual", t: "AC & DC", n: COMPONENTS.filter(c => c.arus === "dual").length }],
+      cfg.arus, e => cfg.arus = e.target.value);
+
+    radioRow($("#optKat"), "kat",
+      [{ v: "", t: "Semua kategori" }].concat(Object.keys(KATEGORI).map(k => ({
+        v: k, t: KATEGORI[k], n: COMPONENTS.filter(c => c.kategori === k).length
+      }))),
+      cfg.kat, e => cfg.kat = e.target.value);
+
+    $$("input[name=urut]").forEach(r => {
+      r.checked = r.value === cfg.urut;
+      r.addEventListener("change", e => cfg.urut = e.target.value);
+    });
+    $("#optTimer").checked = cfg.timer;
+    $("#optTimer").addEventListener("change", e => cfg.timer = e.target.checked);
+    $("#optReview").checked = cfg.review;
+    $("#optReview").addEventListener("change", e => cfg.review = e.target.checked);
+  }
+
+  /* ---------------- init ---------------- */
+  let inited = false;
+
+  /* set / lepas kunci komponen untuk mode fokus */
+  function setFokus(id) {
+    const c = id && byId(id);
+    cfg.fokus = c ? id : "";
+    const box = $("#lockBox");
+    if (!c) { box.style.display = "none"; return; }
+    box.style.display = "";
+    $("#lockText").innerHTML =
+      `Kuis ini dikunci pada komponen <b>${esc(c.nama)}</b>. ` +
+      `Tersedia 10 soal dengan 5 tipe pertanyaan berbeda tentang simbol, jenis arus (${esc(ARUS[c.arus])}), ` +
+      `dan kategorinya (${esc(KATEGORI[c.kategori])}).`;
+  }
+
+  function init() {
+    if (inited) return;
+    inited = true;
+    setFokus(new URLSearchParams(location.search).get("fokus") || "");
+    buildForm();
+    $("#btnMulai").addEventListener("click", () => startQuiz(currentOpts()));
+    $("#btnAcak").addEventListener("click", () => {
+      const c = COMPONENTS[Math.floor(Math.random() * COMPONENTS.length)];
+      location.href = "#/k=" + encodeURIComponent(c.id);
+    });
+    $("#btnUlangSalah").addEventListener("click", repeatWrong);
+    $("#btnNext").addEventListener("click", next);
+    $("#btnQuit").addEventListener("click", () => { clearInterval(tick); show("setup"); });
+
+    const hist = load().terbaik;
+    if (hist) {
+      $("#setupWarn").style.color = "var(--txt-3)";
+      $("#setupWarn").textContent = `Skor terbaik Anda: ${hist}/100`;
+    }
+  }
+
+  // hook untuk router versi satu-file
+  window.KUIS = { init: init, setFokus: setFokus, show: show };
+
+  // pada versi satu-file, router yang memanggil init() — jangan auto-init
+  if (!window.__SINGLE_FILE__) {
+    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+    else init();
+  }
+})();
+
+
+/* ===================== ROUTER SATU-FILE =====================
+   #/            beranda
+   #/daftar      beranda + scroll ke daftar
+   #/panduan     beranda + scroll ke panduan
+   #/k=<id>      detail komponen
+   #/kuis        kuis
+   #/kuis/fokus=<id>
+   ========================================================== */
+(function () {
+  var PAGES = { home: "page-home", detail: "page-detail", quiz: "page-quiz" };
+  var NAV = { home: "Beranda", detail: "Komponen", quiz: "Kuis" };
+
+  function showPage(name) {
+    Object.keys(PAGES).forEach(function (k) {
+      var el = document.getElementById(PAGES[k]);
+      if (el) el.classList.toggle("on", k === name);
+    });
+    document.querySelectorAll(".nav a").forEach(function (a) {
+      a.classList.toggle("on", a.dataset.nav === (name === "detail" ? "detail" : name));
+    });
+  }
+
+  function route() {
+    var h = location.hash || "#/";
+
+    if (h.indexOf("#/k=") === 0) {
+      showPage("detail");
+      DETAIL.show(decodeURIComponent(h.slice(4)));
+      window.scrollTo(0, 0);
+      return;
+    }
+
+    if (h.indexOf("#/kuis") === 0) {
+      showPage("quiz");
+      KUIS.init();
+      if (h.indexOf("#/kuis/fokus=") === 0) KUIS.setFokus(decodeURIComponent(h.slice(13)));
+      else KUIS.setFokus("");
+      window.scrollTo(0, 0);
+      return;
+    }
+
+    // beranda
+    showPage("home");
+    if (h.indexOf("#/daftar") === 0) {
+      var d = document.getElementById("daftar");
+      if (d) setTimeout(function () { d.scrollIntoView({ behavior: "smooth" }); }, 60);
+    } else if (h.indexOf("#/panduan") === 0) {
+      var p = document.getElementById("panduan");
+      if (p) setTimeout(function () { p.scrollIntoView({ behavior: "smooth" }); }, 60);
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }
+
+  window.addEventListener("hashchange", route);
+  document.addEventListener("DOMContentLoaded", function () {
+    KUIS.init();
+    if (!location.hash) location.replace("#/");
+    route();
+  });
+})();
+
+</script>
+</body>
+</html>

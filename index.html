@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Klasifikasi Komponen AC & DC — Sistem Interaktif</title>
+<meta name="description" content="Web sistem interaktif untuk mengklasifikasikan komponen elektronik berdasarkan jenis arus (AC/DC) dan fungsinya.">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="index.html">
+      <span class="logo">⚡</span>
+      <span>Klasifikasi <span class="full">Komponen AC/DC</span></span>
+    </a>
+    <nav class="nav">
+      <a href="index.html" class="on">Beranda</a>
+      <a href="index.html#daftar">Komponen</a>
+      <a href="kuis.html">Kuis</a>
+      <a href="#panduan">Panduan</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ================= HERO ================= -->
+  <section class="hero">
+    <span class="kicker">● Sistem Klasifikasi Interaktif</span>
+    <h1>Kenali &amp; Klasifikasikan Komponen Elektronik<br><span style="color:var(--acc)">Berdasarkan Arus dan Fungsinya</span></h1>
+    <p class="lead">
+      Setiap komponen elektronik dapat diklasifikasikan dari dua sisi: <b>jenis arus</b> yang mampu diterimanya
+      (<b>AC</b>, <b>DC</b>, atau keduanya) dan <b>katategori fungsi</b>-nya. Sistem ini menampilkan
+      94 komponen lengkap dengan simbol, prinsip kerja, dan contoh penerapan nyata — plus mode kuis untuk
+      menguji pemahaman Anda.
+    </p>
+    <div class="hero-actions">
+      <a class="btn primary" href="#daftar">Jelajahi Komponen</a>
+      <a class="btn" href="kuis.html">Mulai Kuis</a>
+      <a class="btn ghost" href="#panduan">Cara Kerja Sistem</a>
+    </div>
+    <div class="stat-row" id="statRow">
+      <div class="stat"><b>94</b><span>Total Komponen</span></div>
+      <div class="stat"><b>8</b><span>Kategori Fungsi</span></div>
+      <div class="stat"><b>3</b><span>Kelas Arus</span></div>
+      <div class="stat"><b>5</b><span>Tipe Soal Kuis</span></div>
+    </div>
+  </section>
+
+  <!-- ================= PANDUAN KLASIFIKASI ================= -->
+  <section id="panduan" class="section">
+    <div class="section-head">
+      <h2>Cara Sistem Mengklasifikasikan</h2>
+      <span class="hint">acuan utama untuk seluruh isi database</span>
+    </div>
+
+    <h3 style="margin-top:18px">1. Berdasarkan jenis arus kerja</h3>
+    <div class="legend">
+      <div class="li" style="--c:var(--ac)">
+        <b>🔵 AC (Alternating Current)</b>
+        <span>Hanya dapat bekerja bila disuplai arus bolak-balik.</span>
+        <ul>
+          <li>Contoh: transformator, TRIAC, motor induksi, saklar</li>
+          <li>Umumnya PLN 220 V / 50 Hz</li>
+          <li>Komponen ini bisa rusak atau terbakar jika diberi DC tetap</li>
+        </ul>
+      </div>
+      <div class="li" style="--c:var(--dc)">
+        <b>🟢 DC (Direct Current)</b>
+        <span>Hanya dapat bekerja bila disuplai arus searah (battery/adaptor).</span>
+        <ul>
+          <li>Contoh: IC digital, op-amp, BJT, motor DC, sensor</li>
+          <li>Umumnya battery, accumulator, atau adaptor</li>
+          <li>Memberi AC tegangan tetap pada komponen ini berbahaya</li>
+        </ul>
+      </div>
+      <div class="li" style="--c:var(--dual)">
+        <b>🟡 AC &amp; DC (Dupleks)</b>
+        <span>Bisa bekerja pada keduanya — kelompok komponen terbesar.</span>
+        <ul>
+          <li>Contoh: resistor, kapasitor, dioda, MOSFET, relay, motor</li>
+          <li>Sifat listriknya tidak bergantung pada arah arus</li>
+          <li>Perbedaannya ada pada aplikasi, bukan pada kelistrikan dasarnya</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="note-box" style="margin-top:14px">
+      <h3>⚠️ Catatan penting</h3>
+      <p>
+        Label "AC", "DC", atau "AC &amp; DC" pada tiap komponen menunjukkan <b>jenis suplai yang aman</b>,
+        bukan asal-usul arus. Contohnya dioda tetap bekerja pada keduanya, tetapi memiliki rating tegangan
+       undur yang berbeda untuk aplikasi AC maupun DC.
+      </p>
+    </div>
+
+    <h3 style="margin-top:28px">2. Berdasarkan fungsi / teknologi</h3>
+    <div class="legend" id="katLegend"></div>
+  </section>
+
+  <!-- ================= DAFTAR KOMPONEN ================= -->
+  <section id="daftar" class="section">
+    <div class="section-head">
+      <h2>Daftar &amp; Filter Komponen</h2>
+      <span class="hint">Cari nama, simbol, atau fungsi — lalu filter berdasarkan arus &amp; kategori</span>
+    </div>
+  </section>
+
+</main>
+
+<!-- filter di luar <main> agar sticky penuh -->
+<div class="filters" id="filterBar">
+  <div class="wrap">
+    <div class="search-row">
+      <label class="search">
+        <span class="ico">🔍</span>
+        <input type="search" id="q" placeholder="Cari: resistor, dioda, trafo, regulator, sensor cahaya…" autocomplete="off">
+      </label>
+      <div class="viewtoggle" role="group" aria-label="Tampilan">
+        <button id="vGrid" class="on" type="button">▦ Grid</button>
+        <button id="vTable" type="button">☰ Tabel</button>
+      </div>
+      <button class="btn ghost sm" id="resetAll" type="button">↺ Reset</button>
+    </div>
+    <div class="chiprow" id="arusChips">
+      <span class="lbl">Arus</span>
+    </div>
+    <div class="chiprow" id="katChips">
+      <span class="lbl">Kategori</span>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="section-head" style="margin:18px 0 0">
+    <h3 id="countLabel" style="margin:0">Memuat…</h3>
+    <span class="hint" id="activeFilterLabel"></span>
+  </div>
+  <div id="listArea"></div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <b style="color:var(--txt)">Klasifikasi Komponen AC/DC</b><br>
+      Sistem belajar interaktif · 94 komponen · tanpa koneksi internet
+    </div>
+    <div>
+      <a href="index.html">Beranda</a> ·
+      <a href="kuis.html">Kuis</a> ·
+      <a href="#panduan">Panduan</a>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/symbols.js"></script>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>

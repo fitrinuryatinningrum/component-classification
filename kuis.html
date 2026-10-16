@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kuis Klasifikasi Komponen AC/DC</title>
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="index.html">
+      <span class="logo">⚡</span>
+      <span>Klasifikasi <span class="full">Komponen AC/DC</span></span>
+    </a>
+    <nav class="nav">
+      <a href="index.html">Beranda</a>
+      <a href="index.html#daftar">Komponen</a>
+      <a href="kuis.html" class="on">Kuis</a>
+      <a href="index.html#panduan">Panduan</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ============ KONFIGURASI ============ -->
+  <section id="setup" class="section">
+    <div class="section-head">
+      <h2>Kuis Klasifikasi Komponen</h2>
+      <span class="hint">5 tipe soal · umpan balik langsung · skor &amp; review</span>
+    </div>
+
+    <div class="note-box" id="lockBox" style="display:none">
+      <h3>🎯 Mode komponen tunggal</h3>
+      <p id="lockText"></p>
+    </div>
+
+    <div class="quiz-setup">
+      <div class="fieldset">
+        <b>Jumlah soal</b>
+        <div class="opts" id="optJumlah"></div>
+      </div>
+      <div class="fieldset">
+        <b>Tingkat kesulitan</b>
+        <div class="opts" id="optTingkat"></div>
+      </div>
+      <div class="fieldset">
+        <b>Jenis arus yang diuji</b>
+        <div class="opts" id="optArus"></div>
+      </div>
+      <div class="fieldset">
+        <b>Kategori komponen</b>
+        <div class="opts" id="optKat"></div>
+      </div>
+      <div class="fieldset">
+        <b>Opsi lain</b>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="urut" value="acak" checked><span>Acak</span></label>
+          <label class="opt"><input type="radio" name="urut" value="berurutan"><span>Berurutan</span></label>
+          <label class="opt"><input type="checkbox" id="optTimer" checked><span>Batas waktu 20 detik/soal</span></label>
+          <label class="opt"><input type="checkbox" id="optReview" checked><span>Tampilkan kunci jawaban</span></label>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-actions">
+      <button class="btn primary" id="btnMulai" type="button">Mulai Kuis →</button>
+      <button class="btn" id="btnAcak" type="button">🎲 Soal Acak</button>
+      <button class="btn hidden" id="btnUlangSalah" type="button">↻ Ulangi yang salah</button>
+    </div>
+    <p class="hint" id="setupWarn" style="color:var(--warn);margin-top:12px"></p>
+  </section>
+
+  <!-- ============ KUIS BERJALAN ============ -->
+  <section id="play" class="section hidden">
+    <div class="qbar">
+      <span class="qmeta" id="qNomor">Soal 1</span>
+      <div class="progress"><i id="qProgress" style="width:0%"></i></div>
+      <span class="qmeta">Skor: <b class="qscore" id="qScore">0</b></span>
+      <span class="qmeta" id="qTimer" style="min-width:52px"></span>
+    </div>
+    <div class="qcard" id="qCard"></div>
+    <div class="hero-actions" style="margin-top:16px">
+      <button class="btn" id="btnQuit" type="button">Keluar</button>
+      <button class="btn primary hidden" id="btnNext" type="button">Soal Berikutnya →</button>
+    </div>
+  </section>
+
+  <!-- ============ HASIL ============ -->
+  <section id="done" class="section hidden">
+    <div class="panel result" id="resultPanel"></div>
+    <div class="review" id="reviewBox"></div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div><b style="color:var(--txt)">Klasifikasi Komponen AC/DC</b><br>Sistem belajar interaktif</div>
+    <div><a href="index.html">Beranda</a> · <a href="index.html#daftar">Komponen</a></div>
+  </div>
+</footer>
+
+<script src="assets/js/symbols.js"></script>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/kuis.js"></script>
+</body>
+</html>
