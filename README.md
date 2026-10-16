@@ -13,6 +13,11 @@
 
 [🌐 Buka langsung (versi 1 file)](Klasifikasi-Komponen-AC-DC.html) · [📖 Dokumentasi](#-dokumentasi)
 
+[![Repo](https://img.shields.io/badge/Repository-fitrinuryatinningrum%2Fcomponent--classification-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/fitrinuryatinningrum/component-classification)
+[![Fork](https://img.shields.io/badge/Fork%20me-58A6FF?style=for-the-badge&logo=github&logoColor=white)](https://github.com/fitrinuryatinningrum/component-classification/fork)
+[![Stars](https://img.shields.io/github/stars/fitrinuryatinningrum/component-classification?style=for-the-badge&logo=github&logoColor=white)](https://github.com/fitrinuryatinningrum/component-classification/stargazers)
+[![License](https://img.shields.io/github/license/fitrinuryatinningrum/component-classification?style=for-the-badge)](https://github.com/fitrinuryatinningrum/component-classification)
+
 </div>
 
 ---
